@@ -17,5 +17,4 @@ global using SunamoValues.Constants;
 global using SunamoCollections;
 global using SunamoGoogleSheets._sunamo;
 global using SunamoGoogleSheets.Clipboard;
-global using SunamoGoogleSheets.Data;
 global using SunamoStringGetLines;

@@ -226,11 +226,11 @@ public class SheetsHelper
 
     //public static void JoinForGoogleSheetRow(StringBuilder sb, IList en)
     //{
-    //    CA.JoinForGoogleSheetRow(sb, en);
+    //    SheetsHelper.JoinForGoogleSheetRow(sb, en);
     //}
 
     //public static string JoinForGoogleSheetRow(IList en)
     //{
-    //    return CA.JoinForGoogleSheetRow(en);
+    //    return SheetsHelper.JoinForGoogleSheetRow(en);
     //}
 }
