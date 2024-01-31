@@ -3,17 +3,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>24.1.13.1</Version>
+    <Version>24.1.24.1</Version>
     <Description>Parsing from and formatting to Google Sheets</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoBts" Version="24.1.13.2" />
-    <PackageReference Include="SunamoCollections" Version="24.1.10.1" />
-    <PackageReference Include="SunamoCollectionsGeneric" Version="24.1.10.1" />
-    <PackageReference Include="SunamoDateTime" Version="24.1.10.1" />
-    <PackageReference Include="SunamoStringGetLines" Version="24.1.11.1" />
-    <PackageReference Include="SunamoStringJoin" Version="24.1.10.1" />
-    <PackageReference Include="SunamoStringSplit" Version="24.1.11.1" />
+    <PackageReference Include="SunamoCollections" Version="24.1.24.1" />
+    <PackageReference Include="SunamoDateTime" Version="24.1.23.1" />
+    <PackageReference Include="SunamoNumbers" Version="24.1.14.2" />
+    <PackageReference Include="SunamoStringJoin" Version="24.1.14.1" />
+    <PackageReference Include="SunamoStringShared" Version="24.1.23.9" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />

@@ -11,7 +11,6 @@ global using System.Data;
 global using SunamoCollectionsGeneric;
 global using SunamoData.Data;
 global using SunamoCollectionsGeneric.Collections;
-global using SunamoData.Enums;
 global using SunamoBts;
 global using SunamoValues.Constants;
 global using SunamoCollections;

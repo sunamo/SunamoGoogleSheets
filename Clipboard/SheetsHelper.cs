@@ -1,5 +1,3 @@
-using SunamoStringJoin;
-
 namespace SunamoGoogleSheets.Clipboard;
 
 
@@ -176,7 +174,7 @@ public class SheetsHelper
         //    input = ClipboardHelper.GetText();
         //}
 
-        var bm = SH.TabOrSpaceNextTo(input);
+        var bm = SHSH.TabOrSpaceNextTo(input);
         List<string> vr = new List<string>();
 
         if (bm.Count > 0)
