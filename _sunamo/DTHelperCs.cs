@@ -1,7 +1,9 @@
+namespace SunamoGoogleSheets._sunamo;
+
 //namespace SunamoGoogleSheets._sunamo;
 
-//public class DTHelperCs
+//internal class DTHelperCs
 //{
-//    public static Func<long, string> ToShortTimeFromSeconds;
+//    internal static Func<long, string> ToShortTimeFromSeconds;
 
 //}

@@ -1,6 +1,8 @@
+namespace SunamoGoogleSheets._sunamo;
+
 //namespace SunamoGoogleSheets._sunamo;
 
-//public class UnixDateConverter
+//internal class UnixDateConverter
 //{
-//    public static Func<long, DateTime> From;
+//    internal static Func<long, DateTime> From;
 //}

@@ -1,6 +1,8 @@
+namespace SunamoGoogleSheets._sunamo;
+
 //namespace SunamoGoogleSheets._sunamo;
 
-//public class NH
+//internal class NH
 //{
-//    public static Func<List<double>, string> CalculateMedianAverage;
+//    internal static Func<List<double>, string> CalculateMedianAverage;
 //}

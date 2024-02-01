@@ -6,6 +6,6 @@ namespace SunamoGoogleSheets._sunamo;
 //using System.Text;
 //using System.Threading.Tasks;
 
-//public class CA
+//internal class CA
 //{
 //}

@@ -1,4 +1,13 @@
+
 namespace SunamoGoogleSheets.Clipboard;
+using SunamoBts;
+using SunamoCollectionsGeneric.Collections;
+using SunamoNumbers;
+using SunamoStringGetLines;
+using SunamoStringJoin;
+using SunamoStringSplit;
+using SunamoValues;
+
 
 
 
@@ -102,7 +111,7 @@ public class SheetsHelper
         {
             r[i] = CalculateMedianAverage(r[i]);
         }
-        return SHJoin.JoinNL(r);
+        return string.Join(Environment.NewLine, r);
     }
 
     public static List<List<string>> AllLines(string d)
@@ -150,7 +159,8 @@ public class SheetsHelper
         var r = SplitFromGoogleSheets(input);
         if (removeEmptyElements)
         {
-            CA.RemoveStringsEmpty2(r);
+            r = r.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+            //CA.RemoveStringsEmpty2(r);
         }
         return r;
     }
@@ -169,27 +179,29 @@ public class SheetsHelper
     /// <param name="input"></param>
     public static List<string> SplitFromGoogleSheets(string input)
     {
+        throw new NotImplementedException();
+
         //if (input == null)
         //{
         //    input = ClipboardHelper.GetText();
         //}
 
-        var bm = SHSH.TabOrSpaceNextTo(input);
-        List<string> vr = new List<string>();
+        //var bm = SHSH.TabOrSpaceNextTo(input);
+        //List<string> vr = new List<string>();
 
-        if (bm.Count > 0)
-        {
-            vr.AddRange(SHSplit.SplitByIndexes(input, bm));
+        //if (bm.Count > 0)
+        //{
+        //    vr.AddRange(SHSplit.SplitByIndexes(input, bm));
 
-            vr.Reverse();
-        }
-        else
-        {
-            //ThisApp.Warning( "Bad data in clipboard");
-            vr.Add(input);
-        }
+        //    vr.Reverse();
+        //}
+        //else
+        //{
+        //    //ThisApp.Warning( "Bad data in clipboard");
+        //    vr.Add(input);
+        //}
         //var vr = SHSplit.Split(input, AllStrings.tab);
-        return vr;
+        //return vr;
     }
 
     /// <summary>
