@@ -1,8 +1,7 @@
 
 namespace SunamoGoogleSheets.Clipboard;
 using SunamoData.Data;
-using SunamoStringGetLines;
-
+using SunamoGoogleSheets._sunamo;
 
 public class SheetsGeneratorTemplate
 {

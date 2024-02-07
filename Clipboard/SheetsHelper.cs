@@ -1,11 +1,8 @@
 
 namespace SunamoGoogleSheets.Clipboard;
-using SunamoBts;
-using SunamoCollectionsGeneric.Collections;
-using SunamoNumbers;
-using SunamoStringGetLines;
-using SunamoStringJoin;
-using SunamoStringSplit;
+
+using SunamoCollectionsValuesTableGrid;
+using SunamoGoogleSheets._sunamo;
 using SunamoValues;
 
 
@@ -141,7 +138,7 @@ public class SheetsHelper
         //    input = ClipboardHelper.GetText();
         //}
 
-        return SHSplit.Split(input, "\n");
+        return input.Split(AllChars.nl).ToList(); //SHSplit.Split(input, "\n");
     }
 
     /// <summary>
