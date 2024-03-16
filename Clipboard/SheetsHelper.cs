@@ -2,6 +2,7 @@
 namespace SunamoGoogleSheets.Clipboard;
 
 using SunamoCollectionsValuesTableGrid;
+using SunamoExceptions;
 using SunamoGoogleSheets._sunamo;
 using SunamoValues;
 
@@ -176,29 +177,21 @@ public class SheetsHelper
     /// <param name="input"></param>
     public static List<string> SplitFromGoogleSheets(string input)
     {
-        throw new NotImplementedException();
+        var bm = SH.TabOrSpaceNextTo(input);
+        List<string> vr = new List<string>();
 
-        //if (input == null)
-        //{
-        //    input = ClipboardHelper.GetText();
-        //}
-
-        //var bm = SHSH.TabOrSpaceNextTo(input);
-        //List<string> vr = new List<string>();
-
-        //if (bm.Count > 0)
-        //{
-        //    vr.AddRange(SHSplit.SplitByIndexes(input, bm));
-
-        //    vr.Reverse();
-        //}
-        //else
-        //{
-        //    //ThisApp.Warning( "Bad data in clipboard");
-        //    vr.Add(input);
-        //}
-        //var vr = SHSplit.Split(input, AllStrings.tab);
-        //return vr;
+        if (bm.Count > 0)
+        {
+            vr.AddRange(SHSplit.SplitByIndexes(input, bm));
+            vr.Reverse();
+        }
+        else
+        {
+            //ThisApp.Warning( "Bad data in clipboard");
+            vr.Add(input);
+        }
+        var vr2 = SHSplit.Split(input, AllStrings.tab);
+        return vr2;
     }
 
     /// <summary>
