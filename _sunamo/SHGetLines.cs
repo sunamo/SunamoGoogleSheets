@@ -3,6 +3,6 @@ internal class SHGetLines
 {
     internal static List<string> GetLines(string s)
     {
-        return s.Split(new String[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        return sv.Split(new string[] { v.Contains("\r\n") ? "\r\n" : "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 }
