@@ -1,4 +1,4 @@
-﻿using SunamoExceptions.OnlyInSE;
+
 
 namespace SunamoGoogleSheets._sunamo;
 internal class CAToNumber
