@@ -16,7 +16,7 @@ public class SheetsHelper
         if (item2.Length > 2)
         {
 
-            if (item2[1] == AllCharsSE.space)
+            if (item2[1] == AllChars.space)
             {
                 return item2[0];
             }
@@ -221,7 +221,7 @@ public class SheetsHelper
     }
     public static string JoinForGoogleSheetRow(IList en)
     {
-        return string.Join(AllCharsSE.tab, en);
+        return string.Join(AllChars.tab, en);
     }
 
     //public static void JoinForGoogleSheetRow(StringBuilder sb, IList en)
