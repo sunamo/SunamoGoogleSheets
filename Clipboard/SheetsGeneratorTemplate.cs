@@ -1,5 +1,5 @@
 
-namespace SunamoGoogleSheets.Clipboard;
+namespace SunamoGoogleSheets;
 using SunamoData.Data;
 using SunamoGoogleSheets._sunamo;
 

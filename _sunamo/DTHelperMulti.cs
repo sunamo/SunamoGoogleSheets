@@ -1,4 +1,4 @@
-namespace SunamoGoogleSheets._sunamo;
+namespace SunamoGoogleSheets;
 
 //using SunamoLang;
 

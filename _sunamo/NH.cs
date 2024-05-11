@@ -3,7 +3,7 @@
 
 
 
-namespace SunamoGoogleSheets._sunamo;
+namespace SunamoGoogleSheets;
 
 //namespace SunamoGoogleSheets._sunamo;
 

@@ -1,4 +1,4 @@
-﻿namespace SunamoGoogleSheets._sunamo;
+namespace SunamoGoogleSheets;
 internal class SHGetLines
 {
     internal static List<string> GetLines(string s)

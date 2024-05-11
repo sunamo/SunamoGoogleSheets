@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunamoGoogleSheets._sunamo;
+namespace SunamoGoogleSheets;
 internal class SH
 {
     public static List<int> TabOrSpaceNextTo(string s)

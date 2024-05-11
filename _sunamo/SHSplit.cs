@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunamoGoogleSheets._sunamo;
+namespace SunamoGoogleSheets;
 internal class SHSplit
 {
     internal static List<string> Split(string p, params string[] newLine)

@@ -1,4 +1,4 @@
-namespace SunamoGoogleSheets._sunamo;
+namespace SunamoGoogleSheets;
 
 //using System;
 //using System.Collections.Generic;
