@@ -1,7 +1,7 @@
 
 namespace SunamoGoogleSheets;
-using SunamoData.Data;
-using SunamoGoogleSheets._sunamo;
+
+
 
 public class SheetsGeneratorTemplate
 {
