@@ -21,6 +21,13 @@
     <Compile Include="..\SunamoExceptions\OnlyInSE\Exc.cs" Link="_linked\SunamoExceptions\OnlyInSE\Exc.cs" />
     <Compile Include="..\SunamoExceptions\OnlyInSE\Types.cs" Link="_linked\SunamoExceptions\OnlyInSE\Types.cs" />
     <Compile Include="..\SunamoXlfKeys\XlfKeys.cs" Link="_linked\SunamoXlfKeys\XlfKeys.cs" />
+    <Compile Include="..\SunamoStringGetLines\SHGetLines.cs" Link="_linked\SunamoStringGetLines\SHGetLines.cs" />
+    <Compile Include="..\SunamoCollectionsValuesTableGrid\ValuesTableGrid.cs" Link="_linked\SunamoCollectionsValuesTableGrid\ValuesTableGrid.cs" />
+    <Compile Include="..\SunamoBts\CAToNumber.cs" Link="_linked\SunamoBts\CAToNumber.cs" />
+    <Compile Include="..\SunamoBts\BTS.cs" Link="_linked\SunamoBts\BTS.cs" />
+    <Compile Include="..\SunamoNumbers\NH.cs" Link="_linked\SunamoNumbers\NH.cs" />
+    <Compile Include="..\SunamoString\SH.cs" Link="_linked\SunamoString\SH.cs" />
+    <Compile Include="..\SunamoStringSplit\SHSplit.cs" Link="_linked\SunamoStringSplit\SHSplit.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SunamoCollectionsValuesTableGrid" Version="24.2.6.2" />
