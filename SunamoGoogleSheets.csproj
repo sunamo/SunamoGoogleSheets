@@ -30,7 +30,6 @@
     <Compile Include="..\SunamoStringSplit\SHSplit.cs" Link="_linked\SunamoStringSplit\SHSplit.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoCollectionsValuesTableGrid" Version="24.2.6.2" />
   </ItemGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>$(DefineConstants);ASYNC;SunamoGoogleSheets</DefineConstants>
