@@ -85,7 +85,14 @@ public class SheetsHelper
         return result;
     }
 
-    public static string CalculateMedianAverage(string input, bool mustBeAllNumbers = true)
+    /// <summary>
+    /// A2 was = true
+    /// </summary>
+    /// <param name="input"></param>
+    /// <param name="mustBeAllNumbers"></param>
+    /// <param name="NHCalculateMedianAverage"></param>
+    /// <returns></returns>
+    public static string CalculateMedianAverage(string input, bool mustBeAllNumbers, Func<List<double>, string> NHCalculateMedianAverage)
     {
         var ls = Rows(input);
 
@@ -96,18 +103,18 @@ public class SheetsHelper
             var defDouble = -1;
             var list = CAToNumber.ToNumber<double>(BTS.ParseDouble, SheetsHelper.SplitFromGoogleSheets(item), defDouble, false);
 
-            sb.AppendLine(NH.CalculateMedianAverage(list));
+            sb.AppendLine(NHCalculateMedianAverage(list));
         }
 
         return sb.ToString();
     }
 
-    public static string CalculateMedianFromTwoRows(string s)
+    public static string CalculateMedianFromTwoRows(string s, Func<List<double>, string> NHCalculateMedianAverage)
     {
         var r = Rows(s);
         for (int i = 0; i < r.Count; i++)
         {
-            r[i] = CalculateMedianAverage(r[i]);
+            r[i] = CalculateMedianAverage(r[i], true, NHCalculateMedianAverage);
         }
         return string.Join(Environment.NewLine, r);
     }
