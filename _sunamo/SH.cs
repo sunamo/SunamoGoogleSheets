@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace SunamoGoogleSheets;
 internal class SH
 {
-    public static List<int> TabOrSpaceNextTo(string s)
+    internal static List<int> TabOrSpaceNextTo(string s)
     {
         List<int> nt = new List<int>();
 

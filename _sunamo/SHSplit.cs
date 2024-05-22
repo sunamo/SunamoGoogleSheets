@@ -11,7 +11,7 @@ internal class SHSplit
     {
         return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
-    public static List<string> SplitByIndexes(string input, List<int> bm)
+    internal static List<string> SplitByIndexes(string input, List<int> bm)
     {
         List<string> d = new List<string>(bm.Count + 1);
         bm.Sort();
