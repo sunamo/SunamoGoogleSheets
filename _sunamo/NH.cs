@@ -8,16 +8,16 @@ namespace SunamoGoogleSheets;
 
 ////namespace SunamoGoogleSheets;
 
-//internal static class NH
+//public static class NH
 //{
-//    //internal static Func<List<double>, string> CalculateMedianAverage;
+//    //public static Func<List<double>, string> CalculateMedianAverage;
 
-//    internal static T Average<T>(List<T> list)
+//    public static T Average<T>(List<T> list)
 //    {
 //        return Average<T>(Sum<T>(list), list.Count);
 //    }
 
-//    internal static T Sum<T>(List<T> list)
+//    public static T Sum<T>(List<T> list)
 //    {
 //        dynamic sum = 0;
 //        foreach (var item in list)
@@ -46,7 +46,7 @@ namespace SunamoGoogleSheets;
 //        return null;
 //    }
 
-//    internal static T Average<T>(dynamic gridWidth, dynamic columnsCount)
+//    public static T Average<T>(dynamic gridWidth, dynamic columnsCount)
 //    {
 //        if (EqualityComparer<T>.Default.Equals(columnsCount, (T)NH.ReturnZero<T>()))
 //        {
@@ -62,7 +62,7 @@ namespace SunamoGoogleSheets;
 //        return result;
 //    }
 
-//    internal static string CalculateMedianAverage(List<double> list, out MedianAverage<double> medianAverage)
+//    public static string CalculateMedianAverage(List<double> list, out MedianAverage<double> medianAverage)
 //    {
 //        list.RemoveAll(d => d == 0);
 
@@ -78,12 +78,12 @@ namespace SunamoGoogleSheets;
 //        return medianAverage.ToString();
 //    }
 
-//    internal static T Median<T>(this IList<T> list) where T : IComparable<T>
+//    public static T Median<T>(this IList<T> list) where T : IComparable<T>
 //    {
 //        return list.NthOrderStatistic((list.Count - 1) / 2);
 //    }
 
-//    internal static string CalculateMedianAverage(List<double> list)
+//    public static string CalculateMedianAverage(List<double> list)
 //    {
 //        MedianAverage<double> medianAverage = null;
 //        return CalculateMedianAverage(list, out medianAverage);

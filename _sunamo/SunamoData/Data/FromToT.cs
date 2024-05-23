@@ -6,9 +6,9 @@ namespace SunamoGoogleSheets;
 /// 
 /// </summary>
 /// <typeparam name="T"></typeparam>
-internal class FromToT<T> : FromToTSH<T>, IParser where T : struct
+public class FromToT<T> : FromToTSH<T>, IParser where T : struct
 {
-    internal FromToT()
+    public FromToT()
     {
         var t = typeof(T);
         if (t == Types.tInt)
@@ -31,7 +31,7 @@ internal class FromToT<T> : FromToTSH<T>, IParser where T : struct
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="ftUse"></param>
-    internal FromToT(T from, T to, FromToUse ftUse = FromToUse.DateTime) : this()
+    public FromToT(T from, T to, FromToUse ftUse = FromToUse.DateTime) : this()
     {
         this.from = from;
         this.to = to;
@@ -41,7 +41,7 @@ internal class FromToT<T> : FromToTSH<T>, IParser where T : struct
     /// After it could be called IsFilledWithData
     /// </summary>
     /// <param name="input"></param>
-    internal void Parse(string input)
+    public void Parse(string input)
     {
         List<string> v = null;
         if (input.Contains(AllStrings.dash))
@@ -68,7 +68,7 @@ internal class FromToT<T> : FromToTSH<T>, IParser where T : struct
             toL = v1;
         }
     }
-    internal bool IsFilledWithData()
+    public bool IsFilledWithData()
     {
         //from != 0 && - cant be, if entered 0-24 fails
         return toL >= 0 && toL != 0;
@@ -99,7 +99,7 @@ internal class FromToT<T> : FromToTSH<T>, IParser where T : struct
         }
         return result;
     }
-    internal string ToString(Langs l)
+    public string ToString(Langs l)
     {
         if (empty)
         {
