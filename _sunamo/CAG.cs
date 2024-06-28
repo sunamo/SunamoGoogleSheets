@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SunamoGoogleSheets;
-public class CAG
+internal class CAG
 {
-    public static int LowestCount<T>(List<List<T>> exists)
+    internal static int LowestCount<T>(List<List<T>> exists)
     {
         var min = int.MaxValue;
 
@@ -22,7 +22,7 @@ public class CAG
         return min;
     }
 
-    public static int MinElementsItemsInnerList<T>(List<List<T>> exists)
+    internal static int MinElementsItemsInnerList<T>(List<List<T>> exists)
     {
         int min = int.MaxValue;
 
@@ -37,7 +37,7 @@ public class CAG
         return min;
     }
 
-    public static int MaxElementsItemsInnerList<T>(List<List<T>> exists)
+    internal static int MaxElementsItemsInnerList<T>(List<List<T>> exists)
     {
         int max = 0;
 
@@ -52,7 +52,7 @@ public class CAG
         return max;
     }
 
-    public static List<List<T>> TrimInnersToCount<T>(List<List<T>> exists, int lowest)
+    internal static List<List<T>> TrimInnersToCount<T>(List<List<T>> exists, int lowest)
     {
         for (int i = 0; i < exists.Count; i++)
         {

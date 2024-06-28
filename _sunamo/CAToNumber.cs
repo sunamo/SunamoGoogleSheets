@@ -1,9 +1,9 @@
 
 
 namespace SunamoGoogleSheets;
-public class CAToNumber
+internal class CAToNumber
 {
-    public static List<T> ToNumber<T>(Func<string, T, T> parse, IList enumerable, T defVal, bool mustBeAllNumbers = true)
+    internal static List<T> ToNumber<T>(Func<string, T, T> parse, IList enumerable, T defVal, bool mustBeAllNumbers = true)
     {
         List<T> result = new List<T>();
         foreach (var item in enumerable)

@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SunamoGoogleSheets;
-public class SH
+internal class SH
 {
-    public static List<int> TabOrSpaceNextTo(string s)
+    internal static List<int> TabOrSpaceNextTo(string s)
     {
         List<int> nt = new List<int>();
 
@@ -20,7 +20,7 @@ public class SH
         return nt;
     }
 
-    public static string NormalizeString(string s)
+    internal static string NormalizeString(string s)
     {
         if (s.Contains(AllChars.nbsp))
         {
@@ -42,7 +42,7 @@ public class SH
         return s;
     }
 
-    public static List<int> ReturnOccurencesOfString(string vcem, string co)
+    internal static List<int> ReturnOccurencesOfString(string vcem, string co)
     {
         vcem = NormalizeString(vcem);
         List<int> Results = new List<int>();

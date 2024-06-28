@@ -8,19 +8,19 @@ using System.Data;
 /// Allow make query to parallel collections as be one
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class ValuesTableGrid<T> : List<List<T>>//, IValuesTableGrid<T>
+internal class ValuesTableGrid<T> : List<List<T>>//, IValuesTableGrid<T>
 {
     /// <summary>
     /// Row - wrapper - files 2
     /// Column - inner - apps 4
     /// </summary>
     private List<List<T>> _exists;
-    public List<string> captions;
+    internal List<string> captions;
     /// <summary>
     /// Must be initialized captions variable
     /// All rows must be trimmed from \r \n
     /// </summary>
-    public DataTable SwitchRowsAndColumn()
+    internal DataTable SwitchRowsAndColumn()
     {
         DataTable newTable = new DataTable();
         if (_exists.Count > 0)
@@ -43,7 +43,7 @@ public class ValuesTableGrid<T> : List<List<T>>//, IValuesTableGrid<T>
         }
         return newTable;
     }
-    public DataTable ToDataTable()
+    internal DataTable ToDataTable()
     {
         DataTable dt = new DataTable();
         var min = CAG.MinElementsItemsInnerList(_exists);
@@ -79,7 +79,7 @@ public class ValuesTableGrid<T> : List<List<T>>//, IValuesTableGrid<T>
         }
         return dt;
     }
-    public ValuesTableGrid(List<List<T>> exists, bool keepInSizeOfSmallest = true)
+    internal ValuesTableGrid(List<List<T>> exists, bool keepInSizeOfSmallest = true)
     {
         if (keepInSizeOfSmallest)
         {
@@ -88,11 +88,11 @@ public class ValuesTableGrid<T> : List<List<T>>//, IValuesTableGrid<T>
         }
         _exists = exists;
     }
-    public bool IsAllInColumn(int i, T value)
+    internal bool IsAllInColumn(int i, T value)
     {
         return _exists[i].All(d => EqualityComparer<T>.Default.Equals(d, value)); //CAG.IsAllTheSame<T>(value, );
     }
-    public bool IsAllInRow(int i, T value)
+    internal bool IsAllInRow(int i, T value)
     {
         var list = _exists[i];
         foreach (var item in list)

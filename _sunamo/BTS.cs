@@ -1,7 +1,7 @@
 namespace SunamoGoogleSheets;
-public class BTS
+internal class BTS
 {
-    public static double ParseDouble(string entry, double _default)
+    internal static double ParseDouble(string entry, double _default)
     {
         //entry = SHSH.FromSpace160To32(entry);
         entry = entry.Replace(" ", string.Empty);

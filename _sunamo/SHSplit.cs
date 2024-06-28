@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace SunamoGoogleSheets;
-public class SHSplit
+internal class SHSplit
 {
-    public static List<string> Split(string p, params string[] newLine)
+    internal static List<string> Split(string p, params string[] newLine)
     {
         return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
-    public static List<string> SplitByIndexes(string input, List<int> bm)
+    internal static List<string> SplitByIndexes(string input, List<int> bm)
     {
         List<string> d = new List<string>(bm.Count + 1);
         bm.Sort();
@@ -30,14 +30,14 @@ public class SHSplit
         return d;
     }
 
-    public static (string, string) GetPartsByLocationNoOutInt(string text, int pozice)
+    internal static (string, string) GetPartsByLocationNoOutInt(string text, int pozice)
     {
         string pred, za;
         GetPartsByLocation(out pred, out za, text, pozice);
         return (pred, za);
     }
 
-    public static void GetPartsByLocation(out string pred, out string za, string text, int pozice)
+    internal static void GetPartsByLocation(out string pred, out string za, string text, int pozice)
     {
         if (pozice == -1)
         {
