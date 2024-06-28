@@ -1,3 +1,5 @@
+
+namespace SunamoGoogleSheets;
 public class TranslateAble
 {
     
