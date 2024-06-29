@@ -9,7 +9,7 @@ namespace SunamoGoogleSheets;
 public class SheetsTable
 {
     DataTable dt = new DataTable();
-    public Dictionary<string, FromToT<int>> ft = new Dictionary<string, FromToT<int>>();
+    public Dictionary<string, FromToTGoogleSheets<int>> ft = new Dictionary<string, FromToTGoogleSheets<int>>();
     public SheetsTable(string input)
     {
         var r = SheetsHelper.Rows(input);
@@ -51,7 +51,7 @@ public class SheetsTable
                     ft.Last().Value.to = i;
                 }
 
-                var ft2 = new FromToT<int>();
+                var ft2 = new FromToTGoogleSheets<int>();
                 ft2.from = i + 1;
 
                 ft.Add(first, ft2);
@@ -70,7 +70,7 @@ public class SheetsTable
         }
     }
 
-    public List<string> RowsFromColumn(int dx, FromToT<int> ft = null)
+    public List<string> RowsFromColumn(int dx, FromToTGoogleSheets<int> ft = null)
     {
         List<string> vr = new List<string>();
 
