@@ -1,7 +1,7 @@
 namespace SunamoGoogleSheets;
 
 
-internal class StoreParsedApp
+public class StoreParsedApp
 {
     internal string name = null;
     internal string uri = null;

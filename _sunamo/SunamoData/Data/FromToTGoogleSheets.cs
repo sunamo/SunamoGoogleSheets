@@ -6,14 +6,14 @@ namespace SunamoGoogleSheets;
 /// 
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class FromToTGoogleSheets<T> : FromToTSH<T>, IParser where T : struct
+public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
 {
     internal FromToTGoogleSheets()
     {
         var t = typeof(T);
         if (t == Types.tInt)
         {
-            ftUse = FromToUse.None;
+            ftUse = FromToUseGoogleSheets.None;
         }
     }
     /// <summary>
@@ -31,7 +31,7 @@ public class FromToTGoogleSheets<T> : FromToTSH<T>, IParser where T : struct
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="ftUse"></param>
-    internal FromToTGoogleSheets(T from, T to, FromToUse ftUse = FromToUse.DateTime) : this()
+    internal FromToTGoogleSheets(T from, T to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
     {
         this.from = from;
         this.to = to;
@@ -99,7 +99,7 @@ public class FromToTGoogleSheets<T> : FromToTSH<T>, IParser where T : struct
         }
         return result;
     }
-    internal string ToString(Langs l)
+    internal string ToString(LangsGoogleSheets l)
     {
         if (empty)
         {
@@ -107,11 +107,11 @@ public class FromToTGoogleSheets<T> : FromToTSH<T>, IParser where T : struct
         }
         else
         {
-            if (new List<FromToUse>([FromToUse.DateTime, FromToUse.Unix, FromToUse.UnixJustTime]).Any(d => d == ftUse))
+            if (new List<FromToUseGoogleSheets>([FromToUseGoogleSheets.DateTime, FromToUseGoogleSheets.Unix, FromToUseGoogleSheets.UnixJustTime]).Any(d => d == ftUse))
             {
                 return ToStringDateTime(l);
             }
-            else if (ftUse == FromToUse.None)
+            else if (ftUse == FromToUseGoogleSheets.None)
             {
                 return from + "-" + to;
             }
@@ -122,7 +122,7 @@ public class FromToTGoogleSheets<T> : FromToTSH<T>, IParser where T : struct
             }
         }
     }
-    protected virtual string ToStringDateTime(Langs l)
+    protected virtual string ToStringDateTime(LangsGoogleSheets l)
     {
         return "";
     }

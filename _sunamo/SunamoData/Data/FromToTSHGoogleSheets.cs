@@ -1,23 +1,23 @@
 namespace SunamoGoogleSheets;
 
 
-internal class FromToTSH<T>
+public class FromToTSHGoogleSheets<T>
 {
-    
+
     internal bool empty;
     protected long fromL;
-    internal FromToUse ftUse = FromToUse.DateTime;
+    internal FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime;
     protected long toL;
-    internal FromToTSH()
+    internal FromToTSHGoogleSheets()
     {
         var t = typeof(T);
-        if (t == Types.tInt) ftUse = FromToUse.None;
+        if (t == Types.tInt) ftUse = FromToUseGoogleSheets.None;
     }
     /// <summary>
     ///     Use Empty contstant outside of class
     /// </summary>
     /// <param name="empty"></param>
-    private FromToTSH(bool empty) : this()
+    private FromToTSHGoogleSheets(bool empty) : this()
     {
         this.empty = empty;
     }
@@ -28,7 +28,7 @@ internal class FromToTSH<T>
     /// <param name="from"></param>
     /// <param name="to"></param>
     /// <param name="ftUse"></param>
-    internal FromToTSH(T from, T to, FromToUse ftUse = FromToUse.DateTime) : this()
+    internal FromToTSHGoogleSheets(T from, T to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
     {
         this.from = from;
         this.to = to;

@@ -1,7 +1,7 @@
 namespace SunamoGoogleSheets;
 
 
-internal enum FromToUse
+internal enum FromToUseGoogleSheets
 {
     DateTime,
     Unix,
