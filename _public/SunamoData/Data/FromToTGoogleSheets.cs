@@ -1,14 +1,14 @@
 namespace SunamoGoogleSheets;
 
 
-/// <summary>
-/// Contains methods which was earlier in FromToT
-/// 
-/// </summary>
-/// <typeparam name="T"></typeparam>
+
+
+
+
+
 public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
 {
-    internal FromToTGoogleSheets()
+    public FromToTGoogleSheets()
     {
         var t = typeof(T);
         if (t == Types.tInt)
@@ -16,37 +16,37 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
             ftUse = FromToUseGoogleSheets.None;
         }
     }
-    /// <summary>
-    /// Use Empty contstant outside of class
-    /// </summary>
-    /// <param name="empty"></param>
+    
+    
+    
+    
     private FromToTGoogleSheets(bool empty) : this()
     {
         this.empty = empty;
     }
-    /// <summary>
-    /// A3 true = DateTime
-    /// A3 False = None
-    /// </summary>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="ftUse"></param>
-    internal FromToTGoogleSheets(T from, T to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
+    
+    
+    
+    
+    
+    
+    
+    public FromToTGoogleSheets(T from, T to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
     {
         this.from = from;
         this.to = to;
         this.ftUse = ftUse;
     }
-    /// <summary>
-    /// After it could be called IsFilledWithData
-    /// </summary>
-    /// <param name="input"></param>
-    internal void Parse(string input)
+    
+    
+    
+    
+    public void Parse(string input)
     {
         List<string> v = null;
         if (input.Contains(AllStrings.dash))
         {
-            v = input.Split(AllChars.dash).ToList(); //SHSplit.SplitChar(input, new Char[] { AllChars.dash });
+            v = input.Split(AllChars.dash).ToList(); 
         }
         else
         {
@@ -68,22 +68,22 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
             toL = v1;
         }
     }
-    internal bool IsFilledWithData()
+    public bool IsFilledWithData()
     {
-        //from != 0 && - cant be, if entered 0-24 fails
+        
         return toL >= 0 && toL != 0;
     }
-    /// <summary>
-    /// Use DTHelperCs.ToShortTimeFromSeconds to convert back
-    /// </summary>
-    /// <param name="v"></param>
-    /// <returns></returns>
+    
+    
+    
+    
+    
     private int ReturnSecondsFromTimeFormat(string v)
     {
         int result = 0;
         if (v.Contains(AllStrings.colon))
         {
-            var parts = v.Split(AllChars.colon).ToList().ConvertAll(d => int.Parse(d)); //SHSplit.SplitToIntList(v, new String[] { AllStrings.colon });
+            var parts = v.Split(AllChars.colon).ToList().ConvertAll(d => int.Parse(d)); 
             result += parts[0] * (int)DTConstants.secondsInHour;
             if (parts.Count > 1)
             {
@@ -99,7 +99,7 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
         }
         return result;
     }
-    internal string ToString(LangsGoogleSheets l)
+    public string ToString(LangsGoogleSheets l)
     {
         if (empty)
         {
