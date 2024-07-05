@@ -1,4 +1,4 @@
-namespace SunamoGoogleSheets;
+namespace SunamoGoogleSheets._sunamo.SunamoValues.Constants;
 
 
 internal class DTConstants

@@ -1,6 +1,6 @@
 
 
-namespace SunamoGoogleSheets;
+namespace SunamoGoogleSheets._sunamo.SunamoBts;
 internal class CAToNumber
 {
     internal static List<T> ToNumber<T>(Func<string, T, T> parse, IList enumerable, T defVal, bool mustBeAllNumbers = true)

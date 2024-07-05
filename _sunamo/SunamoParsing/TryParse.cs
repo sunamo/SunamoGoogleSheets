@@ -1,4 +1,4 @@
-namespace SunamoGoogleSheets;
+namespace SunamoGoogleSheets._sunamo.SunamoParsing;
 
 
 internal class TryParse

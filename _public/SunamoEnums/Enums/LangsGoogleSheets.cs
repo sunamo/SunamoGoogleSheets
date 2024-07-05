@@ -1,4 +1,4 @@
-namespace SunamoGoogleSheets;
+namespace SunamoGoogleSheets._public.SunamoEnums.Enums;
 
 
 

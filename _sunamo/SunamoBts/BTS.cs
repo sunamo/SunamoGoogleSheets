@@ -1,4 +1,4 @@
-namespace SunamoGoogleSheets;
+namespace SunamoGoogleSheets._sunamo.SunamoBts;
 internal class BTS
 {
     internal static double ParseDouble(string entry, double _default)

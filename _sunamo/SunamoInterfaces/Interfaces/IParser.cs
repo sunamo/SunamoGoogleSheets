@@ -1,4 +1,4 @@
-namespace SunamoGoogleSheets;
+namespace SunamoGoogleSheets._sunamo.SunamoInterfaces.Interfaces;
 
 
 internal interface IParser

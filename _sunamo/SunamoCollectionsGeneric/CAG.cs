@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SunamoGoogleSheets;
+namespace SunamoGoogleSheets._sunamo.SunamoCollectionsGeneric;
 internal class CAG
 {
     internal static int LowestCount<T>(List<List<T>> exists)

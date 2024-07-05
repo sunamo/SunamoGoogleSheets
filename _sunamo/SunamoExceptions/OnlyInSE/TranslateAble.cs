@@ -1,5 +1,5 @@
 
-namespace SunamoGoogleSheets;
+namespace SunamoGoogleSheets._sunamo.SunamoExceptions.OnlyInSE;
 internal class TranslateAble
 {
     

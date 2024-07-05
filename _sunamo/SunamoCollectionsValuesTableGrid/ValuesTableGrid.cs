@@ -1,4 +1,4 @@
-namespace SunamoGoogleSheets;
+namespace SunamoGoogleSheets._sunamo.SunamoCollectionsValuesTableGrid;
 
 
 using System.Data;
