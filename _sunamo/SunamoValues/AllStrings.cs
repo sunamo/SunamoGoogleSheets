@@ -1,4 +1,3 @@
-
 namespace SunamoGoogleSheets._sunamo.SunamoValues;
 internal class AllStrings
 {

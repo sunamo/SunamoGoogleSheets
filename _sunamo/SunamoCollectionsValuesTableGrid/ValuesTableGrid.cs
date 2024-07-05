@@ -1,7 +1,6 @@
 namespace SunamoGoogleSheets._sunamo.SunamoCollectionsValuesTableGrid;
 
 
-using System.Data;
 
 /// <summary>
 /// Similar class with two dimension array is UniqueTableInWhole

@@ -1,5 +1,3 @@
-
-
 namespace SunamoGoogleSheets._sunamo.SunamoBts;
 internal class CAToNumber
 {

@@ -1,4 +1,3 @@
-
 namespace SunamoGoogleSheets.Clipboard;
 
 

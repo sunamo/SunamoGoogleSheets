@@ -27,3 +27,6 @@ global using SunamoGoogleSheets._sunamo.SunamoExceptions.OnlyInSE;
 global using SunamoGoogleSheets._sunamo.SunamoExceptions._AddedToAllCsproj;
 global using SunamoGoogleSheets._sunamo.SunamoInterfaces.Interfaces;
 global using SunamoGoogleSheets._sunamo.SunamoValues.Constants;
+global using System.Diagnostics;
+global using System.Net;
+global using System.Threading.Tasks;
