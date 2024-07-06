@@ -22,7 +22,6 @@ global using SunamoGoogleSheets._sunamo.SunamoValues;
 global using SunamoGoogleSheets._sunamo.SunamoXlfKeys;
 global using SunamoGoogleSheets._public.SunamoData.Data;
 global using SunamoGoogleSheets._public.SunamoEnums.Enums;
-global using SunamoGoogleSheets._sunamo.SunamoEnums.Enums;
 global using SunamoGoogleSheets._sunamo.SunamoExceptions.OnlyInSE;
 global using SunamoGoogleSheets._sunamo.SunamoExceptions._AddedToAllCsproj;
 global using SunamoGoogleSheets._sunamo.SunamoInterfaces.Interfaces;
