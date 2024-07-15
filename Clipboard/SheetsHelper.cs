@@ -1,13 +1,5 @@
 namespace SunamoGoogleSheets.Clipboard;
 
-
-
-
-
-
-
-
-
 public class SheetsHelper
 {
     public static char? FirstLetterFromSheet(string item2)
@@ -145,7 +137,7 @@ public class SheetsHelper
         //    input = ClipboardHelper.GetText();
         //}
 
-        return input.Split(AllChars.nl).ToList(); //SHSplit.Split(input, "\n");
+        return input.Split(AllChars.nl).ToList(); //SHSplit.SplitMore(input, "\n");
     }
 
     /// <summary>
@@ -196,7 +188,7 @@ public class SheetsHelper
             //ThisApp.Warning( "Bad data in clipboard");
             vr.Add(input);
         }
-        var vr2 = SHSplit.Split(input, AllStrings.tab);
+        var vr2 = SHSplit.SplitMore(input, AllStrings.tab);
         return vr2;
     }
 
