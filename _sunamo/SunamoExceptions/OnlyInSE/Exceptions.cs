@@ -30,20 +30,20 @@ internal class Exceptions
     {
         return CheckBefore(before) + what + " is not allowed.";
     }
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     internal static string IsOdd(string before, string colName, ICollection col)
     {
         return col.Count % 2 == 1 ? CheckBefore(before) + colName + " has odd number of elements " + col.Count : null;
     }
     internal static string BadFormatOfElementInList(string before, object elVal, string listName)
     {
-        return before + TranslateAble.i18n("BadFormatOfElement") + " " + SunamoString.SH.NullToStringOrDefault(elVal) +
+        return before + TranslateAble.i18n("BadFormatOfElement") + " " + SH.NullToStringOrDefault(elVal) +
         " in list " + listName;
     }
     internal static string IsTheSame(string before, string fst, string sec)
@@ -105,24 +105,24 @@ internal class Exceptions
     {
         return before + "Uncomment next rows";
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
     internal static string OutOfRange(string v, string colName, ICollection col, string indexName, int index)
     {
         return col.Count <= index
         ? CheckBefore(v) + $"{index} (variable {indexName}) is out of range in {colName}"
         : null;
     }
-    
-    
-    
+
+
+
     internal static string FileHasExtensionNotParseableToImageFormat(string before, string fnOri)
     {
         return CheckBefore(before) + "File " + fnOri + " has wrong file extension";
@@ -152,10 +152,10 @@ internal class Exceptions
     }
     internal static string FileExists(string before, string fulLPath)
     {
-        
-        
-        
-        
+
+
+
+
         return CheckBefore(before) + " " + TranslateAble.i18n("DoesnTExists") + ": " + fulLPath;
     }
     internal static string CheckBackslashEnd(string before, string r)
@@ -205,13 +205,13 @@ internal class Exceptions
     {
         return CheckBefore(v) + TranslateAble.i18n("CanTDeleteFolder") + ": " + folder;
     }
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     internal static string ElementWasntRemoved(string before, string detailLocation, int before2, int after)
     {
         return before2 == after
@@ -219,12 +219,12 @@ internal class Exceptions
         detailLocation
         : null;
     }
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     internal static string NoPassedFolders(string before, ICollection folders)
     {
         return folders.Count == 0 ? CheckBefore(before) + TranslateAble.i18n("NoPassedFolderInto") : null;
@@ -237,13 +237,13 @@ internal class Exceptions
     {
         return CheckBefore(before) + description;
     }
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     internal static string InvalidParameter(string before, string valueVar, string nameVar)
     {
         return valueVar != WebUtility.UrlDecode(valueVar)
@@ -298,11 +298,11 @@ internal class Exceptions
     }
     #endregion
     #region From easy copy from ExceptionsShared64.cs - all ok 16-10-21
-    
-    
-    
-    
-    
+
+
+
+
+
     internal static string TextOfExceptions(Exception ex, bool alsoInner = true)
     {
         if (ex == null) return Consts.se;
@@ -352,12 +352,12 @@ internal class Exceptions
     }
     #endregion
     #region from ExceptionsShared.cs
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
     internal static string NotContains(string before, string originalText, params string[] shouldContains)
     {
         List<string> notContained = new();
@@ -391,7 +391,7 @@ internal class Exceptions
         {
             throw new ArgumentException($"'{nameof(additionalMessage)}' cannot be null or empty.", nameof(additionalMessage));
         }
-        
+
         return folders.OfType<object>().Count() == 0
         ? before + colName + " has no elements. " + additionalMessage
         : null;
@@ -439,7 +439,7 @@ internal class Exceptions
     }
     internal static string DumpAsString(object s)
     {
-        return null; 
+        return null;
     }
     internal static string InvalidCast(string before, string message)
     {
@@ -524,8 +524,8 @@ internal class Exceptions
     internal static string DifferentCountInLists(string before, string namefc, int countfc, string namesc, int countsc)
     {
         if (countfc != countsc)
-            
-            
+
+
             return CheckBefore(before) + " " + TranslateAble.i18n("DifferentCountElementsInCollection") + " " +
             string.Concat(namefc + AllStrings.swda + countfc) + " vs. " +
             string.Concat(namesc + AllStrings.swda + countsc);
@@ -556,30 +556,30 @@ internal class Exceptions
         ? before + $"{list.Count} elements in {nameOfVariable} which is zero or more than one"
         : null;
     }
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
     internal static string IsNotPositiveNumber(string before, string nameOfVariable, int? n)
     {
         return !n.HasValue ? before + nameOfVariable + " is not int" :
         n.Value > 0 ? null : nameOfVariable + " is int but not > 0";
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
+
+
+
+
     internal static string NotExists(string before, string item)
     {
         return before + item + " not exists";

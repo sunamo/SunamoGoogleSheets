@@ -175,7 +175,7 @@ public class SheetsHelper
     /// <param name="input"></param>
     public static List<string> SplitFromGoogleSheets(string input)
     {
-        var bm = _sunamo.SunamoString.SH.TabOrSpaceNextTo(input);
+        var bm = SH.TabOrSpaceNextTo(input);
         List<string> vr = new List<string>();
 
         if (bm.Count > 0)
