@@ -1,4 +1,4 @@
-//namespace SunamoGoogleSheets._sunamo.SunamoString;
+namespace SunamoGoogleSheets._sunamo.SunamoString;
 
 internal class SH
 {

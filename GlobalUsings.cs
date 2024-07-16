@@ -20,3 +20,4 @@ global using SunamoGoogleSheets._sunamo.SunamoExceptions.OnlyInSE;
 global using SunamoGoogleSheets._sunamo.SunamoValues.Constants;
 global using System.Diagnostics;
 global using System.Net;
+global using SunamoGoogleSheets._sunamo.SunamoString;

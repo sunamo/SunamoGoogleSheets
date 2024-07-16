@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SunamoGoogleSheets._sunamo;
+﻿namespace SunamoGoogleSheets._sunamo;
 internal class CA
 {
     internal static bool IsListStringWrappedInArray<T>(List<T> v2)
