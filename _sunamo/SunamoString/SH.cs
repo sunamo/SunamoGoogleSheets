@@ -1,4 +1,5 @@
 namespace SunamoGoogleSheets._sunamo.SunamoString;
+
 internal class SH
 {
     internal static List<int> TabOrSpaceNextTo(string s)

@@ -1,11 +1,5 @@
 namespace SunamoGoogleSheets._public.SunamoData.Data;
 
-
-
-
-
-
-
 public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
 {
     public FromToTGoogleSheets()

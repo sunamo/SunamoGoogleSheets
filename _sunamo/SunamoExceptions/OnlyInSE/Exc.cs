@@ -1,9 +1,5 @@
 namespace SunamoGoogleSheets._sunamo.SunamoExceptions.OnlyInSE;
 
-
-
-
-
 internal class Exc
 {
     

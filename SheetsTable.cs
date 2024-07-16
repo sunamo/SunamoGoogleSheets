@@ -1,6 +1,4 @@
 namespace SunamoGoogleSheets;
-//namespace SunamoGoogleSheets;
-
 
 public class SheetsTable
 {
