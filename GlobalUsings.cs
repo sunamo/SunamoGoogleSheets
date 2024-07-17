@@ -21,3 +21,8 @@ global using SunamoGoogleSheets._sunamo.SunamoValues.Constants;
 global using System.Diagnostics;
 global using System.Net;
 global using SunamoGoogleSheets._sunamo.SunamoString;
+global using SunamoGoogleSheets;
+global using SunamoGoogleSheets._sunamo;
+global using SunamoGoogleSheets._sunamo.SunamoParsing;
+global using SunamoGoogleSheets._sunamo.SunamoXlfKeys;
+global using SunamoGoogleSheets._sunamo.SunamoInterfaces.Interfaces;

@@ -1,5 +1,5 @@
-namespace SunamoGoogleSheets.Clipboard;
 
+namespace SunamoGoogleSheets.Clipboard;
 public class SheetsHelper
 {
     public static char? FirstLetterFromSheet(string item2)
@@ -134,7 +134,7 @@ public class SheetsHelper
     {
         //if (input == null)
         //{
-        //    input = ClipboardHelper.GetText();
+        //    input = ClipboardService.GetText();
         //}
 
         return input.Split(AllChars.nl).ToList(); //SHSplit.SplitMore(input, "\n");
@@ -150,7 +150,7 @@ public class SheetsHelper
     {
         //if (input == null)
         //{
-        //    input = ClipboardHelper.GetText();
+        //    input = ClipboardService.GetText();
         //}
         var r = SplitFromGoogleSheets(input);
         if (removeEmptyElements)
@@ -213,13 +213,19 @@ public class SheetsHelper
         return vr;
     }
 
-    public static void JoinForGoogleSheetRow(StringBuilder sb, IList en)
+    /// <summary>
+    /// Dříve byl IList ale ten nemůže být protože string.Join nemá takové přetížení. vrátí potom místo spojeného stringu System.Object[]
+    /// </summary>
+    /// <param name="sb"></param>
+    /// <param name="en"></param>
+    public static void JoinForGoogleSheetRow(StringBuilder sb, Object[] en)
     {
         sb.AppendLine(JoinForGoogleSheetRow(en));
     }
-    public static string JoinForGoogleSheetRow(IList en)
+    public static string JoinForGoogleSheetRow(Object[] en)
     {
-        return string.Join(AllChars.tab, en);
+        var r = string.Join(AllChars.tab, en);
+        return r;
     }
 
     //public static void JoinForGoogleSheetRow(StringBuilder sb, IList en)
