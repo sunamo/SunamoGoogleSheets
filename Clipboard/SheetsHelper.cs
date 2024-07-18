@@ -22,7 +22,14 @@ public class SheetsHelper
         var l = SHGetLines.GetLines(s);
         foreach (var item in l.Skip(1))
         {
+            if (item.Trim() == "")
+            {
+                continue;
+            }
+
             exists.Add(GetRowCells(item));
+
+
         }
 
         ValuesTableGrid<string> t = new ValuesTableGrid<string>(exists, keepInSizeOfSmallest);
@@ -177,18 +184,18 @@ public class SheetsHelper
     public static List<string> SplitFromGoogleSheets(string input)
     {
         var bm = SH.TabOrSpaceNextTo(input);
-        List<string> vr = new List<string>();
+        //List<string> vr = new List<string>();
 
-        if (bm.Count > 0)
-        {
-            vr.AddRange(SHSplit.SplitByIndexes(input, bm));
-            vr.Reverse();
-        }
-        else
-        {
-            //ThisApp.Warning( "Bad data in clipboard");
-            vr.Add(input);
-        }
+        //if (bm.Count > 0)
+        //{
+        //    vr.AddRange(SHSplit.SplitByIndexes(input, bm));
+        //    vr.Reverse();
+        //}
+        //else
+        //{
+        //    //ThisApp.Warning( "Bad data in clipboard");
+        //    vr.Add(input);
+        //}
         var vr2 = SHSplit.SplitMore(input, AllStrings.tab);
         return vr2;
     }
