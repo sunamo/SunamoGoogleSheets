@@ -134,7 +134,7 @@ public class SheetsHelper
     {
         //if (input == null)
         //{
-        //    input = ClipboardService.GetText();
+        //    input = ClipboardHelper.GetText();
         //}
 
         return input.Split(AllChars.nl).ToList(); //SHSplit.SplitMore(input, "\n");
@@ -150,7 +150,7 @@ public class SheetsHelper
     {
         //if (input == null)
         //{
-        //    input = ClipboardService.GetText();
+        //    input = ClipboardHelper.GetText();
         //}
         var r = SplitFromGoogleSheets(input);
         if (removeEmptyElements)
@@ -223,6 +223,20 @@ public class SheetsHelper
         sb.AppendLine(JoinForGoogleSheetRow(en));
     }
     public static string JoinForGoogleSheetRow(Object[] en)
+    {
+        var r = string.Join(AllChars.tab, en);
+        return r;
+    }
+
+    /// <summary>
+    /// Snad to bude fungovat
+    /// 
+    /// JoinForGoogleSheetRow(item.ItemArray) stále odkazuje na JoinForGoogleSheetRow(Object[] en)
+    /// Jinde v app ale používám List<string> a proto potřebuji i toto
+    /// </summary>
+    /// <param name="en"></param>
+    /// <returns></returns>
+    public static string JoinForGoogleSheetRow(IEnumerable<string> en)
     {
         var r = string.Join(AllChars.tab, en);
         return r;
