@@ -20,12 +20,13 @@ public class SheetsHelper
         List<List<string>> exists = new List<List<string>>();
 
         var l = SHGetLines.GetLines(s);
-        foreach (var item in l)
+        foreach (var item in l.Skip(1))
         {
             exists.Add(GetRowCells(item));
         }
 
         ValuesTableGrid<string> t = new ValuesTableGrid<string>(exists, keepInSizeOfSmallest);
+        t.captions = GetRowCells(l[0]);
         DataTable dt = t.SwitchRowsAndColumn();
 
         return DataTableToString(dt);
