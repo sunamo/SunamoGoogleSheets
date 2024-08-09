@@ -1,4 +1,5 @@
 namespace SunamoGoogleSheets._public.SunamoEnums.Enums;
+
 public enum FromToUseGoogleSheets
 {
     DateTime,

@@ -1,15 +1,10 @@
 namespace SunamoGoogleSheets.Clipboard;
 
-
-
 public class SheetsGeneratorTemplate
 {
-
-
-
     public static string AndroidAppComparing(List<StoreParsedApp> spa)
     {
-        Dictionary<string, List<object>> ob = new Dictionary<string, List<object>>();
+        var ob = new Dictionary<string, List<object>>();
 
         var l = @"Name
 Category
@@ -28,29 +23,20 @@ Further test
 Price for year subs
 Price for lifelong subs";
 
-        DataTable dt = new DataTable();
+        var dt = new DataTable();
         dt.Columns.Add();
-        foreach (var item in spa)
-        {
-            dt.Columns.Add();
-        }
+        foreach (var item in spa) dt.Columns.Add();
         var li = SHGetLines.GetLines(l);
 
         foreach (var item in li)
         {
-            List<object> lo = new List<object>(spa.Count + 1);
+            var lo = new List<object>(spa.Count + 1);
 
             lo.Add(item);
 
-            foreach (var item2 in spa)
-            {
-                lo.Add(item2.GetValueForRow(item));
-            }
+            foreach (var item2 in spa) lo.Add(item2.GetValueForRow(item));
 
-            if (item != string.Empty)
-            {
-                ob.Add(item, lo);
-            }
+            if (item != string.Empty) ob.Add(item, lo);
         }
 
         foreach (var item in li)
@@ -58,13 +44,9 @@ Price for lifelong subs";
             var row = dt.NewRow();
 
             if (item != string.Empty)
-            {
                 row.ItemArray = ob[item].ToArray();
-            }
             else
-            {
-                row.ItemArray = new Object[] { string.Empty };
-            }
+                row.ItemArray = new object[] { string.Empty };
             dt.Rows.Add(row);
         }
 

@@ -9,10 +9,7 @@ internal class BTS
         //var ch = entry[3];
 
         double lastDouble2 = 0;
-        if (double.TryParse(entry, out lastDouble2))
-        {
-            return lastDouble2;
-        }
+        if (double.TryParse(entry, out lastDouble2)) return lastDouble2;
         return _default;
     }
 }

@@ -1,10 +1,7 @@
 namespace SunamoGoogleSheets._public.SunamoData.Data;
 
-
 public class StoreParsedApp
 {
-    public string name = null;
-    public string uri = null;
     public const string Name = "Name";
     public const string Category = "Category";
     public const string Uri = "Uri";
@@ -19,6 +16,9 @@ public class StoreParsedApp
     public const string FurtherTest = "Further test";
     public const string PriceForYearSubs = "Price for year subs";
     public const string PriceForLifelongSubs = "Price for lifelong subs";
+    public string name = null;
+    public string uri = null;
+
     public string GetValueForRow(string fc)
     {
         switch (fc)

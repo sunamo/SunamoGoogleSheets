@@ -2,7 +2,6 @@ namespace SunamoGoogleSheets._sunamo.SunamoString;
 
 internal class SH
 {
-
     internal static string JoinNL(List<string> l)
     {
         StringBuilder sb = new();
@@ -11,23 +10,27 @@ internal class SH
         r = sb.ToString();
         return r;
     }
+
     internal static List<string> SplitCharMore(string s, params char[] dot)
     {
         return s.Split(dot, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
+
     internal static List<string> SplitMore(string s, params string[] dot)
     {
         return s.Split(dot, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
+
     internal static List<string> SplitNone(string text, params string[] deli)
     {
         return text.Split(deli, StringSplitOptions.None).ToList();
     }
+
     internal static string NullToStringOrDefault(object n)
     {
-
         return n == null ? " " + Consts.nulled : AllStrings.space + n;
     }
+
     internal static string TrimEnd(string name, string ext)
     {
         while (name.EndsWith(ext)) return name.Substring(0, name.Length - ext.Length);
@@ -36,7 +39,7 @@ internal class SH
 
     internal static List<int> TabOrSpaceNextTo(string s)
     {
-        List<int> nt = new List<int>();
+        var nt = new List<int>();
 
         nt.AddRange(ReturnOccurencesOfString(s, "\t"));
         nt.AddRange(ReturnOccurencesOfString(s, " "));
@@ -50,18 +53,12 @@ internal class SH
     {
         if (s.Contains(AllChars.nbsp))
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var item in s)
-            {
                 if (item == AllChars.nbsp)
-                {
                     sb.Append(AllChars.space);
-                }
                 else
-                {
                     sb.Append(item);
-                }
-            }
             return sb.ToString();
         }
 
@@ -70,22 +67,23 @@ internal class SH
 
     internal static List<int> ReturnOccurencesOfString(string vcem, string co)
     {
-
-        List<int> Results = new List<int>();
-        for (int Index = 0; Index < (vcem.Length - co.Length) + 1; Index++)
+        var Results = new List<int>();
+        for (var Index = 0; Index < vcem.Length - co.Length + 1; Index++)
         {
             var subs = vcem.Substring(Index, co.Length);
             ////////DebugLogger.Instance.WriteLine(subs);
             // non-breaking space. &nbsp; code 160
             // 32 space
-            char ch = subs[0];
-            char ch2 = co[0];
+            var ch = subs[0];
+            var ch2 = co[0];
             if (subs == AllStrings.space)
             {
             }
+
             if (subs == co)
                 Results.Add(Index);
         }
+
         return Results;
     }
 }

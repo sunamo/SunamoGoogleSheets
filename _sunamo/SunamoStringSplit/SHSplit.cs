@@ -6,14 +6,15 @@ internal class SHSplit
     {
         return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
+
     internal static List<string> SplitByIndexes(string input, List<int> bm)
     {
-        List<string> d = new List<string>(bm.Count + 1);
+        var d = new List<string>(bm.Count + 1);
         bm.Sort();
         string before, after;
         before = input;
 
-        for (int i = bm.Count - 1; i >= 0; i--)
+        for (var i = bm.Count - 1; i >= 0; i--)
         {
             (before, after) = GetPartsByLocationNoOutInt(before, bm[i]);
             d.Insert(0, after);
@@ -43,13 +44,9 @@ internal class SHSplit
         {
             pred = text.Substring(0, pozice);
             if (text.Length > pozice + 1)
-            {
                 za = text.Substring(pozice + 1);
-            }
             else
-            {
                 za = string.Empty;
-            }
         }
     }
 }
