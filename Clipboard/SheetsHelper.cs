@@ -128,7 +128,7 @@ public class SheetsHelper
     }
 
     /// <summary>
-    ///     A1 can be null
+    /// 
     /// </summary>
     /// <param name="input"></param>
     /// <param name=""></param>
