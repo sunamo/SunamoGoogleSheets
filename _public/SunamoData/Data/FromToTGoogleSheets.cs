@@ -5,7 +5,7 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
     public FromToTGoogleSheets()
     {
         var t = typeof(T);
-        if (t == Types.tInt) ftUse = FromToUseGoogleSheets.None;
+        if (t == typeof(int)) ftUse = FromToUseGoogleSheets.None;
     }
 
 

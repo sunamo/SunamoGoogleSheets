@@ -10,7 +10,7 @@ public class FromToTSHGoogleSheets<T>
     public FromToTSHGoogleSheets()
     {
         var t = typeof(T);
-        if (t == Types.tInt) ftUse = FromToUseGoogleSheets.None;
+        if (t == typeof(int)) ftUse = FromToUseGoogleSheets.None;
     }
 
 

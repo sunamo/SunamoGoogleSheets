@@ -12,7 +12,7 @@ internal class CAToNumber
             if (mustBeAllNumbers)
                 if (EqualityComparer<T>.Default.Equals(number, defVal))
                 {
-                    ThrowEx.BadFormatOfElementInList(item, nameof(enumerable));
+                    ThrowEx.BadFormatOfElementInList(item, nameof(enumerable), SH.NullToStringOrDefault);
                     return null;
                 }
 
