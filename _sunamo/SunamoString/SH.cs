@@ -28,7 +28,7 @@ internal class SH
 
     internal static string NullToStringOrDefault(object n)
     {
-        return n == null ? " " + Consts.nulled : AllStrings.space + n;
+        return n == null ? " " + "(null)" : "" + n;
     }
 
     internal static string TrimEnd(string name, string ext)
@@ -51,12 +51,12 @@ internal class SH
 
     internal static string NormalizeString(string s)
     {
-        if (s.Contains(AllChars.nbsp))
+        if (s.Contains((char)160))
         {
             var sb = new StringBuilder();
             foreach (var item in s)
-                if (item == AllChars.nbsp)
-                    sb.Append(AllChars.space);
+                if (item == (char)160)
+                    sb.Append(' ');
                 else
                     sb.Append(item);
             return sb.ToString();
@@ -76,7 +76,7 @@ internal class SH
             // 32 space
             var ch = subs[0];
             var ch2 = co[0];
-            if (subs == AllStrings.space)
+            if (subs == "")
             {
             }
 

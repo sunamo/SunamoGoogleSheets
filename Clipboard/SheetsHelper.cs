@@ -5,7 +5,7 @@ public class SheetsHelper
     public static char? FirstLetterFromSheet(string item2)
     {
         if (item2.Length > 2)
-            if (item2[1] == AllChars.space)
+            if (item2[1] == ' ')
                 return item2[0];
         return null;
     }
@@ -124,7 +124,7 @@ public class SheetsHelper
         //    input = ClipboardHelper.GetText();
         //}
 
-        return input.Split(AllChars.nl).ToList(); //SHSplit.SplitMore(input, "\n");
+        return input.Split('\n').ToList(); //SHSplit.SplitMore(input, "\n");
     }
 
     /// <summary>
@@ -171,7 +171,7 @@ public class SheetsHelper
         //    //ThisApp.Warning( "Bad data in clipboard");
         //    vr.Add(input);
         //}
-        var vr2 = SHSplit.SplitMore(input, AllStrings.tab);
+        var vr2 = SHSplit.SplitMore(input, "\t");
         return vr2;
     }
 
@@ -206,7 +206,7 @@ public class SheetsHelper
 
     public static string JoinForGoogleSheetRow(object[] en)
     {
-        var r = string.Join(AllChars.tab, en);
+        var r = string.Join('\t', en);
         return r;
     }
 
@@ -219,7 +219,7 @@ public class SheetsHelper
     /// <returns></returns>
     public static string JoinForGoogleSheetRow(IEnumerable<string> en)
     {
-        var r = string.Join(AllChars.tab, en);
+        var r = string.Join('\t', en);
         return r;
     }
 

@@ -11,7 +11,7 @@ global using SunamoGoogleSheets._sunamo.SunamoCollectionsGeneric;
 global using SunamoGoogleSheets._sunamo.SunamoCollectionsValuesTableGrid;
 global using SunamoGoogleSheets._sunamo.SunamoStringGetLines;
 global using SunamoGoogleSheets._sunamo.SunamoStringSplit;
-global using SunamoGoogleSheets._sunamo.SunamoValues;
+global using SunamoGoogleSheets;
 global using SunamoGoogleSheets._public.SunamoData.Data;
 global using SunamoGoogleSheets._public.SunamoEnums.Enums;
 global using SunamoGoogleSheets._sunamo.SunamoExceptions;

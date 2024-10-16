@@ -26,8 +26,8 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
     public void Parse(string input)
     {
         List<string> v = null;
-        if (input.Contains(AllStrings.dash))
-            v = input.Split(AllChars.dash).ToList();
+        if (input.Contains("-"))
+            v = input.Split('-').ToList();
         else
             v = new List<string>(new[] { input });
         if (v[0] == "0") v[0] = "00:01";
@@ -50,9 +50,9 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
     private int ReturnSecondsFromTimeFormat(string v)
     {
         var result = 0;
-        if (v.Contains(AllStrings.colon))
+        if (v.Contains(":"))
         {
-            var parts = v.Split(AllChars.colon).ToList().ConvertAll(d => int.Parse(d));
+            var parts = v.Split(':').ToList().ConvertAll(d => int.Parse(d));
             result += parts[0] * (int)DTConstants.secondsInHour;
             if (parts.Count > 1) result += parts[1] * (int)DTConstants.secondsInMinute;
         }
