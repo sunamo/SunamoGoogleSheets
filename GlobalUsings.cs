@@ -20,3 +20,7 @@ global using SunamoGoogleSheets._sunamo.SunamoString;
 global using System.Reflection;
 global using System.Net;
 global using System.Diagnostics.CodeAnalysis;
+global using SunamoGoogleSheets;
+global using SunamoGoogleSheets._sunamo;
+global using SunamoGoogleSheets._sunamo.SunamoParsing;
+global using SunamoGoogleSheets._sunamo.SunamoInterfaces.Interfaces;

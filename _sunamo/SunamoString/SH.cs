@@ -28,7 +28,7 @@ internal class SH
 
     internal static string NullToStringOrDefault(object n)
     {
-        return n == null ? " " + "(null)" : "" + n;
+        return n == null ? " " + "(null)" : " " + n;
     }
 
     internal static string TrimEnd(string name, string ext)
@@ -76,9 +76,6 @@ internal class SH
             // 32 space
             var ch = subs[0];
             var ch2 = co[0];
-            if (subs == "")
-            {
-            }
 
             if (subs == co)
                 Results.Add(Index);
