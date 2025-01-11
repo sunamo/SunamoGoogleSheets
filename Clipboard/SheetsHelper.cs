@@ -183,7 +183,7 @@ public class SheetsHelper
     /// </summary>
     /// <param name="captions_FirstColumn"></param>
     /// <param name="exists_OtherColumn"></param>
-    public static string SwitchForGoogleSheets(List<string> captions_FirstColumn, List<List<string>> exists_OtherColumn, bool throwExIfDifferentCountOfCaptionsAndExists)
+    public static string SwitchForGoogleSheets(List<string> captions_FirstColumn, List<List<string>> exists_OtherColumn, bool throwExIfDifferentCountOfCaptionsAndExists = false)
     {
         var countFirst = captions_FirstColumn.Count;
         Dictionary<int, List<int>> columnsWithDifferentElementsList = new();
