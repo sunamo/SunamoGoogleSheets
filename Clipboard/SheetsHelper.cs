@@ -1,5 +1,7 @@
 namespace SunamoGoogleSheets.Clipboard;
 
+using System.ComponentModel.DataAnnotations;
+
 public class SheetsHelper
 {
     public static char? FirstLetterFromSheet(string item2)
@@ -179,18 +181,88 @@ public class SheetsHelper
     ///     A1 are column names for ValuesTableGrid (not letter sorted a,b,.. but left column (Name, Rating, etc.)
     ///     A2 are data
     /// </summary>
-    /// <param name="captions"></param>
-    /// <param name="exists"></param>
-    public static string SwitchForGoogleSheets(List<string> captions, List<List<string>> exists)
+    /// <param name="captions_FirstColumn"></param>
+    /// <param name="exists_OtherColumn"></param>
+    public static string SwitchForGoogleSheets(List<string> captions_FirstColumn, List<List<string>> exists_OtherColumn, bool throwExIfDifferentCountOfCaptionsAndExists)
     {
-        var vtg = new ValuesTableGrid<string>(exists);
-        vtg.captions = captions;
+        var countFirst = captions_FirstColumn.Count;
+        Dictionary<int, List<int>> columnsWithDifferentElementsList = new();
+        List<int> withRightCount = new();
+        for (int i = 0; i < exists_OtherColumn.Count; i++)
+        {
+            var count = exists_OtherColumn[i].Count;
+            if (count != countFirst)
+            {
+                if (columnsWithDifferentElementsList.ContainsKey(count))
+                {
+                    columnsWithDifferentElementsList[count].Add(i);
+                }
+                else
+                {
+                    columnsWithDifferentElementsList.Add(count, [i]);
+                }
+            }
+            else
+            {
+                withRightCount.Add(i);
+            }
+        }
+
+        StringBuilder sb = new();
+
+        if (columnsWithDifferentElementsList.Count != 0)
+        {
+            if (throwExIfDifferentCountOfCaptionsAndExists)
+            {
+                sb.AppendLine($"Different count in captions {columnsWithDifferentElementsList.Count} and exists:");
+                sb.AppendLine("Count in column - Columns list");
+                foreach (var item in columnsWithDifferentElementsList)
+                {
+                    sb.AppendLine(item.Key + " - " + string.Join(",", item.Value));
+                }
+
+                ThrowEx.Custom(sb.ToString());
+            }
+            else
+            {
+                var max = columnsWithDifferentElementsList.Keys.Max();
+
+                if (max > countFirst)
+                {
+                    for (int i = max - countFirst - 1; i >= 0; i--)
+                    {
+                        captions_FirstColumn.Add(i.ToString());
+                    }
+                    countFirst = captions_FirstColumn.Count;
+
+
+
+
+                }
+                for (int i = 0; i < exists_OtherColumn.Count; i++)
+                {
+                    FillUpToSize(exists_OtherColumn[i], countFirst);
+                }
+            }
+        }
+
+        var vtg = new ValuesTableGrid<string>(exists_OtherColumn);
+        vtg.captions = captions_FirstColumn;
         var dt = vtg.SwitchRowsAndColumn();
-        var sb = new StringBuilder();
+        sb.Clear();
         foreach (DataRow item in dt.Rows) JoinForGoogleSheetRow(sb, item.ItemArray);
         var vr = sb.ToString();
-        //////DebugLogger.Instance.WriteLine(vr);
+
         return vr;
+    }
+
+    private static void FillUpToSize(List<string> list, int countFirst)
+    {
+        var to = countFirst - list.Count;
+        for (int i = 0; i < to; i++)
+        {
+            list.Add(i.ToString());
+        }
     }
 
     /// <summary>
