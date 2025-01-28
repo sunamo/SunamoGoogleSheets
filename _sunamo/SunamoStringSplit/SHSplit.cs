@@ -7,24 +7,6 @@ internal class SHSplit
         return p.Split(newLine, StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 
-    internal static List<string> SplitByIndexes(string input, List<int> bm)
-    {
-        var d = new List<string>(bm.Count + 1);
-        bm.Sort();
-        string before, after;
-        before = input;
-
-        for (var i = bm.Count - 1; i >= 0; i--)
-        {
-            (before, after) = GetPartsByLocationNoOutInt(before, bm[i]);
-            d.Insert(0, after);
-        }
-
-        (before, after) = GetPartsByLocationNoOutInt(before, bm[0]);
-        d.Insert(0, before);
-        d.Reverse();
-        return d;
-    }
 
     internal static (string, string) GetPartsByLocationNoOutInt(string text, int pozice)
     {

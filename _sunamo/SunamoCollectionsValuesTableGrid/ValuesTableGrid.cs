@@ -55,51 +55,6 @@ internal class ValuesTableGrid<T> : List<List<T>> //, IValuesTableGrid<T>
         return newTable;
     }
 
-    internal DataTable ToDataTable()
-    {
-        var dt = new DataTable();
-        var min = CAG.MinElementsItemsInnerList(_exists);
-        var max = CAG.MaxElementsItemsInnerList(_exists);
-        var cc = captions.Count;
-        if (min != cc)
-        {
-            ThrowEx.DifferentCountInLists("min", min, "cc", cc);
-            return null;
-        }
 
-        if (max != cc)
-        {
-            ThrowEx.DifferentCountInLists("max", max, "cc", cc);
-            return null;
-        }
 
-        for (var i = 0; i < cc; i++) dt.Columns.Add();
-        var ts = captions.ToArray();
-        //var t1 = ts.GetType();
-        dt.Rows.Add(ts);
-        foreach (var item in _exists)
-        {
-            var ls = new List<string>(item.Count);
-            foreach (var item2 in item) ls.Add(item2.ToString());
-            //var ts2 = CA.ToListStringIList(item).ToArray();
-            //var t2 = ts2.GetType();
-            dt.Rows.Add(ls);
-        }
-
-        return dt;
-    }
-
-    internal bool IsAllInColumn(int i, T value)
-    {
-        return _exists[i].All(d => EqualityComparer<T>.Default.Equals(d, value)); //CAG.IsAllTheSame<T>(value, );
-    }
-
-    internal bool IsAllInRow(int i, T value)
-    {
-        var list = _exists[i];
-        foreach (var item in list)
-            if (!EqualityComparer<T>.Default.Equals(item, value))
-                return false;
-        return true;
-    }
 }
