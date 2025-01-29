@@ -18,8 +18,6 @@ internal partial class ThrowEx
         return ThrowIsNotNull(str, reallyThrow);
     }
 
-    internal static bool IsNullOrEmpty(string argName, string argValue)
-    { return ThrowIsNotNull(Exceptions.IsNullOrWhitespace(FullNameOfExecutedCode(), argName, argValue, true)); }
 
     internal static bool NotImplementedCase(object notImplementedName)
     { return ThrowIsNotNull(Exceptions.NotImplementedCase, notImplementedName); }

@@ -122,12 +122,4 @@ bool fillAlsoFirstTwo = true)
         ".";
     }
 
-    internal static string? DifferentCountInLists(string before, string namefc, int countfc, string namesc, int countsc)
-    {
-        if (countfc != countsc)
-            return CheckBefore(before) + " different count elements in collection" + " " +
-            string.Concat(namefc + "-" + countfc) + " vs. " +
-            string.Concat(namesc + "-" + countsc);
-        return null;
-    }
 }
