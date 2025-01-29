@@ -8,21 +8,6 @@ internal sealed partial class Exceptions
         return string.IsNullOrWhiteSpace(before) ? string.Empty : before + ": ";
     }
 
-    internal static string TextOfExceptions(Exception ex, bool alsoInner = true)
-    {
-        if (ex == null) return string.Empty;
-        StringBuilder sb = new();
-        sb.Append("Exception:");
-        sb.AppendLine(ex.Message);
-        if (alsoInner)
-            while (ex.InnerException != null)
-            {
-                ex = ex.InnerException;
-                sb.AppendLine(ex.Message);
-            }
-        var r = sb.ToString();
-        return r;
-    }
 
     internal static Tuple<string, string, string> PlaceOfException(
 bool fillAlsoFirstTwo = true)

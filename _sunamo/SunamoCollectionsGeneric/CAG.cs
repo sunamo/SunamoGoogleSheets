@@ -13,27 +13,7 @@ internal class CAG
         return min;
     }
 
-    internal static int MinElementsItemsInnerList<T>(List<List<T>> exists)
-    {
-        var min = int.MaxValue;
 
-        foreach (var item in exists)
-            if (item.Count < min)
-                min = item.Count;
-
-        return min;
-    }
-
-    internal static int MaxElementsItemsInnerList<T>(List<List<T>> exists)
-    {
-        var max = 0;
-
-        foreach (var item in exists)
-            if (item.Count > max)
-                max = item.Count;
-
-        return max;
-    }
 
     internal static List<List<T>> TrimInnersToCount<T>(List<List<T>> exists, int lowest)
     {

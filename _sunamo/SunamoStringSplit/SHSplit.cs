@@ -8,12 +8,6 @@ internal class SHSplit
     }
 
 
-    internal static (string, string) GetPartsByLocationNoOutInt(string text, int pozice)
-    {
-        string pred, za;
-        GetPartsByLocation(out pred, out za, text, pozice);
-        return (pred, za);
-    }
 
     internal static void GetPartsByLocation(out string pred, out string za, string text, int pozice)
     {
