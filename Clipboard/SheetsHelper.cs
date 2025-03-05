@@ -1,7 +1,5 @@
 namespace SunamoGoogleSheets.Clipboard;
 
-using System.ComponentModel.DataAnnotations;
-
 public class SheetsHelper
 {
     public static char? FirstLetterFromSheet(string item2)
@@ -11,41 +9,30 @@ public class SheetsHelper
                 return item2[0];
         return null;
     }
-
     public static string SwitchRowsAndColumn(string s, bool keepInSizeOfSmallest = true)
     {
         var exists = new List<List<string>>();
-
         var l = SHGetLines.GetLines(s);
         foreach (var item in l.Skip(1))
         {
             if (item.Trim() == "") continue;
-
             exists.Add(GetRowCells(item));
         }
-
         var t = new ValuesTableGrid<string>(exists, keepInSizeOfSmallest);
         t.captions = GetRowCells(l[0]);
         var dt = t.SwitchRowsAndColumn();
-
         return DataTableToString(dt);
     }
-
     public static string DataTableToString(DataTable s)
     {
         var sb = new StringBuilder();
-
         foreach (DataRow item in s.Rows) sb.AppendLine(JoinForGoogleSheetRow(item.ItemArray));
-
         return sb.ToString();
     }
-
     public static List<string> ColumnsIds(int count)
     {
         var result = new List<string>();
-
         var prefixWith = "";
-
         while (count != 0)
         {
             for (var i = 'A'; i <= 'Z'; i++)
@@ -54,7 +41,6 @@ public class SheetsHelper
                 result.Add(prefixWith + i);
                 if (count == 0) break;
             }
-
             if (prefixWith == "")
             {
                 prefixWith = "A";
@@ -66,10 +52,8 @@ public class SheetsHelper
                 prefixWith = ch.ToString();
             }
         }
-
         return result;
     }
-
     /// <summary>
     ///     A2 was = true
     /// </summary>
@@ -81,27 +65,21 @@ public class SheetsHelper
         Func<List<double>, string> NHCalculateMedianAverage)
     {
         var ls = Rows(input);
-
         var sb = new StringBuilder();
-
         foreach (var item in ls)
         {
             var defDouble = -1;
             var list = CAToNumber.ToNumber<double>(BTS.ParseDouble, SplitFromGoogleSheets(item), defDouble, false);
-
             sb.AppendLine(NHCalculateMedianAverage(list));
         }
-
         return sb.ToString();
     }
-
     public static string CalculateMedianFromTwoRows(string s, Func<List<double>, string> NHCalculateMedianAverage)
     {
         var r = Rows(s);
         for (var i = 0; i < r.Count; i++) r[i] = CalculateMedianAverage(r[i], true, NHCalculateMedianAverage);
         return string.Join(Environment.NewLine, r);
     }
-
     public static List<List<string>> AllLines(string d)
     {
         var result = new List<List<string>>();
@@ -109,12 +87,10 @@ public class SheetsHelper
         foreach (var item in l) result.Add(GetRowCells(item));
         return result;
     }
-
     public static List<string> GetRowCells(string ClipboardS)
     {
         return SplitFromGoogleSheets(ClipboardS);
     }
-
     /// <summary>
     ///     If null, will be  load from clipboard
     /// </summary>
@@ -125,10 +101,8 @@ public class SheetsHelper
         //{
         //    input = ClipboardHelper.GetText();
         //}
-
         return input.Split('\n').ToList(); //SHSplit.SplitMore(input, "\n");
     }
-
     /// <summary>
     /// 
     /// </summary>
@@ -146,12 +120,10 @@ public class SheetsHelper
         //CA.RemoveStringsEmpty2(r);
         return r;
     }
-
     public static List<string> SplitFromGoogleSheets2(string input)
     {
         return SHGetLines.GetLines(input);
     }
-
     /// <summary>
     ///     rozděluje podle tab / space, pokud to chci podle \r\n tak SplitFromGoogleSheets2
     ///     If A1 null, take from clipboard
@@ -162,7 +134,6 @@ public class SheetsHelper
     {
         var bm = SH.TabOrSpaceNextTo(input);
         //List<string> vr = new List<string>();
-
         //if (bm.Count > 0)
         //{
         //    vr.AddRange(SHSplit.SplitByIndexes(input, bm));
@@ -176,7 +147,6 @@ public class SheetsHelper
         var vr2 = SHSplit.SplitMore(input, "\t");
         return vr2;
     }
-
     /// <summary>
     ///     A1 are column names for ValuesTableGrid (not letter sorted a,b,.. but left column (Name, Rating, etc.)
     ///     A2 are data
@@ -207,9 +177,7 @@ public class SheetsHelper
                 withRightCount.Add(i);
             }
         }
-
         StringBuilder sb = new();
-
         if (columnsWithDifferentElementsList.Count != 0)
         {
             if (throwExIfDifferentCountOfCaptionsAndExists)
@@ -220,13 +188,11 @@ public class SheetsHelper
                 {
                     sb.AppendLine(item.Key + " - " + string.Join(",", item.Value));
                 }
-
                 ThrowEx.Custom(sb.ToString());
             }
             else
             {
                 var max = columnsWithDifferentElementsList.Keys.Max();
-
                 if (max > countFirst)
                 {
                     for (int i = max - countFirst - 1; i >= 0; i--)
@@ -234,10 +200,6 @@ public class SheetsHelper
                         captions_FirstColumn.Add(i.ToString());
                     }
                     countFirst = captions_FirstColumn.Count;
-
-
-
-
                 }
                 for (int i = 0; i < exists_OtherColumn.Count; i++)
                 {
@@ -245,17 +207,14 @@ public class SheetsHelper
                 }
             }
         }
-
         var vtg = new ValuesTableGrid<string>(exists_OtherColumn);
         vtg.captions = captions_FirstColumn;
         var dt = vtg.SwitchRowsAndColumn();
         sb.Clear();
         foreach (DataRow item in dt.Rows) JoinForGoogleSheetRow(sb, item.ItemArray);
         var vr = sb.ToString();
-
         return vr;
     }
-
     private static void FillUpToSize(List<string> list, int countFirst)
     {
         var to = countFirst - list.Count;
@@ -264,7 +223,6 @@ public class SheetsHelper
             list.Add(i.ToString());
         }
     }
-
     /// <summary>
     ///     Dříve byl IList ale ten nemůže být protože string.Join nemá takové přetížení. vrátí potom místo spojeného stringu
     ///     System.Object[]
@@ -275,13 +233,11 @@ public class SheetsHelper
     {
         sb.AppendLine(JoinForGoogleSheetRow(en));
     }
-
     public static string JoinForGoogleSheetRow(object[] en)
     {
         var r = string.Join('\t', en);
         return r;
     }
-
     /// <summary>
     ///     Snad to bude fungovat
     ///     JoinForGoogleSheetRow(item.ItemArray) stále odkazuje na JoinForGoogleSheetRow(Object[] en)
@@ -294,12 +250,10 @@ public class SheetsHelper
         var r = string.Join('\t', en);
         return r;
     }
-
     //public static void JoinForGoogleSheetRow(StringBuilder sb, IList en)
     //{
     //    SheetsHelper.JoinForGoogleSheetRow(sb, en);
     //}
-
     //public static string JoinForGoogleSheetRow(IList en)
     //{
     //    return SheetsHelper.JoinForGoogleSheetRow(en);

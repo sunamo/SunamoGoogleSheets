@@ -18,6 +18,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <None Include="readme.md" Pack="True" PackagePath="." />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="*" Pack="True" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>
