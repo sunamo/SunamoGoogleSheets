@@ -24,7 +24,6 @@ global using SunamoGoogleSheets;
 global using SunamoGoogleSheets._sunamo;
 global using SunamoGoogleSheets._sunamo.SunamoParsing;
 global using SunamoGoogleSheets._sunamo.SunamoInterfaces.Interfaces;
-
 global using System.ComponentModel.DataAnnotations;
 global using ILogger = Microsoft.Extensions.Logging.ILogger;
 global using Microsoft.Extensions.Logging;
