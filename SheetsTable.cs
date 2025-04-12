@@ -9,6 +9,28 @@ public class SheetsTable
 
     public int RowsCount => dt.Rows.Count;
 
+    public void ParseRows(string input)
+    {
+        var r = SheetsHelper.Rows(input);
+
+        foreach (var item in r)
+        {
+            var c = SheetsHelper.SplitFromGoogleSheetsRow(item, false);
+            var dr = dt.NewRow();
+
+            dr.ItemArray = c.ConvertAll(d => (object)d).ToArray();
+
+            var first = c.FirstOrDefault();
+
+            if (first == null)
+            {
+                // Při kopírování z google sheets je běžné že se zkppíruje 1000 řádků ale většina z nich jsou prázdné
+                continue;
+
+            }
+        }
+    }
+
     /// <summary>
     /// Vrací řádky které patří k dané sekci (sekce se pozná že má : na konci)
     /// </summary>
