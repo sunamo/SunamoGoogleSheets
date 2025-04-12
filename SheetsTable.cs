@@ -3,7 +3,11 @@
 public class SheetsTable
 {
     private readonly DataTable dt = new();
-    public Dictionary<string, FromToTGoogleSheets<int>> ft = new();
+    public Dictionary<string, FromToTGoogleSheets<int>> ft { get; private set; } = new();
+
+    public int ColumnCount => dt.Columns.Count;
+
+    public int RowsCount => dt.Rows.Count;
 
     /// <summary>
     /// Vrací řádky které patří k dané sekci (sekce se pozná že má : na konci)
@@ -66,6 +70,12 @@ public class SheetsTable
         if (ft.Count > 0) ft.Last().Value.to = i;
     }
 
+    /// <summary>
+    /// Vrátí hodnoty konkrétní sekce
+    /// </summary>
+    /// <param name="dx"></param>
+    /// <param name="ft"></param>
+    /// <returns></returns>
     public List<string> RowsFromColumn(int dx, FromToTGoogleSheets<int> ft = null)
     {
         var vr = new List<string>();
