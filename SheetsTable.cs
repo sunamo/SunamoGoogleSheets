@@ -1,11 +1,15 @@
-namespace SunamoGoogleSheets;
+﻿namespace SunamoGoogleSheets;
 
 public class SheetsTable
 {
     private readonly DataTable dt = new();
     public Dictionary<string, FromToTGoogleSheets<int>> ft = new();
 
-    public SheetsTable(string input)
+    /// <summary>
+    /// Vrací řádky které patří k dané sekci (sekce se pozná že má : na konci)
+    /// </summary>
+    /// <param name="input"></param>
+    public void ParseRowsOfSections(string input)
     {
         var r = SheetsHelper.Rows(input);
 
@@ -30,7 +34,14 @@ public class SheetsTable
 
             dr.ItemArray = c.ConvertAll(d => (object)d).ToArray();
 
-            var first = c.First();
+            var first = c.FirstOrDefault();
+
+            if (first == null)
+            {
+                // Při kopírování z google sheets je běžné že se zkppíruje 1000 řádků ale většina z nich jsou prázdné
+                continue;
+
+            }
 
             if (c.Skip(1).ToList().All(d => d == string.Empty) && first.EndsWith(":"))
             {
@@ -40,6 +51,10 @@ public class SheetsTable
                 ft2.from = i + 1;
 
                 ft.Add(first, ft2);
+            }
+            else
+            {
+
             }
 
 
