@@ -2,12 +2,17 @@
 
 public class SheetsTable
 {
-    private readonly DataTable dt = new();
+    public DataTable Table { get; private set; } = new();
     public Dictionary<string, FromToTGoogleSheets<int>> ft { get; private set; } = new();
 
-    public int ColumnCount => dt.Columns.Count;
+    public int ColumnCount => Table.Columns.Count;
 
-    public int RowsCount => dt.Rows.Count;
+    public int RowsCount => Table.Rows.Count;
+
+    public void DeleteColumn(int dx)
+    {
+        Table.Columns.RemoveAt(dx);
+    }
 
     public void ParseRows(string input)
     {
@@ -16,7 +21,7 @@ public class SheetsTable
         foreach (var item in r)
         {
             var c = SheetsHelper.SplitFromGoogleSheetsRow(item, false);
-            var dr = dt.NewRow();
+            var dr = Table.NewRow();
 
             dr.ItemArray = c.ConvertAll(d => (object)d).ToArray();
 
@@ -48,14 +53,14 @@ public class SheetsTable
         }
 
         var columnNames = SheetsHelper.SplitFromGoogleSheetsRow(r.First(), false);
-        foreach (var item in columnNames) dt.Columns.Add(item);
+        foreach (var item in columnNames) Table.Columns.Add(item);
 
         var i = 0;
 
         foreach (var item in r)
         {
             var c = SheetsHelper.SplitFromGoogleSheetsRow(item, false);
-            var dr = dt.NewRow();
+            var dr = Table.NewRow();
 
 
             dr.ItemArray = c.ConvertAll(d => (object)d).ToArray();
@@ -84,7 +89,7 @@ public class SheetsTable
             }
 
 
-            dt.Rows.Add(dr);
+            Table.Rows.Add(dr);
 
             i++;
         }
@@ -104,9 +109,9 @@ public class SheetsTable
 
         if (ft != null)
             for (var i = ft.from; i < ft.to; i++)
-                vr.Add(dt.Rows[i].ItemArray[dx].ToString());
+                vr.Add(Table.Rows[i].ItemArray[dx].ToString());
         else
-            foreach (DataRow item in dt.Rows)
+            foreach (DataRow item in Table.Rows)
                 vr.Add(item.ItemArray[dx].ToString());
 
         return vr;
