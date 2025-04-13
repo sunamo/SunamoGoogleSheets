@@ -9,6 +9,10 @@ public class SheetsTable
 
     public int RowsCount => Table.Rows.Count;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="dx"></param>
     public void DeleteColumn(int dx)
     {
         Table.Columns.RemoveAt(dx);
