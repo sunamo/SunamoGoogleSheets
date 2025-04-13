@@ -1,6 +1,6 @@
 ﻿namespace SunamoGoogleSheets;
 
-public class SheetsTable
+public class SheetsTable(ILogger logger)
 {
     public DataTable Table { get; private set; } = new();
     public Dictionary<string, FromToTGoogleSheets<int>> ft { get; private set; } = new();
@@ -22,12 +22,37 @@ public class SheetsTable
     {
         var r = SheetsHelper.Rows(input);
 
+        if (r.Count == 0)
+        {
+            logger.LogWarning("Google sheet with zero rows was parsed");
+        }
+
+        var maxRowLength = r.Max(row => SheetsHelper.SplitFromGoogleSheetsRow(row, false).Count);
+
+        var firstRow = r.First();
+        var c = SheetsHelper.SplitFromGoogleSheetsRow(firstRow, false);
+
+        foreach (var item in c)
+        {
+            Table.Columns.Add(item);
+        }
+
+        if (c.Count < maxRowLength) ;
+        {
+            for (int i = c.Count -1; i < maxRowLength; i++)
+            {
+                Table.Columns.Add("Dummy column " + i);
+            }
+        }
+
         foreach (var item in r)
         {
-            var c = SheetsHelper.SplitFromGoogleSheetsRow(item, false);
+            c = SheetsHelper.SplitFromGoogleSheetsRow(item, false);
             var dr = Table.NewRow();
 
             dr.ItemArray = c.ConvertAll(d => (object)d).ToArray();
+
+
 
             var first = c.FirstOrDefault();
 
