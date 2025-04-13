@@ -62,6 +62,8 @@ public class SheetsTable(ILogger logger)
                 continue;
 
             }
+
+            Table.Rows.Add(dr);
         }
     }
 
