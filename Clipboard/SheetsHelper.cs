@@ -101,7 +101,7 @@ public class SheetsHelper
         //{
         //    input = ClipboardHelper.GetText();
         //}
-        return input.Split('\n').ToList(); //SHSplit.SplitMore(input, "\n");
+        return input.Split('\n').ToList(); //SHSplit.Split()input, "\n");
     }
     /// <summary>
     /// 
@@ -144,7 +144,7 @@ public class SheetsHelper
         //    //ThisApp.Warning( "Bad data in clipboard");
         //    vr.Add(input);
         //}
-        var vr2 = SHSplit.SplitMore(input, "\t");
+        var vr2 = SHSplit.SplitNone(input, "\t");
         return vr2;
     }
     /// <summary>
