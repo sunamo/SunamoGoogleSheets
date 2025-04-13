@@ -27,19 +27,29 @@ public class SheetsTable(ILogger logger)
             logger.LogWarning("Google sheet with zero rows was parsed");
         }
 
-        var maxRowLength = r.Max(row => SheetsHelper.SplitFromGoogleSheetsRow(row, false).Count);
+        var maxColumnsLength = r.Max(row => SheetsHelper.SplitFromGoogleSheetsRow(row).Count);
 
         var firstRow = r.First();
-        var c = SheetsHelper.SplitFromGoogleSheetsRow(firstRow, false);
+        var c = SheetsHelper.SplitFromGoogleSheetsRow(firstRow);
+
+        for (int i = c.Count - 1; i>=0; i--)
+        {
+            if (string.IsNullOrWhiteSpace(c[i]))
+            {
+                c.RemoveAt(i);
+            }
+        }
+
+        var columnCount = c.Count;
 
         foreach (var item in c)
         {
-            Table.Columns.Add(item);
+            Table.Columns.Add(item, typeof(string));
         }
 
-        if (c.Count < maxRowLength) ;
+        if (c.Count < maxColumnsLength)
         {
-            for (int i = c.Count -1; i < maxRowLength; i++)
+            for (int i = c.Count -1; i < maxColumnsLength; i++)
             {
                 Table.Columns.Add("Dummy column " + i);
             }
@@ -47,12 +57,13 @@ public class SheetsTable(ILogger logger)
 
         foreach (var item in r)
         {
-            c = SheetsHelper.SplitFromGoogleSheetsRow(item, false);
+            c = SheetsHelper.SplitFromGoogleSheetsRow(item);
             var dr = Table.NewRow();
 
+            // že sloupce budou chybět by se stávat nemělo
+            c = c.Take(columnCount).ToList();
+
             dr.ItemArray = c.ConvertAll(d => (object)d).ToArray();
-
-
 
             var first = c.FirstOrDefault();
 
@@ -60,7 +71,6 @@ public class SheetsTable(ILogger logger)
             {
                 // Při kopírování z google sheets je běžné že se zkppíruje 1000 řádků ale většina z nich jsou prázdné
                 continue;
-
             }
 
             Table.Rows.Add(dr);
@@ -79,18 +89,18 @@ public class SheetsTable(ILogger logger)
 
         foreach (var item in r)
         {
-            var c = SheetsHelper.SplitFromGoogleSheetsRow(item, false);
+            var c = SheetsHelper.SplitFromGoogleSheetsRow(item);
             if (c.Count > maxColumns) maxColumns = c.Count;
         }
 
-        var columnNames = SheetsHelper.SplitFromGoogleSheetsRow(r.First(), false);
+        var columnNames = SheetsHelper.SplitFromGoogleSheetsRow(r.First());
         foreach (var item in columnNames) Table.Columns.Add(item);
 
         var i = 0;
 
         foreach (var item in r)
         {
-            var c = SheetsHelper.SplitFromGoogleSheetsRow(item, false);
+            var c = SheetsHelper.SplitFromGoogleSheetsRow(item);
             var dr = Table.NewRow();
 
 

@@ -87,10 +87,12 @@ public class SheetsHelper
         foreach (var item in l) result.Add(GetRowCells(item));
         return result;
     }
+
     public static List<string> GetRowCells(string ClipboardS)
     {
         return SplitFromGoogleSheets(ClipboardS);
     }
+
     /// <summary>
     ///     If null, will be  load from clipboard
     /// </summary>
@@ -103,27 +105,46 @@ public class SheetsHelper
         //}
         return input.Split('\n').ToList(); //SHSplit.Split()input, "\n");
     }
+
     /// <summary>
     /// 
     /// </summary>
     /// <param name="input"></param>
     /// <param name=""></param>
     /// <returns></returns>
-    public static List<string> SplitFromGoogleSheetsRow(string input, bool removeEmptyElements)
+    public static List<string> SplitFromGoogleSheetsRow(string input /*, bool removeEmptyElementsFromEnd*/)
     {
         //if (input == null)
         //{
         //    input = ClipboardHelper.GetText();
         //}
         var r = SplitFromGoogleSheets(input);
-        if (removeEmptyElements) r = r.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+        bool removeEmptyElementsFromEnd = true;
+        if (removeEmptyElementsFromEnd)
+        {
+            for (var i = r.Count - (1); i>=0; i--)
+            {
+                if (string.IsNullOrWhiteSpace(r[i]))
+                {
+                    r.RemoveAt(i);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            //r = r.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+        }
+
         //CA.RemoveStringsEmpty2(r);
         return r;
     }
+
     public static List<string> SplitFromGoogleSheets2(string input)
     {
         return SHGetLines.GetLines(input);
     }
+
     /// <summary>
     ///     rozděluje podle tab / space, pokud to chci podle \r\n tak SplitFromGoogleSheets2
     ///     If A1 null, take from clipboard
