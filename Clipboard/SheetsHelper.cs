@@ -103,7 +103,7 @@ public class SheetsHelper
         //{
         //    input = ClipboardHelper.GetText();
         //}
-        return input.Split('\n').ToList(); //SHSplit.Split()input, "\n");
+        return input.Split('\n').ToList(); //SHSplit.Split(input, "\n");
     }
 
     /// <summary>
