@@ -69,7 +69,7 @@ public class SheetsHelper
         foreach (var item in ls)
         {
             var defDouble = -1;
-            var list = CAToNumber.ToNumber<double>(BTS.ParseDouble, SplitFromGoogleSheets(item), defDouble, false);
+            var list = CAToNumber.ToNumber<double>(BTS.ParseDouble, SplitFromGoogleSheets(item), defDouble, mustBeAllNumbers);
             sb.AppendLine(NHCalculateMedianAverage(list));
         }
         return sb.ToString();
@@ -122,7 +122,7 @@ public class SheetsHelper
         bool removeEmptyElementsFromEnd = true;
         if (removeEmptyElementsFromEnd)
         {
-            for (var i = r.Count - (1); i>=0; i--)
+            for (var i = r.Count - (1); i >= 0; i--)
             {
                 if (string.IsNullOrWhiteSpace(r[i]))
                 {
