@@ -32,27 +32,32 @@ public class SheetsHelper
     public static List<string> ColumnsIds(int count)
     {
         var result = new List<string>();
-        var prefixWith = "";
-        while (count != 0)
+        
+        for (int i = 0; i < count; i++)
         {
-            for (var i = 'A'; i <= 'Z'; i++)
-            {
-                count--;
-                result.Add(prefixWith + i);
-                if (count == 0) break;
-            }
-            if (prefixWith == "")
-            {
-                prefixWith = "A";
-            }
-            else
-            {
-                var ch = prefixWith[0];
-                ch++;
-                prefixWith = ch.ToString();
-            }
+            result.Add(GetColumnName(i));
         }
+        
         return result;
+    }
+    
+    /// <summary>
+    /// Generuje názvy sloupců ve stylu Excel/Google Sheets (a, b, c, ..., z, aa, ab, ac, ...)
+    /// </summary>
+    /// <param name="columnIndex">Index sloupce (0-based)</param>
+    /// <returns>Název sloupce</returns>
+    private static string GetColumnName(int columnIndex)
+    {
+        string columnName = string.Empty;
+        
+        do
+        {
+            columnName = (char)('A' + (columnIndex % 26)) + columnName;
+            columnIndex = (columnIndex / 26) - 1;
+        }
+        while (columnIndex >= 0);
+
+        return columnName;
     }
     /// <summary>
     ///     A2 was = true
@@ -165,6 +170,7 @@ public class SheetsHelper
         //    //ThisApp.Warning( "Bad data in clipboard");
         //    vr.Add(input);
         //}
+
         var vr2 = SHSplit.SplitNone(input, "\t");
         return vr2;
     }
