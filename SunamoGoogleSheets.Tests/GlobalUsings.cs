@@ -6,3 +6,5 @@ global using System.Threading.Tasks;
 global using TextCopy;
 global using Xunit;
 global using SunamoGoogleSheets.Tests;
+
+global using SunamoGoogleSheets;
