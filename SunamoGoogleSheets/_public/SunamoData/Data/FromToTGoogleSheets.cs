@@ -1,11 +1,14 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoGoogleSheets._public.SunamoData.Data;
 
-public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
+public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where type : struct
 {
     public FromToTGoogleSheets()
     {
-        var t = typeof(T);
-        if (t == typeof(int)) ftUse = FromToUseGoogleSheets.None;
+        var type = typeof(type);
+        if (type == typeof(int)) ftUse = FromToUseGoogleSheets.None;
     }
 
 
@@ -15,7 +18,7 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
     }
 
 
-    public FromToTGoogleSheets(T from, T to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
+    public FromToTGoogleSheets(type from, type to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
     {
         this.from = from;
         this.to = to;

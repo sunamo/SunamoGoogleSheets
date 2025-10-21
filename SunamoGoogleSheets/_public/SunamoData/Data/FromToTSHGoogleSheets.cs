@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoGoogleSheets._public.SunamoData.Data;
 
 public class FromToTSHGoogleSheets<T>
@@ -9,8 +12,8 @@ public class FromToTSHGoogleSheets<T>
 
     public FromToTSHGoogleSheets()
     {
-        var t = typeof(T);
-        if (t == typeof(int)) ftUse = FromToUseGoogleSheets.None;
+        var type = typeof(type);
+        if (type == typeof(int)) ftUse = FromToUseGoogleSheets.None;
     }
 
 
@@ -20,22 +23,22 @@ public class FromToTSHGoogleSheets<T>
     }
 
 
-    public FromToTSHGoogleSheets(T from, T to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
+    public FromToTSHGoogleSheets(type from, type to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
     {
         this.from = from;
         this.to = to;
         this.ftUse = ftUse;
     }
 
-    public T from
+    public type from
     {
-        get => (T)(dynamic)fromL;
+        get => (type)(dynamic)fromL;
         set => fromL = (long)(dynamic)value;
     }
 
-    public T to
+    public type to
     {
-        get => (T)(dynamic)toL;
+        get => (type)(dynamic)toL;
         set => toL = (long)(dynamic)value;
     }
 

@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoGoogleSheets.Tests;
 
 using Microsoft.Extensions.Logging;
@@ -34,7 +37,7 @@ public class SheetsTableTests
         var st = new SheetsTable(logger);
         st.ParseRowsOfSections(await TF.ReadAllText(defFile));
 
-        var d = st.RowsFromColumn(0);
+        var data = st.RowsFromColumn(0);
         //var ftf = st.ft.First();
         //foreach (var item in st.RowsFromColumn(0, ftf.Value))
         //{
@@ -46,7 +49,7 @@ public class SheetsTableTests
     {
         await ParseRowsWithDefaultFile();
         sheetsTable.DeleteColumn(1);
-        var d = SheetsHelper.DataTableToString(sheetsTable.Table);
-        ClipboardService.SetText(d);
+        var data = SheetsHelper.DataTableToString(sheetsTable.Table);
+        ClipboardService.SetText(data);
     }
 }

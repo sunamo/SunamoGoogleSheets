@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoGoogleSheets.Clipboard;
 
 public class SheetsGeneratorTemplate
@@ -6,7 +9,7 @@ public class SheetsGeneratorTemplate
     {
         var ob = new Dictionary<string, List<object>>();
 
-        var l = @"Name
+        var list = @"Name
 Category
 Uri
 Count of ratings
@@ -26,7 +29,7 @@ Price for lifelong subs";
         var dt = new DataTable();
         dt.Columns.Add();
         foreach (var item in spa) dt.Columns.Add();
-        var li = SHGetLines.GetLines(l);
+        var li = SHGetLines.GetLines(list);
 
         foreach (var item in li)
         {

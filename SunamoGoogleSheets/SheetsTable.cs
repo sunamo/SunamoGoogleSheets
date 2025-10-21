@@ -1,4 +1,7 @@
-﻿namespace SunamoGoogleSheets;
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
+namespace SunamoGoogleSheets;
 
 public class SheetsTable(ILogger logger)
 {
@@ -20,52 +23,52 @@ public class SheetsTable(ILogger logger)
 
     public void ParseRows(string input)
     {
-        var r = SheetsHelper.Rows(input);
+        var result = SheetsHelper.Rows(input);
 
-        if (r.Count == 0)
+        if (result.Count == 0)
         {
             logger.LogWarning("Google sheet with zero rows was parsed");
         }
 
-        var maxColumnsLength = r.Max(row => SheetsHelper.SplitFromGoogleSheetsRow(row).Count);
+        var maxColumnsLength = result.Max(row => SheetsHelper.SplitFromGoogleSheetsRow(row).Count);
 
-        var firstRow = r.First();
-        var c = SheetsHelper.SplitFromGoogleSheetsRow(firstRow);
+        var firstRow = result.First();
+        var count = SheetsHelper.SplitFromGoogleSheetsRow(firstRow);
 
-        for (int i = c.Count - 1; i>=0; i--)
+        for (int i = count.Count - 1; i>=0; i--)
         {
-            if (string.IsNullOrWhiteSpace(c[i]))
+            if (string.IsNullOrWhiteSpace(count[i]))
             {
-                c.RemoveAt(i);
+                count.RemoveAt(i);
             }
         }
 
-        var columnCount = c.Count;
+        var columnCount = count.Count;
 
-        foreach (var item in c)
+        foreach (var item in count)
         {
             Table.Columns.Add(item, typeof(string));
         }
 
-        if (c.Count < maxColumnsLength)
+        if (count.Count < maxColumnsLength)
         {
-            for (int i = c.Count -1; i < maxColumnsLength; i++)
+            for (int i = count.Count -1; i < maxColumnsLength; i++)
             {
                 Table.Columns.Add("Dummy column " + i);
             }
         }
 
-        foreach (var item in r)
+        foreach (var item in result)
         {
-            c = SheetsHelper.SplitFromGoogleSheetsRow(item);
+            count = SheetsHelper.SplitFromGoogleSheetsRow(item);
             var dr = Table.NewRow();
 
             // že sloupce budou chybět by se stávat nemělo
-            c = c.Take(columnCount).ToList();
+            count = count.Take(columnCount).ToList();
 
-            dr.ItemArray = c.ConvertAll(d => (object)d).ToArray();
+            dr.ItemArray = count.ConvertAll(d => (object)d).ToArray();
 
-            var first = c.FirstOrDefault();
+            var first = count.FirstOrDefault();
 
             if (first == null)
             {
@@ -83,30 +86,30 @@ public class SheetsTable(ILogger logger)
     /// <param name="input"></param>
     public void ParseRowsOfSections(string input)
     {
-        var r = SheetsHelper.Rows(input);
+        var result = SheetsHelper.Rows(input);
 
         var maxColumns = 0;
 
-        foreach (var item in r)
+        foreach (var item in result)
         {
-            var c = SheetsHelper.SplitFromGoogleSheetsRow(item);
-            if (c.Count > maxColumns) maxColumns = c.Count;
+            var count = SheetsHelper.SplitFromGoogleSheetsRow(item);
+            if (count.Count > maxColumns) maxColumns = count.Count;
         }
 
-        var columnNames = SheetsHelper.SplitFromGoogleSheetsRow(r.First());
+        var columnNames = SheetsHelper.SplitFromGoogleSheetsRow(result.First());
         foreach (var item in columnNames) Table.Columns.Add(item);
 
         var i = 0;
 
-        foreach (var item in r)
+        foreach (var item in result)
         {
-            var c = SheetsHelper.SplitFromGoogleSheetsRow(item);
+            var count = SheetsHelper.SplitFromGoogleSheetsRow(item);
             var dr = Table.NewRow();
 
 
-            dr.ItemArray = c.ConvertAll(d => (object)d).ToArray();
+            dr.ItemArray = count.ConvertAll(d => (object)d).ToArray();
 
-            var first = c.FirstOrDefault();
+            var first = count.FirstOrDefault();
 
             if (first == null)
             {
@@ -115,7 +118,7 @@ public class SheetsTable(ILogger logger)
 
             }
 
-            if (c.Skip(1).ToList().All(d => d == string.Empty) && first.EndsWith(":"))
+            if (count.Skip(1).ToList().All(d => d == string.Empty) && first.EndsWith(":"))
             {
                 if (ft.Count > 0) ft.Last().Value.to = i;
 

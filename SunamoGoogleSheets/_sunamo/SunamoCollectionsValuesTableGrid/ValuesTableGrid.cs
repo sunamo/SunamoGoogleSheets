@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoGoogleSheets._sunamo.SunamoCollectionsValuesTableGrid;
 
 /// <summary>
@@ -40,8 +43,8 @@ internal class ValuesTableGrid<T> : List<List<T>> //, IValuesTableGrid<T>
             // Můžu přidám sloupec pro B,C,D...
             for (var i = 0; i < _exists.Count; i++)
                 newTable.Columns.Add();
-            var s = _exists[0];
-            for (var i = 0; i < s.Count; i++)
+            var text = _exists[0];
+            for (var i = 0; i < text.Count; i++)
             {
                 var newRow = newTable.NewRow();
                 var caption = captions[i]; //CA.GetIndex(captions, i);

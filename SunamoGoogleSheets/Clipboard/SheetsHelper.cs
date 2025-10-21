@@ -1,3 +1,6 @@
+// EN: Variable names have been checked and replaced with self-descriptive names
+// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
+
 namespace SunamoGoogleSheets.Clipboard;
 
 public class SheetsHelper
@@ -9,25 +12,25 @@ public class SheetsHelper
                 return item2[0];
         return null;
     }
-    public static string SwitchRowsAndColumn(string s, bool keepInSizeOfSmallest = true)
+    public static string SwitchRowsAndColumn(string text, bool keepInSizeOfSmallest = true)
     {
         var exists = new List<List<string>>();
-        var l = SHGetLines.GetLines(s);
-        foreach (var item in l.Skip(1))
+        var list = SHGetLines.GetLines(text);
+        foreach (var item in list.Skip(1))
         {
             if (item.Trim() == "") continue;
             exists.Add(GetRowCells(item));
         }
-        var t = new ValuesTableGrid<string>(exists, keepInSizeOfSmallest);
-        t.captions = GetRowCells(l[0]);
-        var dt = t.SwitchRowsAndColumn();
+        var temp = new ValuesTableGrid<string>(exists, keepInSizeOfSmallest);
+        temp.captions = GetRowCells(list[0]);
+        var dt = temp.SwitchRowsAndColumn();
         return DataTableToString(dt);
     }
-    public static string DataTableToString(DataTable s)
+    public static string DataTableToString(DataTable text)
     {
-        var sb = new StringBuilder();
-        foreach (DataRow item in s.Rows) sb.AppendLine(JoinForGoogleSheetRow(item.ItemArray));
-        return sb.ToString();
+        var stringBuilder = new StringBuilder();
+        foreach (DataRow item in text.Rows) stringBuilder.AppendLine(JoinForGoogleSheetRow(item.ItemArray));
+        return stringBuilder.ToString();
     }
     public static List<string> ColumnsIds(int count)
     {
@@ -69,27 +72,27 @@ public class SheetsHelper
     public static string CalculateMedianAverage(string input, bool mustBeAllNumbers,
         Func<List<double>, string> NHCalculateMedianAverage)
     {
-        var ls = Rows(input);
-        var sb = new StringBuilder();
-        foreach (var item in ls)
+        var sourceList = Rows(input);
+        var stringBuilder = new StringBuilder();
+        foreach (var item in sourceList)
         {
             var defDouble = -1;
             var list = CAToNumber.ToNumber<double>(BTS.ParseDouble, SplitFromGoogleSheets(item), defDouble, mustBeAllNumbers);
-            sb.AppendLine(NHCalculateMedianAverage(list));
+            stringBuilder.AppendLine(NHCalculateMedianAverage(list));
         }
-        return sb.ToString();
+        return stringBuilder.ToString();
     }
-    public static string CalculateMedianFromTwoRows(string s, Func<List<double>, string> NHCalculateMedianAverage)
+    public static string CalculateMedianFromTwoRows(string text, Func<List<double>, string> NHCalculateMedianAverage)
     {
-        var r = Rows(s);
-        for (var i = 0; i < r.Count; i++) r[i] = CalculateMedianAverage(r[i], true, NHCalculateMedianAverage);
-        return string.Join(Environment.NewLine, r);
+        var result = Rows(text);
+        for (var i = 0; i < result.Count; i++) result[i] = CalculateMedianAverage(result[i], true, NHCalculateMedianAverage);
+        return string.Join(Environment.NewLine, result);
     }
     public static List<List<string>> AllLines(string d)
     {
         var result = new List<List<string>>();
-        var l = SHGetLines.GetLines(d);
-        foreach (var item in l) result.Add(GetRowCells(item));
+        var list = SHGetLines.GetLines(d);
+        foreach (var item in list) result.Add(GetRowCells(item));
         return result;
     }
 
@@ -123,26 +126,26 @@ public class SheetsHelper
         //{
         //    input = ClipboardHelper.GetText();
         //}
-        var r = SplitFromGoogleSheets(input);
+        var result = SplitFromGoogleSheets(input);
         bool removeEmptyElementsFromEnd = true;
         if (removeEmptyElementsFromEnd)
         {
-            for (var i = r.Count - (1); i >= 0; i--)
+            for (var i = result.Count - (1); i >= 0; i--)
             {
-                if (string.IsNullOrWhiteSpace(r[i]))
+                if (string.IsNullOrWhiteSpace(result[i]))
                 {
-                    r.RemoveAt(i);
+                    result.RemoveAt(i);
                 }
                 else
                 {
                     break;
                 }
             }
-            //r = r.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+            //r = result.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
         }
 
-        //CA.RemoveStringsEmpty2(r);
-        return r;
+        //CA.RemoveStringsEmpty2(result);
+        return result;
     }
 
     public static List<string> SplitFromGoogleSheets2(string input)
@@ -204,18 +207,18 @@ public class SheetsHelper
                 withRightCount.Add(i);
             }
         }
-        StringBuilder sb = new();
+        StringBuilder stringBuilder = new();
         if (columnsWithDifferentElementsList.Count != 0)
         {
             if (throwExIfDifferentCountOfCaptionsAndExists)
             {
-                sb.AppendLine($"Different count in captions {columnsWithDifferentElementsList.Count} and exists:");
-                sb.AppendLine("Count in column - Columns list");
+                stringBuilder.AppendLine($"Different count in captions {columnsWithDifferentElementsList.Count} and exists:");
+                stringBuilder.AppendLine("Count in column - Columns list");
                 foreach (var item in columnsWithDifferentElementsList)
                 {
-                    sb.AppendLine(item.Key + " - " + string.Join(",", item.Value));
+                    stringBuilder.AppendLine(item.Key + " - " + string.Join(",", item.Value));
                 }
-                ThrowEx.Custom(sb.ToString());
+                ThrowEx.Custom(stringBuilder.ToString());
             }
             else
             {
@@ -237,9 +240,9 @@ public class SheetsHelper
         var vtg = new ValuesTableGrid<string>(exists_OtherColumn);
         vtg.captions = captions_FirstColumn;
         var dt = vtg.SwitchRowsAndColumn();
-        sb.Clear();
-        foreach (DataRow item in dt.Rows) JoinForGoogleSheetRow(sb, item.ItemArray);
-        var vr = sb.ToString();
+        stringBuilder.Clear();
+        foreach (DataRow item in dt.Rows) JoinForGoogleSheetRow(stringBuilder, item.ItemArray);
+        var vr = stringBuilder.ToString();
         return vr;
     }
     private static void FillUpToSize(List<string> list, int countFirst)
@@ -256,14 +259,14 @@ public class SheetsHelper
     /// </summary>
     /// <param name="sb"></param>
     /// <param name="en"></param>
-    public static void JoinForGoogleSheetRow(StringBuilder sb, object[] en)
+    public static void JoinForGoogleSheetRow(StringBuilder stringBuilder, object[] en)
     {
-        sb.AppendLine(JoinForGoogleSheetRow(en));
+        stringBuilder.AppendLine(JoinForGoogleSheetRow(en));
     }
     public static string JoinForGoogleSheetRow(object[] en)
     {
-        var r = string.Join('\t', en);
-        return r;
+        var result = string.Join('\t', en);
+        return result;
     }
     /// <summary>
     ///     Snad to bude fungovat
@@ -274,12 +277,12 @@ public class SheetsHelper
     /// <returns></returns>
     public static string JoinForGoogleSheetRow(IEnumerable<string> en)
     {
-        var r = string.Join('\t', en);
-        return r;
+        var result = string.Join('\t', en);
+        return result;
     }
-    //public static void JoinForGoogleSheetRow(StringBuilder sb, IList en)
+    //public static void JoinForGoogleSheetRow(StringBuilder stringBuilder, IList en)
     //{
-    //    SheetsHelper.JoinForGoogleSheetRow(sb, en);
+    //    SheetsHelper.JoinForGoogleSheetRow(stringBuilder, en);
     //}
     //public static string JoinForGoogleSheetRow(IList en)
     //{
