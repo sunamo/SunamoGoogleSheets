@@ -12,7 +12,7 @@ public class FromToTSHGoogleSheets<T>
 
     public FromToTSHGoogleSheets()
     {
-        var type = typeof(type);
+        var type = typeof(T);
         if (type == typeof(int)) ftUse = FromToUseGoogleSheets.None;
     }
 
@@ -23,22 +23,22 @@ public class FromToTSHGoogleSheets<T>
     }
 
 
-    public FromToTSHGoogleSheets(type from, type to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
+    public FromToTSHGoogleSheets(T from, T to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
     {
         this.from = from;
         this.to = to;
         this.ftUse = ftUse;
     }
 
-    public type from
+    public T from
     {
-        get => (type)(dynamic)fromL;
+        get => (T)(dynamic)fromL;
         set => fromL = (long)(dynamic)value;
     }
 
-    public type to
+    public T to
     {
-        get => (type)(dynamic)toL;
+        get => (T)(dynamic)toL;
         set => toL = (long)(dynamic)value;
     }
 

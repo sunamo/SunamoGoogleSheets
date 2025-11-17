@@ -147,7 +147,7 @@ public class SheetsTable(ILogger logger)
     /// <param name="dx"></param>
     /// <param name="ft"></param>
     /// <returns></returns>
-    public List<string> RowsFromColumn(int dx, FromToTGoogleSheets<int> ft = null)
+    public List<string> RowsFromColumn(int dx, FromToTGoogleSheets<int>? ft = null)
     {
         var vr = new List<string>();
 

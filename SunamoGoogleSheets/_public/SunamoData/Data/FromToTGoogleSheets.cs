@@ -3,11 +3,11 @@
 
 namespace SunamoGoogleSheets._public.SunamoData.Data;
 
-public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where type : struct
+public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
 {
     public FromToTGoogleSheets()
     {
-        var type = typeof(type);
+        var type = typeof(T);
         if (type == typeof(int)) ftUse = FromToUseGoogleSheets.None;
     }
 
@@ -18,7 +18,7 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where type : stru
     }
 
 
-    public FromToTGoogleSheets(type from, type to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
+    public FromToTGoogleSheets(T from, T to, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
     {
         this.from = from;
         this.to = to;
