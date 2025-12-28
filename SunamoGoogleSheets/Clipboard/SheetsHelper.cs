@@ -63,10 +63,10 @@ public class SheetsHelper
     ///     A2 was = true
     /// </summary>
     /// <param name="input"></param>
-    /// <param name="mustBeAllNumbers"></param>
+    /// <param name="isRequiringAllNumbers"></param>
     /// <param name="NHCalculateMedianAverage"></param>
     /// <returns></returns>
-    public static string CalculateMedianAverage(string input, bool mustBeAllNumbers,
+    public static string CalculateMedianAverage(string input, bool isRequiringAllNumbers,
         Func<List<double>, string> NHCalculateMedianAverage)
     {
         var sourceList = Rows(input);
@@ -74,7 +74,7 @@ public class SheetsHelper
         foreach (var item in sourceList)
         {
             var defDouble = -1;
-            var list = CAToNumber.ToNumber<double>(BTS.ParseDouble, SplitFromGoogleSheets(item), defDouble, mustBeAllNumbers);
+            var list = CAToNumber.ToNumber<double>(BTS.ParseDouble, SplitFromGoogleSheets(item), defDouble, isRequiringAllNumbers);
             stringBuilder.AppendLine(NHCalculateMedianAverage(list));
         }
         return stringBuilder.ToString();
