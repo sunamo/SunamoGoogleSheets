@@ -1,60 +1,69 @@
 namespace SunamoGoogleSheets._sunamo.SunamoCollectionsValuesTableGrid;
 
 /// <summary>
-///     Similar class with two dimension array is UniqueTableInWhole
-///     Allow make query to parallel collections as be one
+/// Represents a grid of values organized in a table structure
+/// Similar class with two dimension array is UniqueTableInWhole
+/// Allows making queries to parallel collections as one
 /// </summary>
-/// <typeparam name="T"></typeparam>
-internal class ValuesTableGrid<T> : List<List<T>> //, IValuesTableGrid<T>
+/// <typeparam name="T">The type of values in the grid</typeparam>
+internal class ValuesTableGrid<T> : List<List<T>>
 {
     /// <summary>
-    ///     Row - wrapper - files 2
-    ///     Column - inner - apps 4
+    /// The underlying data structure
+    /// Row - wrapper - files 2
+    /// Column - inner - apps 4
     /// </summary>
-    private readonly List<List<T>> _exists;
+    private readonly List<List<T>> data;
 
-    internal List<string> captions;
+    /// <summary>
+    /// Gets or sets the column captions for the grid
+    /// </summary>
+    internal List<string> Captions { get; set; }
 
-    internal ValuesTableGrid(List<List<T>> exists, bool keepInSizeOfSmallest = true)
+    /// <summary>
+    /// Initializes a new instance of the ValuesTableGrid class
+    /// </summary>
+    /// <param name="lists">The list of lists to initialize the grid with</param>
+    /// <param name="isKeepingInSizeOfSmallest">If true, trims all inner lists to the size of the smallest list</param>
+    internal ValuesTableGrid(List<List<T>> lists, bool isKeepingInSizeOfSmallest = true)
     {
-        if (keepInSizeOfSmallest)
+        if (isKeepingInSizeOfSmallest)
         {
-            var lowest = CAG.LowestCount(exists);
-            exists = CAG.TrimInnersToCount(exists, lowest);
+            var lowest = CAG.LowestCount(lists);
+            lists = CAG.TrimInnersToCount(lists, lowest);
         }
 
-        _exists = exists;
+        data = lists;
     }
 
     /// <summary>
-    ///     Must be initialized captions variable
-    ///     All rows must be trimmed from \r \n
+    /// Switches rows and columns, creating a transposed DataTable
+    /// Captions must be initialized before calling this method
+    /// All rows must be trimmed from \r \n characters
     /// </summary>
+    /// <returns>A DataTable with rows and columns switched</returns>
     internal DataTable SwitchRowsAndColumn()
     {
         var newTable = new DataTable();
-        if (_exists.Count > 0)
+        if (data.Count > 0)
         {
-            // Prvně přidám prázdný sloupec kde budou captions
+            // First add an empty column for captions
             newTable.Columns.Add(string.Empty);
-            // Můžu přidám sloupec pro B,C,D...
-            for (var i = 0; i < _exists.Count; i++)
+            // Then add columns for B,C,D...
+            for (var i = 0; i < data.Count; i++)
                 newTable.Columns.Add();
-            var text = _exists[0];
-            for (var i = 0; i < text.Count; i++)
+            var firstRow = data[0];
+            for (var i = 0; i < firstRow.Count; i++)
             {
                 var newRow = newTable.NewRow();
-                var caption = captions[i]; //CA.GetIndex(captions, i);
+                var caption = Captions[i];
                 newRow[0] = caption == null ? string.Empty : caption;
-                for (var j = 0; j < _exists.Count; j++)
-                    newRow[j + 1] = _exists[j][i];
+                for (var j = 0; j < data.Count; j++)
+                    newRow[j + 1] = data[j][i];
                 newTable.Rows.Add(newRow);
             }
         }
 
         return newTable;
     }
-
-
-
 }

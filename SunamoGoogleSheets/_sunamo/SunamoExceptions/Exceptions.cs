@@ -1,21 +1,31 @@
 namespace SunamoGoogleSheets._sunamo.SunamoExceptions;
 
-// © www.sunamo.cz. All Rights Reserved.
+/// <summary>
+/// Provides exception message formatting utilities
+/// </summary>
 internal sealed partial class Exceptions
 {
     #region Other
-    internal static string CheckBefore(string before)
+    /// <summary>
+    /// Checks if the prefix text is empty and formats it with a colon if not
+    /// </summary>
+    /// <param name="prefix">The prefix text to check</param>
+    /// <returns>Empty string if prefix is empty, otherwise prefix with colon and space</returns>
+    internal static string CheckBefore(string prefix)
     {
-        return string.IsNullOrWhiteSpace(before) ? string.Empty : before + ": ";
+        return string.IsNullOrWhiteSpace(prefix) ? string.Empty : prefix + ": ";
     }
 
-
-    internal static Tuple<string, string, string> PlaceOfException(
-bool fillAlsoFirstTwo = true)
+    /// <summary>
+    /// Gets the location where the exception occurred in the call stack
+    /// </summary>
+    /// <param name="isFilling AlsoFirstTwo">If true, fills the first two items (type and method name)</param>
+    /// <returns>Tuple containing type name, method name, and full stack trace</returns>
+    internal static Tuple<string, string, string> PlaceOfException(bool isFillingAlsoFirstTwo = true)
     {
-        StackTrace st = new();
-        var value = st.ToString();
-        var lines = value.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        StackTrace stackTrace = new();
+        var stackTraceText = stackTrace.ToString();
+        var lines = stackTraceText.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries).ToList();
         lines.RemoveAt(0);
         var i = 0;
         string type = string.Empty;
@@ -23,11 +33,11 @@ bool fillAlsoFirstTwo = true)
         for (; i < lines.Count; i++)
         {
             var item = lines[i];
-            if (fillAlsoFirstTwo)
+            if (isFillingAlsoFirstTwo)
                 if (!item.StartsWith("   at ThrowEx"))
                 {
                     TypeAndMethodName(item, out type, out methodName);
-                    fillAlsoFirstTwo = false;
+                    isFillingAlsoFirstTwo = false;
                 }
             if (item.StartsWith("at System."))
             {
@@ -38,19 +48,32 @@ bool fillAlsoFirstTwo = true)
         }
         return new Tuple<string, string, string>(type, methodName, string.Join(Environment.NewLine, lines));
     }
-    internal static void TypeAndMethodName(string lines, out string type, out string methodName)
+
+    /// <summary>
+    /// Extracts type and method name from a stack trace line
+    /// </summary>
+    /// <param name="stackTraceLine">The stack trace line to parse</param>
+    /// <param name="type">Output: the type name</param>
+    /// <param name="methodName">Output: the method name</param>
+    internal static void TypeAndMethodName(string stackTraceLine, out string type, out string methodName)
     {
-        var s2 = lines.Split("at ")[1].Trim();
-        var text = s2.Split("(")[0];
-        var parameter = text.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
-        methodName = parameter[^1];
-        parameter.RemoveAt(parameter.Count - 1);
-        type = string.Join(".", parameter);
+        var methodPath = stackTraceLine.Split("at ")[1].Trim();
+        var fullMethodName = methodPath.Split("(")[0];
+        var parts = fullMethodName.Split(new char[] { '.' }, StringSplitOptions.RemoveEmptyEntries).ToList();
+        methodName = parts[^1];
+        parts.RemoveAt(parts.Count - 1);
+        type = string.Join(".", parts);
     }
-    internal static string CallingMethod(int value = 1)
+
+    /// <summary>
+    /// Gets the name of the calling method
+    /// </summary>
+    /// <param name="frameDepth">The depth in the call stack (1 = immediate caller)</param>
+    /// <returns>The name of the calling method</returns>
+    internal static string CallingMethod(int frameDepth = 1)
     {
         StackTrace stackTrace = new();
-        var methodBase = stackTrace.GetFrame(value)?.GetMethod();
+        var methodBase = stackTrace.GetFrame(frameDepth)?.GetMethod();
         if (methodBase == null)
         {
             return "Method name cannot be get";
@@ -61,34 +84,55 @@ bool fillAlsoFirstTwo = true)
     #endregion
 
     #region IsNullOrWhitespace
-    readonly static StringBuilder sbAdditionalInfoInner = new();
-    readonly static StringBuilder sbAdditionalInfo = new();
+    internal readonly static StringBuilder AdditionalInfoInnerStringBuilder = new();
+    internal readonly static StringBuilder AdditionalInfoStringBuilder = new();
     #endregion
 
-    #region OnlyReturnString 
-    internal static string? BadFormatOfElementInList(string before, object elVal, string listName, Func<object, string> SH_NullToStringOrDefault)
+    #region OnlyReturnString
+    /// <summary>
+    /// Creates an error message for a bad format of an element in a list
+    /// </summary>
+    /// <param name="prefix">The prefix text for the message</param>
+    /// <param name="elementValue">The element value that has bad format</param>
+    /// <param name="listName">The name of the list containing the element</param>
+    /// <param name="nullToStringOrDefaultFunction">Function to convert null values to string</param>
+    /// <returns>Formatted error message</returns>
+    internal static string? BadFormatOfElementInList(string prefix, object elementValue, string listName, Func<object, string> nullToStringOrDefaultFunction)
     {
-        return CheckBefore(before) + " Bad format of element" + " " + SH_NullToStringOrDefault(elVal) +
+        return CheckBefore(prefix) + " Bad format of element" + " " + nullToStringOrDefaultFunction(elementValue) +
         " in list " + listName;
     }
-    internal static string? Custom(string before, string message)
+
+    /// <summary>
+    /// Creates a custom error message with a prefix
+    /// </summary>
+    /// <param name="prefix">The prefix text for the message</param>
+    /// <param name="message">The custom message</param>
+    /// <returns>Formatted error message</returns>
+    internal static string? Custom(string prefix, string message)
     {
-        return CheckBefore(before) + message;
+        return CheckBefore(prefix) + message;
     }
     #endregion
-    internal static string? NotImplementedCase(string before, object notImplementedName)
+
+    /// <summary>
+    /// Creates an error message for a not implemented case
+    /// </summary>
+    /// <param name="prefix">The prefix text for the message</param>
+    /// <param name="notImplementedName">The name or type of the not implemented case</param>
+    /// <returns>Formatted error message</returns>
+    internal static string? NotImplementedCase(string prefix, object notImplementedName)
     {
-        var fr = string.Empty;
+        var typeInfo = string.Empty;
         if (notImplementedName != null)
         {
-            fr = " for ";
+            typeInfo = " for ";
             if (notImplementedName.GetType() == typeof(Type))
-                fr += ((Type)notImplementedName).FullName;
+                typeInfo += ((Type)notImplementedName).FullName;
             else
-                fr += notImplementedName.ToString();
+                typeInfo += notImplementedName.ToString();
         }
-        return CheckBefore(before) + "Not implemented case" + fr + " . internal program error. Please contact developer" +
+        return CheckBefore(prefix) + "Not implemented case" + typeInfo + " . internal program error. Please contact developer" +
         ".";
     }
-
 }

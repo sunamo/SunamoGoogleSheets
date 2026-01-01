@@ -1,6 +1,3 @@
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-
 using System.Data;
 
 namespace SunamoGoogleSheets.Tests;
@@ -17,7 +14,7 @@ public class SheetsHelperTests
         dt.Rows.Add(["conventional-changelog-cli", "@semantic-release/release-notes-generator"]);
         dt.Rows.Add(["https://www.npmjs.com/package/conventional-changelog-cli", " https://www.npmjs.com/package/@semantic-release/release-notes-generator"]);
 
-        var ts = SheetsHelper.DataTableToString(dt);
+        var result = SheetsHelper.DataTableToString(dt);
 
     }
 

@@ -1,9 +1,15 @@
 namespace SunamoGoogleSheets.Tests;
 
+/// <summary>
+/// Provides collection conversion utilities for tests
+/// </summary>
 public class CATo
 {
-    public static List<T> To<T>(params T[] t)
+    /// <summary>
+    /// Converts an array to a list
+    /// </summary>
+    public static List<T> To<T>(params T[] items)
     {
-        return t.ToList();
+        return items.ToList();
     }
 }

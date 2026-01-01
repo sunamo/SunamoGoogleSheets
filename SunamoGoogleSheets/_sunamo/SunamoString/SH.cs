@@ -1,46 +1,54 @@
 namespace SunamoGoogleSheets._sunamo.SunamoString;
 
+/// <summary>
+/// Provides string manipulation utilities
+/// </summary>
 internal class SH
 {
-
-
-
-
-    internal static string NullToStringOrDefault(object n)
+    /// <summary>
+    /// Converts a value to string, returning "(null)" if the value is null
+    /// </summary>
+    /// <param name="value">The value to convert</param>
+    /// <returns>String representation with leading space, or " (null)" if value is null</returns>
+    internal static string NullToStringOrDefault(object value)
     {
-        return n == null ? " " + "(null)" : " " + n;
+        return value == null ? " " + "(null)" : " " + value;
     }
 
-
-    internal static List<int> TabOrSpaceNextTo(string s)
+    /// <summary>
+    /// Finds all positions of tab or space characters in the text
+    /// </summary>
+    /// <param name="text">The text to search in</param>
+    /// <returns>Sorted list of indices where tabs or spaces occur</returns>
+    internal static List<int> TabOrSpaceNextTo(string text)
     {
-        var nt = new List<int>();
+        var indices = new List<int>();
 
-        nt.AddRange(ReturnOccurencesOfString(s, "\t"));
-        nt.AddRange(ReturnOccurencesOfString(s, " "));
+        indices.AddRange(ReturnOccurencesOfString(text, "\t"));
+        indices.AddRange(ReturnOccurencesOfString(text, " "));
 
-        nt.Sort();
+        indices.Sort();
 
-        return nt;
+        return indices;
     }
 
-
-    internal static List<int> ReturnOccurencesOfString(string vcem, string co)
+    /// <summary>
+    /// Returns all positions where the search pattern occurs in the text
+    /// </summary>
+    /// <param name="text">The text to search in</param>
+    /// <param name="searchPattern">The pattern to search for</param>
+    /// <returns>List of indices where the pattern was found</returns>
+    internal static List<int> ReturnOccurencesOfString(string text, string searchPattern)
     {
-        var Results = new List<int>();
-        for (var Index = 0; Index < vcem.Length - co.Length + 1; Index++)
+        var results = new List<int>();
+        for (var index = 0; index < text.Length - searchPattern.Length + 1; index++)
         {
-            var subs = vcem.Substring(Index, co.Length);
-            ////////DebugLogger.Instance.WriteLine(subs);
-            // non-breaking space. &nbsp; code 160
-            // 32 space
-            var ch = subs[0];
-            var ch2 = co[0];
+            var substring = text.Substring(index, searchPattern.Length);
 
-            if (subs == co)
-                Results.Add(Index);
+            if (substring == searchPattern)
+                results.Add(index);
         }
 
-        return Results;
+        return results;
     }
 }

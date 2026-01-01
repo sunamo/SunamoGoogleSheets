@@ -117,10 +117,10 @@ public class SheetsTable(ILogger logger)
 
             if (count.Skip(1).ToList().All(d => d == string.Empty) && first.EndsWith(":"))
             {
-                if (ft.Count > 0) ft.Last().Value.to = i;
+                if (ft.Count > 0) ft.Last().Value.To = i;
 
                 var ft2 = new FromToTGoogleSheets<int>();
-                ft2.from = i + 1;
+                ft2.From = i + 1;
 
                 ft.Add(first, ft2);
             }
@@ -135,7 +135,7 @@ public class SheetsTable(ILogger logger)
             i++;
         }
 
-        if (ft.Count > 0) ft.Last().Value.to = i;
+        if (ft.Count > 0) ft.Last().Value.To = i;
     }
 
     /// <summary>
@@ -149,7 +149,7 @@ public class SheetsTable(ILogger logger)
         var vr = new List<string>();
 
         if (ft != null)
-            for (var i = ft.from; i < ft.to; i++)
+            for (var i = ft.From; i < ft.To; i++)
                 vr.Add(Table.Rows[i].ItemArray[dx].ToString());
         else
             foreach (DataRow item in Table.Rows)

@@ -1,7 +1,15 @@
 namespace SunamoGoogleSheets.Clipboard;
 
+/// <summary>
+/// Helper class for parsing and formatting data from Google Sheets clipboard format
+/// </summary>
 public class SheetsHelper
 {
+    /// <summary>
+    /// Gets the first letter from a Google Sheets cell if it is followed by a space
+    /// </summary>
+    /// <param name="item2">The cell content to examine</param>
+    /// <returns>The first character if followed by a space, otherwise null</returns>
     public static char? FirstLetterFromSheet(string item2)
     {
         if (item2.Length > 2)
@@ -9,6 +17,13 @@ public class SheetsHelper
                 return item2[0];
         return null;
     }
+
+    /// <summary>
+    /// Switches rows and columns in tabular text data (transposes the data)
+    /// </summary>
+    /// <param name="text">The text containing tabular data with rows and columns</param>
+    /// <param name="keepInSizeOfSmallest">If true, keeps only columns up to the size of the smallest row</param>
+    /// <returns>The transposed data as text</returns>
     public static string SwitchRowsAndColumn(string text, bool keepInSizeOfSmallest = true)
     {
         var exists = new List<List<string>>();
@@ -19,16 +34,28 @@ public class SheetsHelper
             exists.Add(GetRowCells(item));
         }
         var temp = new ValuesTableGrid<string>(exists, keepInSizeOfSmallest);
-        temp.captions = GetRowCells(list[0]);
+        temp.Captions = GetRowCells(list[0]);
         var dt = temp.SwitchRowsAndColumn();
         return DataTableToString(dt);
     }
+
+    /// <summary>
+    /// Converts a DataTable to Google Sheets formatted text (tab-delimited)
+    /// </summary>
+    /// <param name="text">The DataTable to convert</param>
+    /// <returns>Tab-delimited text representation of the DataTable</returns>
     public static string DataTableToString(DataTable text)
     {
         var stringBuilder = new StringBuilder();
         foreach (DataRow item in text.Rows) stringBuilder.AppendLine(JoinForGoogleSheetRow(item.ItemArray));
         return stringBuilder.ToString();
     }
+
+    /// <summary>
+    /// Generates Excel/Google Sheets style column identifiers (A, B, C, ..., Z, AA, AB, AC, ...)
+    /// </summary>
+    /// <param name="count">The number of column identifiers to generate</param>
+    /// <returns>List of column identifiers</returns>
     public static List<string> ColumnsIds(int count)
     {
         var result = new List<string>();
@@ -40,12 +67,12 @@ public class SheetsHelper
         
         return result;
     }
-    
+
     /// <summary>
-    /// Generuje názvy sloupců ve stylu Excel/Google Sheets (a, b, c, ..., z, aa, ab, ac, ...)
+    /// Generates column name in Excel/Google Sheets style (A, B, C, ..., Z, AA, AB, AC, ...)
     /// </summary>
-    /// <param name="columnIndex">Index sloupce (0-based)</param>
-    /// <returns>Název sloupce</returns>
+    /// <param name="columnIndex">Column index (0-based)</param>
+    /// <returns>Column name</returns>
     private static string GetColumnName(int columnIndex)
     {
         string columnName = string.Empty;
@@ -59,13 +86,14 @@ public class SheetsHelper
 
         return columnName;
     }
+
     /// <summary>
-    ///     A2 was = true
+    /// Calculates median or average for each row in the input text
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name="isRequiringAllNumbers"></param>
-    /// <param name="NHCalculateMedianAverage"></param>
-    /// <returns></returns>
+    /// <param name="input">The text containing rows of numbers</param>
+    /// <param name="isRequiringAllNumbers">If true, all values must be valid numbers</param>
+    /// <param name="NHCalculateMedianAverage">Function to calculate median or average from a list of numbers</param>
+    /// <returns>Text with calculated values for each row</returns>
     public static string CalculateMedianAverage(string input, bool isRequiringAllNumbers,
         Func<List<double>, string> NHCalculateMedianAverage)
     {
@@ -79,107 +107,104 @@ public class SheetsHelper
         }
         return stringBuilder.ToString();
     }
+
+    /// <summary>
+    /// Calculates median or average for data organized in two rows
+    /// </summary>
+    /// <param name="text">The text containing two rows of data</param>
+    /// <param name="NHCalculateMedianAverage">Function to calculate median or average from a list of numbers</param>
+    /// <returns>Text with calculated values</returns>
     public static string CalculateMedianFromTwoRows(string text, Func<List<double>, string> NHCalculateMedianAverage)
     {
         var result = Rows(text);
         for (var i = 0; i < result.Count; i++) result[i] = CalculateMedianAverage(result[i], true, NHCalculateMedianAverage);
         return string.Join(Environment.NewLine, result);
     }
-    public static List<List<string>> AllLines(string d)
+
+    /// <summary>
+    /// Parses all lines from text into a 2D list of cells
+    /// </summary>
+    /// <param name="text">The text containing tabular data</param>
+    /// <returns>2D list where each inner list represents cells in a row</returns>
+    public static List<List<string>> AllLines(string text)
     {
         var result = new List<List<string>>();
-        var list = SHGetLines.GetLines(d);
+        var list = SHGetLines.GetLines(text);
         foreach (var item in list) result.Add(GetRowCells(item));
         return result;
     }
 
-    public static List<string> GetRowCells(string ClipboardS)
+    /// <summary>
+    /// Splits a row from Google Sheets into individual cell values
+    /// </summary>
+    /// <param name="clipboardText">The row text from clipboard</param>
+    /// <returns>List of cell values</returns>
+    public static List<string> GetRowCells(string clipboardText)
     {
-        return SplitFromGoogleSheets(ClipboardS);
+        return SplitFromGoogleSheets(clipboardText);
     }
 
     /// <summary>
-    ///     If null, will be  load from clipboard
+    /// Splits the input text into rows by newline character
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="input">The text to split into rows</param>
+    /// <returns>List of row strings</returns>
     public static List<string> Rows(string input)
     {
-        //if (input == null)
-        //{
-        //    input = ClipboardHelper.GetText();
-        //}
-        return input.Split('\n').ToList(); //SHSplit.Split(input, "\n");
+        return input.Split('\n').ToList();
     }
 
     /// <summary>
-    /// 
+    /// Splits a Google Sheets row into cells and removes empty elements from the end
     /// </summary>
-    /// <param name="input"></param>
-    /// <param name=""></param>
-    /// <returns></returns>
-    public static List<string> SplitFromGoogleSheetsRow(string input /*, bool removeEmptyElementsFromEnd*/)
+    /// <param name="input">The row text to split</param>
+    /// <returns>List of cell values with trailing empty elements removed</returns>
+    public static List<string> SplitFromGoogleSheetsRow(string input)
     {
-        //if (input == null)
-        //{
-        //    input = ClipboardHelper.GetText();
-        //}
         var result = SplitFromGoogleSheets(input);
-        bool removeEmptyElementsFromEnd = true;
-        if (removeEmptyElementsFromEnd)
+
+        for (var i = result.Count - 1; i >= 0; i--)
         {
-            for (var i = result.Count - (1); i >= 0; i--)
+            if (string.IsNullOrWhiteSpace(result[i]))
             {
-                if (string.IsNullOrWhiteSpace(result[i]))
-                {
-                    result.RemoveAt(i);
-                }
-                else
-                {
-                    break;
-                }
+                result.RemoveAt(i);
             }
-            //r = result.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+            else
+            {
+                break;
+            }
         }
 
-        //CA.RemoveStringsEmpty2(result);
         return result;
     }
 
+    /// <summary>
+    /// Splits text by line breaks (alternative method that splits by \r\n instead of tabs)
+    /// </summary>
+    /// <param name="input">The text to split</param>
+    /// <returns>List of lines</returns>
     public static List<string> SplitFromGoogleSheets2(string input)
     {
         return SHGetLines.GetLines(input);
     }
 
     /// <summary>
-    ///     rozděluje podle tab / space, pokud to chci podle \r\n tak SplitFromGoogleSheets2
-    ///     If A1 null, take from clipboard
-    ///     Not to parse whole content
+    /// Splits text by tab or space characters (for splitting by \r\n use SplitFromGoogleSheets2)
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="input">The text to split</param>
+    /// <returns>List of cell values</returns>
     public static List<string> SplitFromGoogleSheets(string input)
     {
-        var bm = SH.TabOrSpaceNextTo(input);
-        //List<string> vr = new List<string>();
-        //if (bm.Count > 0)
-        //{
-        //    vr.AddRange(SHSplit.SplitByIndexes(input, bm));
-        //    vr.Reverse();
-        //}
-        //else
-        //{
-        //    //ThisApp.Warning( "Bad data in clipboard");
-        //    vr.Add(input);
-        //}
-
-        var vr2 = SHSplit.SplitNone(input, "\t");
-        return vr2;
+        var result = SHSplit.SplitNone(input, "\t");
+        return result;
     }
     /// <summary>
-    ///     A1 are column names for ValuesTableGrid (not letter sorted a,b,.. but left column (Name, Rating, etc.)
-    ///     A2 are data
+    /// Switches rows and columns for Google Sheets format, using first column as captions
     /// </summary>
-    /// <param name="captions_FirstColumn"></param>
-    /// <param name="exists_OtherColumn"></param>
+    /// <param name="captions_FirstColumn">Column names (not letter sorted like A,B,C but actual names like Name, Rating, etc.)</param>
+    /// <param name="exists_OtherColumn">Data columns</param>
+    /// <param name="throwExIfDifferentCountOfCaptionsAndExists">If true, throws exception when caption count differs from data count</param>
+    /// <returns>Transposed data formatted for Google Sheets</returns>
     public static string SwitchForGoogleSheets(List<string> captions_FirstColumn, List<List<string>> exists_OtherColumn, bool throwExIfDifferentCountOfCaptionsAndExists = false)
     {
         var countFirst = captions_FirstColumn.Count;
@@ -235,12 +260,12 @@ public class SheetsHelper
             }
         }
         var vtg = new ValuesTableGrid<string>(exists_OtherColumn);
-        vtg.captions = captions_FirstColumn;
+        vtg.Captions = captions_FirstColumn;
         var dt = vtg.SwitchRowsAndColumn();
         stringBuilder.Clear();
         foreach (DataRow item in dt.Rows) JoinForGoogleSheetRow(stringBuilder, item.ItemArray);
-        var vr = stringBuilder.ToString();
-        return vr;
+        var result = stringBuilder.ToString();
+        return result;
     }
     private static void FillUpToSize(List<string> list, int countFirst)
     {
@@ -250,39 +275,35 @@ public class SheetsHelper
             list.Add(i.ToString());
         }
     }
+
     /// <summary>
-    ///     Dříve byl IList ale ten nemůže být protože string.Join nemá takové přetížení. vrátí potom místo spojeného stringu
-    ///     System.Object[]
+    /// Joins array elements with tab delimiter and appends to StringBuilder (previously was IList but string.Join doesn't support that overload)
     /// </summary>
-    /// <param name="sb"></param>
-    /// <param name="en"></param>
+    /// <param name="stringBuilder">StringBuilder to append the result to</param>
+    /// <param name="en">Array of objects to join</param>
     public static void JoinForGoogleSheetRow(StringBuilder stringBuilder, object[] en)
     {
         stringBuilder.AppendLine(JoinForGoogleSheetRow(en));
     }
+
+    /// <summary>
+    /// Joins array elements with tab delimiter for Google Sheets row format
+    /// </summary>
+    /// <param name="en">Array of objects to join</param>
+    /// <returns>Tab-delimited string</returns>
     public static string JoinForGoogleSheetRow(object[] en)
     {
         var result = string.Join('\t', en);
         return result;
     }
     /// <summary>
-    ///     Snad to bude fungovat
-    ///     JoinForGoogleSheetRow(item.ItemArray) stále odkazuje na JoinForGoogleSheetRow(Object[] en)
-    ///     Jinde v app ale používám List<string> a proto potřebuji i toto
+    /// Joins string enumerable with tab delimiter for Google Sheets row format (overload for List&lt;string&gt; and other IEnumerable types)
     /// </summary>
-    /// <param name="en"></param>
-    /// <returns></returns>
+    /// <param name="en">String enumerable to join</param>
+    /// <returns>Tab-delimited string</returns>
     public static string JoinForGoogleSheetRow(IEnumerable<string> en)
     {
         var result = string.Join('\t', en);
         return result;
     }
-    //public static void JoinForGoogleSheetRow(StringBuilder stringBuilder, IList en)
-    //{
-    //    SheetsHelper.JoinForGoogleSheetRow(stringBuilder, en);
-    //}
-    //public static string JoinForGoogleSheetRow(IList en)
-    //{
-    //    return SheetsHelper.JoinForGoogleSheetRow(en);
-    //}
 }

@@ -1,10 +1,18 @@
 namespace SunamoGoogleSheets.Clipboard;
 
+/// <summary>
+/// Provides templates for generating Google Sheets content
+/// </summary>
 public class SheetsGeneratorTemplate
 {
-    public static string AndroidAppComparing(List<StoreParsedApp> spa)
+    /// <summary>
+    /// Generates a comparison table for Android apps
+    /// </summary>
+    /// <param name="parsedApps">The list of parsed app data</param>
+    /// <returns>String representation of the comparison table</returns>
+    public static string AndroidAppComparing(List<StoreParsedApp> parsedApps)
     {
-        var ob = new Dictionary<string, List<object>>();
+        var valuesByField = new Dictionary<string, List<object>>();
 
         var list = @"Name
 Category
@@ -25,26 +33,26 @@ Price for lifelong subs";
 
         var dt = new DataTable();
         dt.Columns.Add();
-        foreach (var item in spa) dt.Columns.Add();
-        var li = SHGetLines.GetLines(list);
+        foreach (var item in parsedApps) dt.Columns.Add();
+        var fieldNames = SHGetLines.GetLines(list);
 
-        foreach (var item in li)
+        foreach (var item in fieldNames)
         {
-            var lo = new List<object>(spa.Count + 1);
+            var rowValues = new List<object>(parsedApps.Count + 1);
 
-            lo.Add(item);
+            rowValues.Add(item);
 
-            foreach (var item2 in spa) lo.Add(item2.GetValueForRow(item));
+            foreach (var app in parsedApps) rowValues.Add(app.GetValueForRow(item));
 
-            if (item != string.Empty) ob.Add(item, lo);
+            if (item != string.Empty) valuesByField.Add(item, rowValues);
         }
 
-        foreach (var item in li)
+        foreach (var item in fieldNames)
         {
             var row = dt.NewRow();
 
             if (item != string.Empty)
-                row.ItemArray = ob[item].ToArray();
+                row.ItemArray = valuesByField[item].ToArray();
             else
                 row.ItemArray = new object[] { string.Empty };
             dt.Rows.Add(row);

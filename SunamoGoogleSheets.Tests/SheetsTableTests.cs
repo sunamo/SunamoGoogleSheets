@@ -1,6 +1,3 @@
-// EN: Variable names have been checked and replaced with self-descriptive names
-// CZ: Názvy proměnných byly zkontrolovány a nahrazeny samopopisnými názvy
-
 namespace SunamoGoogleSheets.Tests;
 
 using Microsoft.Extensions.Logging;
@@ -34,14 +31,10 @@ public class SheetsTableTests
     [Fact]
     public async Task ParseRowsOfSectionsTest()
     {
-        var st = new SheetsTable(logger);
-        st.ParseRowsOfSections(await TF.ReadAllText(defFile));
+        var table = new SheetsTable(logger);
+        table.ParseRowsOfSections(await TF.ReadAllText(defFile));
 
-        var data = st.RowsFromColumn(0);
-        //var ftf = st.ft.First();
-        //foreach (var item in st.RowsFromColumn(0, ftf.Value))
-        //{
-        //}
+        var data = table.RowsFromColumn(0);
     }
 
     [Fact]

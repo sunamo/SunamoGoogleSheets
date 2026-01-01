@@ -1,36 +1,79 @@
 namespace SunamoGoogleSheets._sunamo.SunamoValues.Constants;
 
+/// <summary>
+/// Date and time constants
+/// </summary>
 internal class DTConstants
 {
-    internal const long secondsInMinute = 60;
-    internal const long secondsInHour = secondsInMinute * 60;
-    internal const long secondsInDay = secondsInHour * 24;
-    internal const int yearStartUnixDate = 1970;
+    /// <summary>
+    /// Number of seconds in one minute
+    /// </summary>
+    internal const long SecondsInMinute = 60;
 
-    internal static readonly List<string> daysInWeekENShortcut =
+    /// <summary>
+    /// Number of seconds in one hour
+    /// </summary>
+    internal const long SecondsInHour = SecondsInMinute * 60;
+
+    /// <summary>
+    /// Number of seconds in one day
+    /// </summary>
+    internal const long SecondsInDay = SecondsInHour * 24;
+
+    /// <summary>
+    /// The year when Unix time starts (1970)
+    /// </summary>
+    internal const int YearStartUnixDate = 1970;
+
+    /// <summary>
+    /// Shortcut names for days of the week in English
+    /// </summary>
+    internal static readonly List<string> DaysInWeekENShortcut =
         new List<string>(["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]);
 
-    internal static readonly List<string> daysInWeekEN = new()
+    /// <summary>
+    /// Full names for days of the week in English
+    /// </summary>
+    internal static readonly List<string> DaysInWeekEN = new()
         { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
 
-    internal static readonly List<string> monthsInYearEN = new()
+    /// <summary>
+    /// Names for months of the year in English
+    /// </summary>
+    internal static readonly List<string> MonthsInYearEN = new()
     {
         "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November",
         "December"
     };
 
-    internal static readonly DateTime UnixFsStart = new(yearStartUnixDate, 1, 1);
+    /// <summary>
+    /// Unix file system start date
+    /// </summary>
+    internal static readonly DateTime UnixFsStart = new(YearStartUnixDate, 1, 1);
 
-    internal static readonly List<string> daysInWeekCS = new()
+    /// <summary>
+    /// Full names for days of the week in Czech
+    /// </summary>
+    internal static readonly List<string> DaysInWeekCS = new()
         { Pondeli, Utery, Streda, Ctvrtek, Patek, Sobota, Nedele };
 
-    internal static DateTime unixTimeStartEpoch = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
-    internal static DateTime winTimeStartEpoch = new(1601, 1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    /// <summary>
+    /// Unix time epoch start (January 1, 1970, UTC)
+    /// </summary>
+    internal static DateTime UnixTimeStartEpoch = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
-    internal static readonly List<string> monthsInYearCZ = new()
+    /// <summary>
+    /// Windows time epoch start (January 1, 1601, UTC)
+    /// </summary>
+    internal static DateTime WinTimeStartEpoch = new(1601, 1, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+    /// <summary>
+    /// Names for months of the year in Czech
+    /// </summary>
+    internal static readonly List<string> MonthsInYearCZ = new()
         { Leden, Unor, Brezen, Duben, Kveten, Cerven, Cervenec, Srpen, Zari, Rijen, Listopad, Prosinec };
 
-    #region Dny v týdny CS
+    #region Days of the week in Czech
 
     internal const string Pondeli = "Pond\u011Bl\u00ED";
     internal const string Utery = "\u00DAter\u00FD";
@@ -42,7 +85,7 @@ internal class DTConstants
 
     #endregion
 
-    #region Měsíce v roce CS
+    #region Months of the year in Czech
 
     internal const string Leden = "Leden";
     internal const string Unor = "\u00DAnor";

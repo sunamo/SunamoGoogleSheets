@@ -1,15 +1,22 @@
 namespace SunamoGoogleSheets._sunamo.SunamoBts;
 
+/// <summary>
+/// Provides basic type conversion and parsing utilities
+/// </summary>
 internal class BTS
 {
-    internal static double ParseDouble(string entry, double _default)
+    /// <summary>
+    /// Parses a double value from text, removing spaces before parsing
+    /// </summary>
+    /// <param name="text">The text to parse</param>
+    /// <param name="defaultValue">The default value to return if parsing fails</param>
+    /// <returns>The parsed double value, or the default value if parsing fails</returns>
+    internal static double ParseDouble(string text, double defaultValue)
     {
-        //entry = SH.FromSpace160To32(entry);
-        entry = entry.Replace(" ", string.Empty);
-        //var ch = entry[3];
+        text = text.Replace(" ", string.Empty);
 
-        double lastDouble2 = 0;
-        if (double.TryParse(entry, out lastDouble2)) return lastDouble2;
-        return _default;
+        double parsedValue = 0;
+        if (double.TryParse(text, out parsedValue)) return parsedValue;
+        return defaultValue;
     }
 }
