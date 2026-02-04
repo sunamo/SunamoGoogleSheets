@@ -14,7 +14,7 @@ public class SheetsGeneratorTemplate
     {
         var valuesByField = new Dictionary<string, List<object>>();
 
-        var list = @"Name
+        var fieldNamesText = @"Name
 Category
 Uri
 Count of ratings
@@ -31,10 +31,10 @@ Further test
 Price for year subs
 Price for lifelong subs";
 
-        var dt = new DataTable();
-        dt.Columns.Add();
-        foreach (var item in parsedApps) dt.Columns.Add();
-        var fieldNames = SHGetLines.GetLines(list);
+        var dataTable = new DataTable();
+        dataTable.Columns.Add();
+        foreach (var item in parsedApps) dataTable.Columns.Add();
+        var fieldNames = SHGetLines.GetLines(fieldNamesText);
 
         foreach (var item in fieldNames)
         {
@@ -49,15 +49,15 @@ Price for lifelong subs";
 
         foreach (var item in fieldNames)
         {
-            var row = dt.NewRow();
+            var row = dataTable.NewRow();
 
             if (item != string.Empty)
                 row.ItemArray = valuesByField[item].ToArray();
             else
                 row.ItemArray = new object[] { string.Empty };
-            dt.Rows.Add(row);
+            dataTable.Rows.Add(row);
         }
 
-        return SheetsHelper.DataTableToString(dt);
+        return SheetsHelper.DataTableToString(dataTable);
     }
 }

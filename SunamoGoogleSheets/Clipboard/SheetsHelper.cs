@@ -8,13 +8,13 @@ public class SheetsHelper
     /// <summary>
     /// Gets the first letter from a Google Sheets cell if it is followed by a space
     /// </summary>
-    /// <param name="item2">The cell content to examine</param>
+    /// <param name="cellContent">The cell content to examine</param>
     /// <returns>The first character if followed by a space, otherwise null</returns>
-    public static char? FirstLetterFromSheet(string item2)
+    public static char? FirstLetterFromSheet(string cellContent)
     {
-        if (item2.Length > 2)
-            if (item2[1] == ' ')
-                return item2[0];
+        if (cellContent.Length > 2)
+            if (cellContent[1] == ' ')
+                return cellContent[0];
         return null;
     }
 
@@ -22,9 +22,9 @@ public class SheetsHelper
     /// Switches rows and columns in tabular text data (transposes the data)
     /// </summary>
     /// <param name="text">The text containing tabular data with rows and columns</param>
-    /// <param name="keepInSizeOfSmallest">If true, keeps only columns up to the size of the smallest row</param>
+    /// <param name="isKeepingInSizeOfSmallest">If true, keeps only columns up to the size of the smallest row</param>
     /// <returns>The transposed data as text</returns>
-    public static string SwitchRowsAndColumn(string text, bool keepInSizeOfSmallest = true)
+    public static string SwitchRowsAndColumn(string text, bool isKeepingInSizeOfSmallest = true)
     {
         var exists = new List<List<string>>();
         var list = SHGetLines.GetLines(text);
@@ -33,21 +33,21 @@ public class SheetsHelper
             if (item.Trim() == "") continue;
             exists.Add(GetRowCells(item));
         }
-        var temp = new ValuesTableGrid<string>(exists, keepInSizeOfSmallest);
-        temp.Captions = GetRowCells(list[0]);
-        var dt = temp.SwitchRowsAndColumn();
-        return DataTableToString(dt);
+        var tableGrid = new ValuesTableGrid<string>(exists, isKeepingInSizeOfSmallest);
+        tableGrid.Captions = GetRowCells(list[0]);
+        var dataTable = tableGrid.SwitchRowsAndColumn();
+        return DataTableToString(dataTable);
     }
 
     /// <summary>
     /// Converts a DataTable to Google Sheets formatted text (tab-delimited)
     /// </summary>
-    /// <param name="text">The DataTable to convert</param>
+    /// <param name="dataTable">The DataTable to convert</param>
     /// <returns>Tab-delimited text representation of the DataTable</returns>
-    public static string DataTableToString(DataTable text)
+    public static string DataTableToString(DataTable dataTable)
     {
         var stringBuilder = new StringBuilder();
-        foreach (DataRow item in text.Rows) stringBuilder.AppendLine(JoinForGoogleSheetRow(item.ItemArray));
+        foreach (DataRow item in dataTable.Rows) stringBuilder.AppendLine(JoinForGoogleSheetRow(item.ItemArray!));
         return stringBuilder.ToString();
     }
 
@@ -92,18 +92,18 @@ public class SheetsHelper
     /// </summary>
     /// <param name="input">The text containing rows of numbers</param>
     /// <param name="isRequiringAllNumbers">If true, all values must be valid numbers</param>
-    /// <param name="NHCalculateMedianAverage">Function to calculate median or average from a list of numbers</param>
+    /// <param name="calculateFunction">Function to calculate median or average from a list of numbers</param>
     /// <returns>Text with calculated values for each row</returns>
     public static string CalculateMedianAverage(string input, bool isRequiringAllNumbers,
-        Func<List<double>, string> NHCalculateMedianAverage)
+        Func<List<double>, string> calculateFunction)
     {
         var sourceList = Rows(input);
         var stringBuilder = new StringBuilder();
         foreach (var item in sourceList)
         {
-            var defDouble = -1;
-            var list = CAToNumber.ToNumber<double>(BTS.ParseDouble, SplitFromGoogleSheets(item), defDouble, isRequiringAllNumbers);
-            stringBuilder.AppendLine(NHCalculateMedianAverage(list));
+            var defaultValue = -1.0;
+            var list = CAToNumber.ToNumber<double>(BTS.ParseDouble, SplitFromGoogleSheets(item), defaultValue, isRequiringAllNumbers);
+            stringBuilder.AppendLine(calculateFunction(list));
         }
         return stringBuilder.ToString();
     }
@@ -112,12 +112,12 @@ public class SheetsHelper
     /// Calculates median or average for data organized in two rows
     /// </summary>
     /// <param name="text">The text containing two rows of data</param>
-    /// <param name="NHCalculateMedianAverage">Function to calculate median or average from a list of numbers</param>
+    /// <param name="calculateFunction">Function to calculate median or average from a list of numbers</param>
     /// <returns>Text with calculated values</returns>
-    public static string CalculateMedianFromTwoRows(string text, Func<List<double>, string> NHCalculateMedianAverage)
+    public static string CalculateMedianFromTwoRows(string text, Func<List<double>, string> calculateFunction)
     {
         var result = Rows(text);
-        for (var i = 0; i < result.Count; i++) result[i] = CalculateMedianAverage(result[i], true, NHCalculateMedianAverage);
+        for (var i = 0; i < result.Count; i++) result[i] = CalculateMedianAverage(result[i], true, calculateFunction);
         return string.Join(Environment.NewLine, result);
     }
 
@@ -201,38 +201,38 @@ public class SheetsHelper
     /// <summary>
     /// Switches rows and columns for Google Sheets format, using first column as captions
     /// </summary>
-    /// <param name="captions_FirstColumn">Column names (not letter sorted like A,B,C but actual names like Name, Rating, etc.)</param>
-    /// <param name="exists_OtherColumn">Data columns</param>
-    /// <param name="throwExIfDifferentCountOfCaptionsAndExists">If true, throws exception when caption count differs from data count</param>
+    /// <param name="captions">Column names (not letter sorted like A,B,C but actual names like Name, Rating, etc.)</param>
+    /// <param name="dataColumns">Data columns</param>
+    /// <param name="isThrowingExceptionIfDifferentCountOfCaptionsAndExists">If true, throws exception when caption count differs from data count</param>
     /// <returns>Transposed data formatted for Google Sheets</returns>
-    public static string SwitchForGoogleSheets(List<string> captions_FirstColumn, List<List<string>> exists_OtherColumn, bool throwExIfDifferentCountOfCaptionsAndExists = false)
+    public static string SwitchForGoogleSheets(List<string> captions, List<List<string>> dataColumns, bool isThrowingExceptionIfDifferentCountOfCaptionsAndExists = false)
     {
-        var countFirst = captions_FirstColumn.Count;
+        var captionCount = captions.Count;
         Dictionary<int, List<int>> columnsWithDifferentElementsList = new();
-        List<int> withRightCount = new();
-        for (int i = 0; i < exists_OtherColumn.Count; i++)
+        List<int> columnsWithCorrectCount = new();
+        for (int i = 0; i < dataColumns.Count; i++)
         {
-            var count = exists_OtherColumn[i].Count;
-            if (count != countFirst)
+            var columnCount = dataColumns[i].Count;
+            if (columnCount != captionCount)
             {
-                if (columnsWithDifferentElementsList.ContainsKey(count))
+                if (columnsWithDifferentElementsList.ContainsKey(columnCount))
                 {
-                    columnsWithDifferentElementsList[count].Add(i);
+                    columnsWithDifferentElementsList[columnCount].Add(i);
                 }
                 else
                 {
-                    columnsWithDifferentElementsList.Add(count, [i]);
+                    columnsWithDifferentElementsList.Add(columnCount, [i]);
                 }
             }
             else
             {
-                withRightCount.Add(i);
+                columnsWithCorrectCount.Add(i);
             }
         }
         StringBuilder stringBuilder = new();
         if (columnsWithDifferentElementsList.Count != 0)
         {
-            if (throwExIfDifferentCountOfCaptionsAndExists)
+            if (isThrowingExceptionIfDifferentCountOfCaptionsAndExists)
             {
                 stringBuilder.AppendLine($"Different count in captions {columnsWithDifferentElementsList.Count} and exists:");
                 stringBuilder.AppendLine("Count in column - Columns list");
@@ -245,32 +245,38 @@ public class SheetsHelper
             else
             {
                 var max = columnsWithDifferentElementsList.Keys.Max();
-                if (max > countFirst)
+                if (max > captionCount)
                 {
-                    for (int i = max - countFirst - 1; i >= 0; i--)
+                    for (int i = max - captionCount - 1; i >= 0; i--)
                     {
-                        captions_FirstColumn.Add(i.ToString());
+                        captions.Add(i.ToString());
                     }
-                    countFirst = captions_FirstColumn.Count;
+                    captionCount = captions.Count;
                 }
-                for (int i = 0; i < exists_OtherColumn.Count; i++)
+                for (int i = 0; i < dataColumns.Count; i++)
                 {
-                    FillUpToSize(exists_OtherColumn[i], countFirst);
+                    FillUpToSize(dataColumns[i], captionCount);
                 }
             }
         }
-        var vtg = new ValuesTableGrid<string>(exists_OtherColumn);
-        vtg.Captions = captions_FirstColumn;
-        var dt = vtg.SwitchRowsAndColumn();
+        var tableGrid = new ValuesTableGrid<string>(dataColumns);
+        tableGrid.Captions = captions;
+        var dataTable = tableGrid.SwitchRowsAndColumn();
         stringBuilder.Clear();
-        foreach (DataRow item in dt.Rows) JoinForGoogleSheetRow(stringBuilder, item.ItemArray);
+        foreach (DataRow item in dataTable.Rows) JoinForGoogleSheetRow(stringBuilder, item.ItemArray!);
         var result = stringBuilder.ToString();
         return result;
     }
-    private static void FillUpToSize(List<string> list, int countFirst)
+
+    /// <summary>
+    /// Fills a list with string representations of indices until it reaches the target size
+    /// </summary>
+    /// <param name="list">The list to fill</param>
+    /// <param name="targetSize">The target size to reach</param>
+    private static void FillUpToSize(List<string> list, int targetSize)
     {
-        var to = countFirst - list.Count;
-        for (int i = 0; i < to; i++)
+        var elementsToAdd = targetSize - list.Count;
+        for (int i = 0; i < elementsToAdd; i++)
         {
             list.Add(i.ToString());
         }
@@ -280,30 +286,58 @@ public class SheetsHelper
     /// Joins array elements with tab delimiter and appends to StringBuilder (previously was IList but string.Join doesn't support that overload)
     /// </summary>
     /// <param name="stringBuilder">StringBuilder to append the result to</param>
-    /// <param name="en">Array of objects to join</param>
-    public static void JoinForGoogleSheetRow(StringBuilder stringBuilder, object[] en)
+    /// <param name="cells">Array of objects to join</param>
+    public static void JoinForGoogleSheetRow(StringBuilder stringBuilder, object[] cells)
     {
-        stringBuilder.AppendLine(JoinForGoogleSheetRow(en));
+        stringBuilder.AppendLine(JoinForGoogleSheetRow(cells));
     }
 
     /// <summary>
     /// Joins array elements with tab delimiter for Google Sheets row format
+    /// EN: CRITICAL - Sanitizes cell values by removing newlines, tabs, and carriage returns that would break TSV format
+    /// CZ: KRITICKÉ - Sanitizuje hodnoty buněk odstraněním newline, tab a carriage return znaků které by rozbily TSV formát
     /// </summary>
-    /// <param name="en">Array of objects to join</param>
+    /// <param name="cells">Array of objects to join</param>
     /// <returns>Tab-delimited string</returns>
-    public static string JoinForGoogleSheetRow(object[] en)
+    public static string JoinForGoogleSheetRow(object[] cells)
     {
-        var result = string.Join('\t', en);
+        // EN: Sanitize each cell value - remove/replace characters that would break TSV format
+        // CZ: Sanitizovat každou hodnotu - odstranit/nahradit znaky které by rozbily TSV formát
+        var sanitizedCells = cells.Select(cell =>
+        {
+            if (cell == null) return string.Empty;
+            var str = cell.ToString() ?? string.Empty;
+            // EN: Replace newlines, tabs, and carriage returns with spaces to prevent TSV format corruption
+            // CZ: Nahradit newline, tab a carriage return znaky mezerami aby se předešlo poškození TSV formátu
+            str = str.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace("\t", " ");
+            return str;
+        }).ToArray();
+
+        var result = string.Join('\t', sanitizedCells);
         return result;
     }
+
     /// <summary>
     /// Joins string enumerable with tab delimiter for Google Sheets row format (overload for List&lt;string&gt; and other IEnumerable types)
+    /// EN: CRITICAL - Sanitizes cell values by removing newlines, tabs, and carriage returns that would break TSV format
+    /// CZ: KRITICKÉ - Sanitizuje hodnoty buněk odstraněním newline, tab a carriage return znaků které by rozbily TSV formát
     /// </summary>
-    /// <param name="en">String enumerable to join</param>
+    /// <param name="cells">String enumerable to join</param>
     /// <returns>Tab-delimited string</returns>
-    public static string JoinForGoogleSheetRow(IEnumerable<string> en)
+    public static string JoinForGoogleSheetRow(IEnumerable<string> cells)
     {
-        var result = string.Join('\t', en);
+        // EN: Sanitize each cell value - remove/replace characters that would break TSV format
+        // CZ: Sanitizovat každou hodnotu - odstranit/nahradit znaky které by rozbily TSV formát
+        var sanitizedCells = cells.Select(cell =>
+        {
+            if (cell == null) return string.Empty;
+            // EN: Replace newlines, tabs, and carriage returns with spaces to prevent TSV format corruption
+            // CZ: Nahradit newline, tab a carriage return znaky mezerami aby se předešlo poškození TSV formátu
+            var str = cell.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace("\t", " ");
+            return str;
+        });
+
+        var result = string.Join('\t', sanitizedCells);
         return result;
     }
 }

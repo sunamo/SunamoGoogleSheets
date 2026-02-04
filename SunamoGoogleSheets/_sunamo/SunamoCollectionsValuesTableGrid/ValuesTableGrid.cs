@@ -18,7 +18,7 @@ internal class ValuesTableGrid<T> : List<List<T>>
     /// <summary>
     /// Gets or sets the column captions for the grid
     /// </summary>
-    internal List<string> Captions { get; set; }
+    internal List<string>? Captions { get; set; }
 
     /// <summary>
     /// Initializes a new instance of the ValuesTableGrid class
@@ -56,7 +56,7 @@ internal class ValuesTableGrid<T> : List<List<T>>
             for (var i = 0; i < firstRow.Count; i++)
             {
                 var newRow = newTable.NewRow();
-                var caption = Captions[i];
+                var caption = Captions?[i];
                 newRow[0] = caption == null ? string.Empty : caption;
                 for (var j = 0; j < data.Count; j++)
                     newRow[j + 1] = data[j][i];

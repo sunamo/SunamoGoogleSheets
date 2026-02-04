@@ -20,12 +20,12 @@ internal class CAToNumber
         var result = new List<T>();
         foreach (var item in list)
         {
-            var number = parseFunction.Invoke(item.ToString(), defaultValue);
+            var number = parseFunction.Invoke(item?.ToString() ?? string.Empty, defaultValue);
             if (isRequiringAllNumbers)
                 if (EqualityComparer<T>.Default.Equals(number, defaultValue))
                 {
                     ThrowEx.BadFormatOfElementInList(item, nameof(list), SH.NullToStringOrDefault);
-                    return null;
+                    throw new InvalidOperationException("Failed to parse all numbers");
                 }
 
             if (!EqualityComparer<T>.Default.Equals(number, defaultValue)) result.Add(number);

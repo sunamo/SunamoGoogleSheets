@@ -19,7 +19,7 @@ internal sealed partial class Exceptions
     /// <summary>
     /// Gets the location where the exception occurred in the call stack
     /// </summary>
-    /// <param name="isFilling AlsoFirstTwo">If true, fills the first two items (type and method name)</param>
+    /// <param name="isFillingAlsoFirstTwo">If true, fills the first two items (type and method name)</param>
     /// <returns>Tuple containing type name, method name, and full stack trace</returns>
     internal static Tuple<string, string, string> PlaceOfException(bool isFillingAlsoFirstTwo = true)
     {

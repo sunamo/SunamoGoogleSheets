@@ -1,3 +1,4 @@
+// variables names: ok
 namespace RunnerGoogleSheets;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -23,7 +24,8 @@ partial class Program
 
         Provider = Services.BuildServiceProvider();
 
-        logger = Provider.GetService<ILogger>() ?? throw new ServiceNotFoundException(nameof(ILogger));
+        // ServiceNotFoundException is not available in current SunamoCl version
+        logger = Provider.GetService<ILogger>() ?? throw new InvalidOperationException($"Service {nameof(ILogger)} not found");
     }
 
     static void Main()

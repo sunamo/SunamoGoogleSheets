@@ -7,8 +7,8 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="SunamoCl" Version="25.4.5.1" />
-    <PackageReference Include="SunamoDependencyInjection" Version="25.3.29.1" />
+    <PackageReference Include="SunamoCl" Version="*" />
+    <PackageReference Include="SunamoDependencyInjection" Version="*" />
     <PackageReference Include="TextCopy" Version="6.2.1" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="*" Pack="True" />
     <ProjectReference Include="..\SunamoGoogleSheets.Tests\SunamoGoogleSheets.Tests.csproj" />

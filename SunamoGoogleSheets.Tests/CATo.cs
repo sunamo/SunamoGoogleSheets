@@ -1,3 +1,4 @@
+// variables names: ok
 namespace SunamoGoogleSheets.Tests;
 
 /// <summary>

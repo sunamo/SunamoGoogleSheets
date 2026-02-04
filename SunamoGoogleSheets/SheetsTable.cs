@@ -1,23 +1,43 @@
 namespace SunamoGoogleSheets;
 
+/// <summary>
+/// Represents a table parsed from Google Sheets with support for sections
+/// </summary>
 public class SheetsTable(ILogger logger)
 {
+    /// <summary>
+    /// Gets the parsed data table
+    /// </summary>
     public DataTable Table { get; private set; } = new();
-    public Dictionary<string, FromToTGoogleSheets<int>> ft { get; private set; } = new();
 
+    /// <summary>
+    /// Gets the section ranges (from-to) for each section identified by section name
+    /// </summary>
+    public Dictionary<string, FromToTGoogleSheets<int>> SectionRanges { get; private set; } = new();
+
+    /// <summary>
+    /// Gets the number of columns in the table
+    /// </summary>
     public int ColumnCount => Table.Columns.Count;
 
+    /// <summary>
+    /// Gets the number of rows in the table
+    /// </summary>
     public int RowsCount => Table.Rows.Count;
 
     /// <summary>
-    /// 
+    /// Deletes a column from the table at the specified index
     /// </summary>
-    /// <param name="dx"></param>
-    public void DeleteColumn(int dx)
+    /// <param name="columnIndex">The zero-based index of the column to delete</param>
+    public void DeleteColumn(int columnIndex)
     {
-        Table.Columns.RemoveAt(dx);
+        Table.Columns.RemoveAt(columnIndex);
     }
 
+    /// <summary>
+    /// Parses rows from Google Sheets clipboard format into the table
+    /// </summary>
+    /// <param name="input">The text content from Google Sheets clipboard</param>
     public void ParseRows(string input)
     {
         var result = SheetsHelper.Rows(input);
@@ -30,26 +50,26 @@ public class SheetsTable(ILogger logger)
         var maxColumnsLength = result.Max(row => SheetsHelper.SplitFromGoogleSheetsRow(row).Count);
 
         var firstRow = result.First();
-        var count = SheetsHelper.SplitFromGoogleSheetsRow(firstRow);
+        var headerCells = SheetsHelper.SplitFromGoogleSheetsRow(firstRow);
 
-        for (int i = count.Count - 1; i>=0; i--)
+        for (int i = headerCells.Count - 1; i>=0; i--)
         {
-            if (string.IsNullOrWhiteSpace(count[i]))
+            if (string.IsNullOrWhiteSpace(headerCells[i]))
             {
-                count.RemoveAt(i);
+                headerCells.RemoveAt(i);
             }
         }
 
-        var columnCount = count.Count;
+        var columnCount = headerCells.Count;
 
-        foreach (var item in count)
+        foreach (var item in headerCells)
         {
             Table.Columns.Add(item, typeof(string));
         }
 
-        if (count.Count < maxColumnsLength)
+        if (headerCells.Count < maxColumnsLength)
         {
-            for (int i = count.Count -1; i < maxColumnsLength; i++)
+            for (int i = headerCells.Count -1; i < maxColumnsLength; i++)
             {
                 Table.Columns.Add("Dummy column " + i);
             }
@@ -57,30 +77,31 @@ public class SheetsTable(ILogger logger)
 
         foreach (var item in result)
         {
-            count = SheetsHelper.SplitFromGoogleSheetsRow(item);
-            var dr = Table.NewRow();
+            var cellValues = SheetsHelper.SplitFromGoogleSheetsRow(item);
+            var dataRow = Table.NewRow();
 
-            // že sloupce budou chybět by se stávat nemělo
-            count = count.Take(columnCount).ToList();
+            // Column count should match, but trim if needed
+            cellValues = cellValues.Take(columnCount).ToList();
 
-            dr.ItemArray = count.ConvertAll(d => (object)d).ToArray();
+            dataRow.ItemArray = cellValues.ConvertAll(cellValue => (object)cellValue).ToArray();
 
-            var first = count.FirstOrDefault();
+            var first = cellValues.FirstOrDefault();
 
             if (first == null)
             {
-                // Při kopírování z google sheets je běžné že se zkppíruje 1000 řádků ale většina z nich jsou prázdné
+                // When copying from Google Sheets, it's common to copy 1000 rows but most of them are empty
                 continue;
             }
 
-            Table.Rows.Add(dr);
+            Table.Rows.Add(dataRow);
         }
     }
 
     /// <summary>
-    /// Vrací řádky které patří k dané sekci (sekce se pozná že má : na konci)
+    /// Parses rows and identifies sections (sections are identified by a colon at the end of the first cell)
+    /// Returns rows that belong to each section
     /// </summary>
-    /// <param name="input"></param>
+    /// <param name="input">The text content from Google Sheets clipboard</param>
     public void ParseRowsOfSections(string input)
     {
         var result = SheetsHelper.Rows(input);
@@ -89,72 +110,68 @@ public class SheetsTable(ILogger logger)
 
         foreach (var item in result)
         {
-            var count = SheetsHelper.SplitFromGoogleSheetsRow(item);
-            if (count.Count > maxColumns) maxColumns = count.Count;
+            var cellValues = SheetsHelper.SplitFromGoogleSheetsRow(item);
+            if (cellValues.Count > maxColumns) maxColumns = cellValues.Count;
         }
 
         var columnNames = SheetsHelper.SplitFromGoogleSheetsRow(result.First());
         foreach (var item in columnNames) Table.Columns.Add(item);
 
-        var i = 0;
+        var rowIndex = 0;
 
         foreach (var item in result)
         {
-            var count = SheetsHelper.SplitFromGoogleSheetsRow(item);
-            var dr = Table.NewRow();
+            var cellValues = SheetsHelper.SplitFromGoogleSheetsRow(item);
+            var dataRow = Table.NewRow();
 
 
-            dr.ItemArray = count.ConvertAll(d => (object)d).ToArray();
+            dataRow.ItemArray = cellValues.ConvertAll(cellValue => (object)cellValue).ToArray();
 
-            var first = count.FirstOrDefault();
+            var first = cellValues.FirstOrDefault();
 
             if (first == null)
             {
-                // Při kopírování z google sheets je běžné že se zkppíruje 1000 řádků ale většina z nich jsou prázdné
+                // When copying from Google Sheets, it's common to copy 1000 rows but most of them are empty
                 continue;
 
             }
 
-            if (count.Skip(1).ToList().All(d => d == string.Empty) && first.EndsWith(":"))
+            if (cellValues.Skip(1).ToList().All(cellValue => cellValue == string.Empty) && first.EndsWith(":"))
             {
-                if (ft.Count > 0) ft.Last().Value.To = i;
+                if (SectionRanges.Count > 0) SectionRanges.Last().Value.To = rowIndex;
 
-                var ft2 = new FromToTGoogleSheets<int>();
-                ft2.From = i + 1;
+                var sectionRange = new FromToTGoogleSheets<int>();
+                sectionRange.From = rowIndex + 1;
 
-                ft.Add(first, ft2);
-            }
-            else
-            {
-
+                SectionRanges.Add(first, sectionRange);
             }
 
 
-            Table.Rows.Add(dr);
+            Table.Rows.Add(dataRow);
 
-            i++;
+            rowIndex++;
         }
 
-        if (ft.Count > 0) ft.Last().Value.To = i;
+        if (SectionRanges.Count > 0) SectionRanges.Last().Value.To = rowIndex;
     }
 
     /// <summary>
-    /// Vrátí hodnoty konkrétní sekce
+    /// Returns values from a specific column, optionally filtered to a specific section
     /// </summary>
-    /// <param name="dx"></param>
-    /// <param name="ft"></param>
-    /// <returns></returns>
-    public List<string> RowsFromColumn(int dx, FromToTGoogleSheets<int>? ft = null)
+    /// <param name="columnIndex">The zero-based index of the column to retrieve values from</param>
+    /// <param name="sectionRange">Optional section range to filter rows; if null, returns all rows</param>
+    /// <returns>List of string values from the specified column</returns>
+    public List<string> RowsFromColumn(int columnIndex, FromToTGoogleSheets<int>? sectionRange = null)
     {
-        var vr = new List<string>();
+        var result = new List<string>();
 
-        if (ft != null)
-            for (var i = ft.From; i < ft.To; i++)
-                vr.Add(Table.Rows[i].ItemArray[dx].ToString());
+        if (sectionRange != null)
+            for (var i = sectionRange.From; i < sectionRange.To; i++)
+                result.Add(Table.Rows[i].ItemArray[columnIndex]?.ToString() ?? string.Empty);
         else
             foreach (DataRow item in Table.Rows)
-                vr.Add(item.ItemArray[dx].ToString());
+                result.Add(item.ItemArray[columnIndex]?.ToString() ?? string.Empty);
 
-        return vr;
+        return result;
     }
 }

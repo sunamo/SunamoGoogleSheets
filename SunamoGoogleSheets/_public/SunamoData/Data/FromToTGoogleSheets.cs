@@ -12,7 +12,7 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
     public FromToTGoogleSheets()
     {
         var type = typeof(T);
-        if (type == typeof(int)) FtUse = FromToUseGoogleSheets.None;
+        if (type == typeof(int)) TimestampFormat = FromToUseGoogleSheets.None;
     }
 
     /// <summary>
@@ -29,12 +29,12 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
     /// </summary>
     /// <param name="fromValue">The from value</param>
     /// <param name="toValue">The to value</param>
-    /// <param name="ftUse">The format to use when converting timestamps</param>
-    public FromToTGoogleSheets(T fromValue, T toValue, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
+    /// <param name="timestampFormat">The format to use when converting timestamps</param>
+    public FromToTGoogleSheets(T fromValue, T toValue, FromToUseGoogleSheets timestampFormat = FromToUseGoogleSheets.DateTime) : this()
     {
         this.From = fromValue;
         this.To = toValue;
-        this.FtUse = ftUse;
+        this.TimestampFormat = timestampFormat;
     }
 
     /// <summary>
@@ -43,22 +43,22 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
     /// <param name="input">The text to parse</param>
     public void Parse(string input)
     {
-        List<string> parts = null;
+        List<string> timeParts;
         if (input.Contains("-"))
-            parts = input.Split('-').ToList();
+            timeParts = input.Split('-').ToList();
         else
-            parts = new List<string>(new[] { input });
-        if (parts[0] == "0") parts[0] = "00:01";
-        if (parts[1] == "24") parts[1] = "23:59";
-        var fromSeconds = (long)ReturnSecondsFromTimeFormat(parts[0]);
+            timeParts = new List<string>(new[] { input });
+        if (timeParts[0] == "0") timeParts[0] = "00:01";
+        if (timeParts[1] == "24") timeParts[1] = "23:59";
+        var fromSeconds = (long)ReturnSecondsFromTimeFormat(timeParts[0]);
         var toSeconds = fromSeconds;
-        if (parts.Count > 1)
+        if (timeParts.Count > 1)
         {
-            toSeconds = (long)ReturnSecondsFromTimeFormat(parts[1]);
+            toSeconds = (long)ReturnSecondsFromTimeFormat(timeParts[1]);
         }
 
-        From = (T)(dynamic)fromSeconds;
-        To = (T)(dynamic)toSeconds;
+        From = (T)(dynamic)fromSeconds!;
+        To = (T)(dynamic)toSeconds!;
     }
 
     /// <summary>
@@ -80,9 +80,9 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
         var result = 0;
         if (timeText.Contains(":"))
         {
-            var parts = timeText.Split(':').ToList().ConvertAll(part => int.Parse(part));
-            result += parts[0] * (int)DTConstants.SecondsInHour;
-            if (parts.Count > 1) result += parts[1] * (int)DTConstants.SecondsInMinute;
+            var timeComponents = timeText.Split(':').ToList().ConvertAll(part => int.Parse(part));
+            result += timeComponents[0] * (int)DTConstants.SecondsInHour;
+            if (timeComponents.Count > 1) result += timeComponents[1] * (int)DTConstants.SecondsInMinute;
         }
         else
         {
@@ -102,17 +102,17 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
         if (Empty) return string.Empty;
 
         if (new List<FromToUseGoogleSheets>([FromToUseGoogleSheets.DateTime, FromToUseGoogleSheets.Unix,
-                FromToUseGoogleSheets.UnixJustTime]).Any(useType => useType == FtUse))
+                FromToUseGoogleSheets.UnixJustTime]).Any(useType => useType == TimestampFormat))
         {
             return ToStringDateTime(lang);
         }
-        else if (FtUse == FromToUseGoogleSheets.None)
+        else if (TimestampFormat == FromToUseGoogleSheets.None)
         {
             return From + "-" + To;
         }
         else
         {
-            ThrowEx.NotImplementedCase(FtUse);
+            ThrowEx.NotImplementedCase(TimestampFormat);
             return string.Empty;
         }
     }

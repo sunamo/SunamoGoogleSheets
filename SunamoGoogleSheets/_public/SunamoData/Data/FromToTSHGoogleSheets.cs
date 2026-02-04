@@ -6,8 +6,8 @@ namespace SunamoGoogleSheets._public.SunamoData.Data;
 /// <typeparam name="T">The type of values in the range</typeparam>
 public class FromToTSHGoogleSheets<T>
 {
-    private long fromL;
-    private long toL;
+    private long fromLongValue;
+    private long toLongValue;
 
     /// <summary>
     /// Gets or sets a value indicating whether this range is empty
@@ -17,7 +17,7 @@ public class FromToTSHGoogleSheets<T>
     /// <summary>
     /// Gets or sets the format to use when converting to/from timestamps
     /// </summary>
-    public FromToUseGoogleSheets FtUse { get; set; } = FromToUseGoogleSheets.DateTime;
+    public FromToUseGoogleSheets TimestampFormat { get; set; } = FromToUseGoogleSheets.DateTime;
 
     /// <summary>
     /// Initializes a new instance of the FromToTSHGoogleSheets class
@@ -25,7 +25,7 @@ public class FromToTSHGoogleSheets<T>
     public FromToTSHGoogleSheets()
     {
         var type = typeof(T);
-        if (type == typeof(int)) FtUse = FromToUseGoogleSheets.None;
+        if (type == typeof(int)) TimestampFormat = FromToUseGoogleSheets.None;
     }
 
     /// <summary>
@@ -42,12 +42,12 @@ public class FromToTSHGoogleSheets<T>
     /// </summary>
     /// <param name="fromValue">The from value</param>
     /// <param name="toValue">The to value</param>
-    /// <param name="ftUse">The format to use when converting timestamps</param>
-    public FromToTSHGoogleSheets(T fromValue, T toValue, FromToUseGoogleSheets ftUse = FromToUseGoogleSheets.DateTime) : this()
+    /// <param name="timestampFormat">The format to use when converting timestamps</param>
+    public FromToTSHGoogleSheets(T fromValue, T toValue, FromToUseGoogleSheets timestampFormat = FromToUseGoogleSheets.DateTime) : this()
     {
         this.From = fromValue;
         this.To = toValue;
-        this.FtUse = ftUse;
+        this.TimestampFormat = timestampFormat;
     }
 
     /// <summary>
@@ -55,8 +55,8 @@ public class FromToTSHGoogleSheets<T>
     /// </summary>
     public T From
     {
-        get => (T)(dynamic)fromL;
-        set => fromL = (long)(dynamic)value;
+        get => (T)(dynamic)fromLongValue!;
+        set => fromLongValue = (long)(dynamic)value!;
     }
 
     /// <summary>
@@ -64,17 +64,17 @@ public class FromToTSHGoogleSheets<T>
     /// </summary>
     public T To
     {
-        get => (T)(dynamic)toL;
-        set => toL = (long)(dynamic)value;
+        get => (T)(dynamic)toLongValue!;
+        set => toLongValue = (long)(dynamic)value!;
     }
 
     /// <summary>
     /// Gets the from value as a long
     /// </summary>
-    public long FromL => fromL;
+    public long FromL => fromLongValue;
 
     /// <summary>
     /// Gets the to value as a long
     /// </summary>
-    public long ToL => toL;
+    public long ToL => toLongValue;
 }
