@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="SunamoGoogleSheets.Tests\\SunamoGoogleSheets.Tests.csproj" />
+  <Project Path="RunnerGoogleSheets\\RunnerGoogleSheets.csproj" />
+  <Project Path="SunamoGoogleSheets\SunamoGoogleSheets.csproj" />
+</Solution>
