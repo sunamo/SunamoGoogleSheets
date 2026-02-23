@@ -24,7 +24,7 @@ internal class CAToNumber
             if (isRequiringAllNumbers)
                 if (EqualityComparer<T>.Default.Equals(number, defaultValue))
                 {
-                    ThrowEx.BadFormatOfElementInList(item, nameof(list), SH.NullToStringOrDefault);
+                    ThrowEx.BadFormatOfElementInList(item ?? "<null>", nameof(list), SH.NullToStringOrDefault);
                     throw new InvalidOperationException("Failed to parse all numbers");
                 }
 

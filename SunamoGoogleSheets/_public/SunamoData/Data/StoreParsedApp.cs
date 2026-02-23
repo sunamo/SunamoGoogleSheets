@@ -54,9 +54,9 @@ public class StoreParsedApp
         switch (fieldName)
         {
             case Name:
-                return AppName;
+                return AppName ?? string.Empty;
             case Uri:
-                return AppUri;
+                return AppUri ?? string.Empty;
             default:
                 return string.Empty;
         }
