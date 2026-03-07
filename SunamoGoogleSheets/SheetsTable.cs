@@ -81,7 +81,7 @@ public class SheetsTable(ILogger logger)
             var dataRow = Table.NewRow();
 
             // Column count should match, but trim if needed
-            cellValues = cellValues.Take(columnCount).ToList();
+            cellValues = cellValues.Take(maxColumnsLength).ToList();
 
             dataRow.ItemArray = cellValues.ConvertAll(cellValue => (object)cellValue).ToArray();
 
