@@ -90,14 +90,14 @@ public class SheetsHelper
     /// <summary>
     /// Calculates median or average for each row in the input text
     /// </summary>
-    /// <param name="input">The text containing rows of numbers</param>
+    /// <param name="text">The text containing rows of numbers</param>
     /// <param name="isRequiringAllNumbers">If true, all values must be valid numbers</param>
     /// <param name="calculateFunction">Function to calculate median or average from a list of numbers</param>
     /// <returns>Text with calculated values for each row</returns>
-    public static string CalculateMedianAverage(string input, bool isRequiringAllNumbers,
+    public static string CalculateMedianAverage(string text, bool isRequiringAllNumbers,
         Func<List<double>, string> calculateFunction)
     {
-        var sourceList = Rows(input);
+        var sourceList = Rows(text);
         var stringBuilder = new StringBuilder();
         foreach (var item in sourceList)
         {
@@ -137,31 +137,31 @@ public class SheetsHelper
     /// <summary>
     /// Splits a row from Google Sheets into individual cell values
     /// </summary>
-    /// <param name="clipboardText">The row text from clipboard</param>
+    /// <param name="text">The row text from clipboard</param>
     /// <returns>List of cell values</returns>
-    public static List<string> GetRowCells(string clipboardText)
+    public static List<string> GetRowCells(string text)
     {
-        return SplitFromGoogleSheets(clipboardText);
+        return SplitFromGoogleSheets(text);
     }
 
     /// <summary>
     /// Splits the input text into rows by newline character
     /// </summary>
-    /// <param name="input">The text to split into rows</param>
+    /// <param name="text">The text to split into rows</param>
     /// <returns>List of row strings</returns>
-    public static List<string> Rows(string input)
+    public static List<string> Rows(string text)
     {
-        return input.Split('\n').ToList();
+        return text.Split('\n').ToList();
     }
 
     /// <summary>
     /// Splits a Google Sheets row into cells and removes empty elements from the end
     /// </summary>
-    /// <param name="input">The row text to split</param>
+    /// <param name="text">The row text to split</param>
     /// <returns>List of cell values with trailing empty elements removed</returns>
-    public static List<string> SplitFromGoogleSheetsRow(string input)
+    public static List<string> SplitFromGoogleSheetsRow(string text)
     {
-        var result = SplitFromGoogleSheets(input);
+        var result = SplitFromGoogleSheets(text);
 
         for (var i = result.Count - 1; i >= 0; i--)
         {
@@ -181,21 +181,21 @@ public class SheetsHelper
     /// <summary>
     /// Splits text by line breaks (alternative method that splits by \r\n instead of tabs)
     /// </summary>
-    /// <param name="input">The text to split</param>
+    /// <param name="text">The text to split</param>
     /// <returns>List of lines</returns>
-    public static List<string> SplitFromGoogleSheets2(string input)
+    public static List<string> SplitFromGoogleSheets2(string text)
     {
-        return SHGetLines.GetLines(input);
+        return SHGetLines.GetLines(text);
     }
 
     /// <summary>
     /// Splits text by tab or space characters (for splitting by \r\n use SplitFromGoogleSheets2)
     /// </summary>
-    /// <param name="input">The text to split</param>
+    /// <param name="text">The text to split</param>
     /// <returns>List of cell values</returns>
-    public static List<string> SplitFromGoogleSheets(string input)
+    public static List<string> SplitFromGoogleSheets(string text)
     {
-        var result = SHSplit.SplitNone(input, "\t");
+        var result = SHSplit.SplitNone(text, "\t");
         return result;
     }
     /// <summary>
