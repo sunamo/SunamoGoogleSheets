@@ -3,8 +3,8 @@
     <TargetFrameworks>net10.0;net9.0;net8.0</TargetFrameworks>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Version>26.3.28.4</Version>
-    <Description>Parsing from and formatting to Google Sheets</Description>
+    <Version>26.5.3.2</Version>
+    <Description>Parsing from and formatting to Google Sheets, plus Google Sheets v4 API service for creating and writing spreadsheets via OAuth</Description>
     <Authors>www.sunamo.cz</Authors>
     <Copyright>www.sunamo.cz</Copyright>
     <PackageProjectUrl>https://sunamo.cz/</PackageProjectUrl>
@@ -12,7 +12,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageReleaseNotes>feat: Improved variable names</PackageReleaseNotes>
+    <PackageReleaseNotes>feat: Added net10.0 to TargetFrameworks</PackageReleaseNotes>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
@@ -30,6 +30,8 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <None Include="readme.md" Pack="True" PackagePath="." />
+    <PackageReference Include="Google.Apis.Auth" Version="1.73.0" Pack="True" />
+    <PackageReference Include="Google.Apis.Sheets.v4" Version="1.73.0.4061" Pack="True" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" Pack="True" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="10.0.201" PrivateAssets="all" />
   </ItemGroup>
