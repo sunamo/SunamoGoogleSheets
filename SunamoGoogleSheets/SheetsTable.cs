@@ -1,43 +1,20 @@
 namespace SunamoGoogleSheets;
 
-/// <summary>
-/// Represents a table parsed from Google Sheets with support for sections
-/// </summary>
 public class SheetsTable(ILogger logger)
 {
-    /// <summary>
-    /// Gets the parsed data table
-    /// </summary>
     public DataTable Table { get; private set; } = new();
 
-    /// <summary>
-    /// Gets the section ranges (from-to) for each section identified by section name
-    /// </summary>
     public Dictionary<string, FromToTGoogleSheets<int>> SectionRanges { get; private set; } = new();
 
-    /// <summary>
-    /// Gets the number of columns in the table
-    /// </summary>
     public int ColumnCount => Table.Columns.Count;
 
-    /// <summary>
-    /// Gets the number of rows in the table
-    /// </summary>
     public int RowsCount => Table.Rows.Count;
 
-    /// <summary>
-    /// Deletes a column from the table at the specified index
-    /// </summary>
-    /// <param name="columnIndex">The zero-based index of the column to delete</param>
     public void DeleteColumn(int columnIndex)
     {
         Table.Columns.RemoveAt(columnIndex);
     }
 
-    /// <summary>
-    /// Parses rows from Google Sheets clipboard format into the table
-    /// </summary>
-    /// <param name="input">The text content from Google Sheets clipboard</param>
     public void ParseRows(string input)
     {
         var result = SheetsHelper.Rows(input);
@@ -97,11 +74,6 @@ public class SheetsTable(ILogger logger)
         }
     }
 
-    /// <summary>
-    /// Parses rows and identifies sections (sections are identified by a colon at the end of the first cell)
-    /// Returns rows that belong to each section
-    /// </summary>
-    /// <param name="input">The text content from Google Sheets clipboard</param>
     public void ParseRowsOfSections(string input)
     {
         var result = SheetsHelper.Rows(input);
@@ -155,12 +127,6 @@ public class SheetsTable(ILogger logger)
         if (SectionRanges.Count > 0) SectionRanges.Last().Value.To = rowIndex;
     }
 
-    /// <summary>
-    /// Returns values from a specific column, optionally filtered to a specific section
-    /// </summary>
-    /// <param name="columnIndex">The zero-based index of the column to retrieve values from</param>
-    /// <param name="sectionRange">Optional section range to filter rows; if null, returns all rows</param>
-    /// <returns>List of string values from the specified column</returns>
     public List<string> RowsFromColumn(int columnIndex, FromToTGoogleSheets<int>? sectionRange = null)
     {
         var result = new List<string>();
