@@ -1,15 +1,7 @@
 namespace SunamoGoogleSheets.Clipboard;
 
-/// <summary>
-/// Provides templates for generating Google Sheets content
-/// </summary>
 public class SheetsGeneratorTemplate
 {
-    /// <summary>
-    /// Generates a comparison table for Android apps
-    /// </summary>
-    /// <param name="parsedApps">The list of parsed app data</param>
-    /// <returns>String representation of the comparison table</returns>
     public static string AndroidAppComparing(List<StoreParsedApp> parsedApps)
     {
         var valuesByField = new Dictionary<string, List<object>>();

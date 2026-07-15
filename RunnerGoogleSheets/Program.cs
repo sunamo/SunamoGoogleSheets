@@ -39,15 +39,10 @@ partial class Program
         {
             AddGroupOfActions = AddGroupOfActions,
             Args = [],
-            AskUserIfRelease = true,
+            ShouldAskUserIfRelease = true,
             RunInDebugAsync = RunInDebugAsync,
             ServiceCollection = Services,
             IsDebug =
-#if DEBUG
-            true
-#else
-false
-#endif
         });
 
 

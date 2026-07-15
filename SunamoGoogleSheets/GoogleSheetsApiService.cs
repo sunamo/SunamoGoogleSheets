@@ -15,23 +15,12 @@ public sealed class DriveSheetInfo
     public string WebViewLink { get; set; } = "";
 }
 
-/// <summary>
-/// Wrapper around Google Sheets v4 + Drive v3 API. Initialize once, then create / update / list spreadsheets.
-/// OAuth token is cached per app name in the user's ApplicationData folder.
-/// </summary>
 public sealed class GoogleSheetsApiService(ILogger logger)
 {
     private SheetsService? _sheetsService;
     private DriveService? _driveService;
     private string _applicationName = "SunamoGoogleSheets";
 
-    /// <summary>
-    /// Initializes the service using an OAuth desktop client_secret JSON. Opens the system browser
-    /// on first run for user consent; subsequent runs reuse the cached token.
-    /// </summary>
-    /// <param name="clientSecretsPath">Path to the client_secret*.json file (installed/desktop type).</param>
-    /// <param name="applicationName">Name shown in Google API logs and used for the local token cache folder.</param>
-    /// <param name="forceRefresh">If true, deletes the cached token and forces re-authorization.</param>
     public async Task<bool> InitializeAsync(string clientSecretsPath, string applicationName, bool forceRefresh = false)
     {
         try
@@ -95,13 +84,9 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
-    /// <summary>
-    /// Clears existing cells in the given range and writes the new values starting at A1 of the same range.
-    /// Returns true on success.
-    /// </summary>
     public async Task<bool> WriteValuesToExistingAsync(string spreadsheetId, IList<IList<object>> values, string range = "Sheet1!A1:Z1000")
     {
-        if (_sheetsService == null)
+        if (_sheetsService is null)
         {
             logger.LogError("Sheets service not initialized. Call InitializeAsync first.");
             return false;
@@ -126,13 +111,9 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
-    /// <summary>
-    /// Reads cell values from an existing spreadsheet within the given A1-style range.
-    /// Returns null on failure (caller should treat as "no data available").
-    /// </summary>
     public async Task<IList<IList<object>>?> ReadValuesAsync(string spreadsheetId, string range)
     {
-        if (_sheetsService == null)
+        if (_sheetsService is null)
         {
             logger.LogError("Sheets service not initialized. Call InitializeAsync first.");
             return null;
@@ -149,13 +130,9 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
-    /// <summary>
-    /// Creates a spreadsheet inside the given Drive folder, writes values, and returns its ID + URL.
-    /// Returns (null, null) on failure.
-    /// </summary>
     public async Task<(string? Id, string? Url)> CreateSpreadsheetInFolderAsync(string folderId, string title, IList<IList<object>> values)
     {
-        if (_driveService == null || _sheetsService == null)
+        if (_driveService is null || _sheetsService is null)
         {
             logger.LogError("Drive/Sheets service not initialized. Call InitializeAsync first.");
             return (null, null);
@@ -192,13 +169,9 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
-    /// <summary>
-    /// Lists Google Sheets files in the given Drive folder, ordered by modifiedTime desc.
-    /// Returns null on failure.
-    /// </summary>
     public async Task<List<DriveSheetInfo>?> ListSpreadsheetsInFolderAsync(string folderId)
     {
-        if (_driveService == null)
+        if (_driveService is null)
         {
             logger.LogError("Drive service not initialized. Call InitializeAsync first.");
             return null;
@@ -212,7 +185,7 @@ public sealed class GoogleSheetsApiService(ILogger logger)
             listReq.PageSize = 100;
             var resp = await listReq.ExecuteAsync();
             var result = new List<DriveSheetInfo>();
-            if (resp.Files != null)
+            if (resp.Files is not null)
             {
                 foreach (var f in resp.Files)
                 {
@@ -235,12 +208,9 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
-    /// <summary>
-    /// Deletes a Drive file (spreadsheet) by id. Returns true on 200/204 or 404 (already gone).
-    /// </summary>
     public async Task<bool> DeleteFileAsync(string fileId)
     {
-        if (_driveService == null)
+        if (_driveService is null)
         {
             logger.LogError("Drive service not initialized. Call InitializeAsync first.");
             return false;
@@ -261,15 +231,9 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
-    /// <summary>
-    /// Creates a new spreadsheet with the given title and writes the values starting at A1.
-    /// Returns the spreadsheet's web URL, or null on failure.
-    /// </summary>
-    /// <param name="title">Spreadsheet title.</param>
-    /// <param name="values">Rows of cell values; the first row is typically headers.</param>
     public async Task<string?> CreateSpreadsheetAsync(string title, IList<IList<object>> values)
     {
-        if (_sheetsService == null)
+        if (_sheetsService is null)
         {
             logger.LogError("Sheets service not initialized. Call InitializeAsync first.");
             return null;
