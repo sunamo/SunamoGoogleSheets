@@ -1,5 +1,10 @@
 # SunamoGoogleSheets
 
+## Short description
+
+Knihovna pro převod dat z Google Sheets a zpět: parsuje obsah tabulek a formátuje data pro zápis do nich. Obsahuje Runner a testy.
+
+
 Parsing from and formatting to Google Sheets
 
 ## Overview
