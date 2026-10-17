@@ -111,6 +111,85 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
+    /// <summary>
+    /// Replaces all conditional formatting on the first sheet with green highlighting of numeric cells
+    /// (columns B onward) that are >= the median of their own row, for the given zero-based row indexes.
+    /// </summary>
+    public async Task<bool> HighlightAtOrAboveRowMedianAsync(string spreadsheetId, IEnumerable<int> rowIndexes)
+    {
+        if (_sheetsService is null)
+        {
+            logger.LogError("Sheets service not initialized. Call InitializeAsync first.");
+            return false;
+        }
+        try
+        {
+            var spreadsheet = await _sheetsService.Spreadsheets.Get(spreadsheetId).ExecuteAsync();
+            var sheet = spreadsheet.Sheets[0];
+            var sheetId = sheet.Properties.SheetId;
+            var columnCount = sheet.Properties.GridProperties?.ColumnCount ?? 26;
+            var lastColumnLetter = ColumnLetter(columnCount);
+
+            var requests = new List<Request>();
+            var existingRules = sheet.ConditionalFormats?.Count ?? 0;
+            for (var i = 0; i < existingRules; i++)
+            {
+                requests.Add(new Request { DeleteConditionalFormatRule = new DeleteConditionalFormatRuleRequest { SheetId = sheetId, Index = 0 } });
+            }
+
+            foreach (var rowIndex in rowIndexes)
+            {
+                var row = rowIndex + 1;
+                var formula = $"=AND(ISNUMBER(B{row}),B{row}>=MEDIAN($B{row}:${lastColumnLetter}{row}))";
+                requests.Add(new Request
+                {
+                    AddConditionalFormatRule = new AddConditionalFormatRuleRequest
+                    {
+                        Index = 0,
+                        Rule = new ConditionalFormatRule
+                        {
+                            Ranges = new List<GridRange>
+                            {
+                                new GridRange { SheetId = sheetId, StartRowIndex = rowIndex, EndRowIndex = rowIndex + 1, StartColumnIndex = 1, EndColumnIndex = columnCount }
+                            },
+                            BooleanRule = new BooleanRule
+                            {
+                                Condition = new BooleanCondition
+                                {
+                                    Type = "CUSTOM_FORMULA",
+                                    Values = new List<ConditionValue> { new ConditionValue { UserEnteredValue = formula } }
+                                },
+                                Format = new CellFormat { BackgroundColor = new Color { Red = 0.714f, Green = 0.843f, Blue = 0.659f } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            if (requests.Count == 0) return true;
+            await _sheetsService.Spreadsheets.BatchUpdate(new BatchUpdateSpreadsheetRequest { Requests = requests }, spreadsheetId).ExecuteAsync();
+            logger.LogInformation("Applied median highlighting to spreadsheet {Id}", spreadsheetId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Failed to apply median highlighting to spreadsheet {Id}", spreadsheetId);
+            return false;
+        }
+    }
+
+    private static string ColumnLetter(int columnNumber)
+    {
+        var letters = "";
+        while (columnNumber > 0)
+        {
+            var remainder = (columnNumber - 1) % 26;
+            letters = (char)('A' + remainder) + letters;
+            columnNumber = (columnNumber - 1) / 26;
+        }
+        return letters;
+    }
+
     public async Task<IList<IList<object>>?> ReadValuesAsync(string spreadsheetId, string range)
     {
         if (_sheetsService is null)
