@@ -127,16 +127,19 @@ public class SheetsTable(ILogger logger)
         if (SectionRanges.Count > 0) SectionRanges.Last().Value.To = rowIndex;
     }
 
+    /// Vrátí buňky jednoho sloupce shora dolů (volitelně jen v rozsahu sekce).
     public List<string> RowsFromColumn(int columnIndex, FromToTGoogleSheets<int>? sectionRange = null)
     {
-        var result = new List<string>();
+        // Indexer řádku, ne ItemArray — ItemArray kopíruje při každém čtení celý řádek, takže volání ve
+        // smyčce přes sloupce stálo řádky × sloupce místo řádků (karta nemovitosti PerfectHome: desítky sekund).
+        var result = new List<string>(Table.Rows.Count);
 
         if (sectionRange != null)
             for (var i = sectionRange.From; i < sectionRange.To; i++)
-                result.Add(Table.Rows[i].ItemArray[columnIndex]?.ToString() ?? string.Empty);
+                result.Add(Table.Rows[i][columnIndex]?.ToString() ?? string.Empty);
         else
             foreach (DataRow item in Table.Rows)
-                result.Add(item.ItemArray[columnIndex]?.ToString() ?? string.Empty);
+                result.Add(item[columnIndex]?.ToString() ?? string.Empty);
 
         return result;
     }
