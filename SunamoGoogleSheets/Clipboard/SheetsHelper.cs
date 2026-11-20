@@ -204,18 +204,15 @@ public class SheetsHelper
         stringBuilder.AppendLine(JoinForGoogleSheetRow(cells));
     }
 
-    // EN: CRITICAL - Sanitizes cell values by removing newlines, tabs, and carriage returns that would break TSV format
-    // CZ: KRITICKÉ - Sanitizuje hodnoty buněk odstraněním newline, tab a carriage return znaků které by rozbily TSV formát
+    // CRITICAL - Sanitizes cell values by removing newlines, tabs, and carriage returns that would break TSV format
     public static string JoinForGoogleSheetRow(object[] cells)
     {
-        // EN: Sanitize each cell value - remove/replace characters that would break TSV format
-        // CZ: Sanitizovat každou hodnotu - odstranit/nahradit znaky které by rozbily TSV formát
+        // Sanitize each cell value - remove/replace characters that would break TSV format
         var sanitizedCells = cells.Select(cell =>
         {
             if (cell == null) return string.Empty;
             var str = cell.ToString() ?? string.Empty;
-            // EN: Replace newlines, tabs, and carriage returns with spaces to prevent TSV format corruption
-            // CZ: Nahradit newline, tab a carriage return znaky mezerami aby se předešlo poškození TSV formátu
+            // Replace newlines, tabs, and carriage returns with spaces to prevent TSV format corruption
             str = str.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace("\t", " ");
             return str;
         }).ToArray();
@@ -224,17 +221,14 @@ public class SheetsHelper
         return result;
     }
 
-    // EN: CRITICAL - Sanitizes cell values by removing newlines, tabs, and carriage returns that would break TSV format
-    // CZ: KRITICKÉ - Sanitizuje hodnoty buněk odstraněním newline, tab a carriage return znaků které by rozbily TSV formát
+    // CRITICAL - Sanitizes cell values by removing newlines, tabs, and carriage returns that would break TSV format
     public static string JoinForGoogleSheetRow(IEnumerable<string> cells)
     {
-        // EN: Sanitize each cell value - remove/replace characters that would break TSV format
-        // CZ: Sanitizovat každou hodnotu - odstranit/nahradit znaky které by rozbily TSV formát
+        // Sanitize each cell value - remove/replace characters that would break TSV format
         var sanitizedCells = cells.Select(cell =>
         {
             if (cell == null) return string.Empty;
-            // EN: Replace newlines, tabs, and carriage returns with spaces to prevent TSV format corruption
-            // CZ: Nahradit newline, tab a carriage return znaky mezerami aby se předešlo poškození TSV formátu
+            // Replace newlines, tabs, and carriage returns with spaces to prevent TSV format corruption
             var str = cell.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Replace("\t", " ");
             return str;
         });
