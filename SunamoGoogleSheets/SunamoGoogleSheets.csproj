@@ -13,9 +13,11 @@
     <RepositoryType>git</RepositoryType>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageTags>sunamo;dotnet;google;sheets</PackageTags>
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
     <IsPackable>true</IsPackable>
+    <EnablePackageValidation>true</EnablePackageValidation>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -31,6 +33,7 @@
   <ItemGroup>
     <Folder Include="Data\" />
     <None Include="readme.md" Pack="True" PackagePath="." />
+    <None Include="icon.png" Pack="True" PackagePath="." />
     <PackageReference Include="Google.Apis.Auth" Version="1.73.0" Pack="True" />
     <PackageReference Include="Google.Apis.Sheets.v4" Version="1.73.0.4061" Pack="True" />
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.73.0.3987" Pack="True" />
