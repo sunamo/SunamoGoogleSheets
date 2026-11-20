@@ -20,10 +20,6 @@ partial class Program
         var actions = OtherActions();
 
         // CL.perform is not available in current SunamoCl version
-        // if (CL.perform)
-        // {
-        //     await CLActions.PerformActionAsync(actions);
-        // }
 
         return actions;
     }
