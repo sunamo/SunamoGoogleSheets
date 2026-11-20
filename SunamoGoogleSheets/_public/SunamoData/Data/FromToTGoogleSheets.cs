@@ -1,7 +1,13 @@
 namespace SunamoGoogleSheets._public.SunamoData.Data;
 
+/// <summary>
+/// Represents the from to t google sheets t type.
+/// </summary>
 public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
 {
+    /// <summary>
+    /// Initializes a new instance of the from to t google sheets class.
+    /// </summary>
     public FromToTGoogleSheets()
     {
         var type = typeof(T);
@@ -13,6 +19,12 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
         this.Empty = isEmpty;
     }
 
+    /// <summary>
+    /// Initializes a new instance of the from to t google sheets class.
+    /// </summary>
+    /// <param name="fromValue">The from value.</param>
+    /// <param name="toValue">The to value.</param>
+    /// <param name="timestampFormat">The timestamp format.</param>
     public FromToTGoogleSheets(T fromValue, T toValue, FromToUseGoogleSheets timestampFormat = FromToUseGoogleSheets.DateTime) : this()
     {
         this.From = fromValue;
@@ -20,6 +32,10 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
         this.TimestampFormat = timestampFormat;
     }
 
+    /// <summary>
+    /// Parse.
+    /// </summary>
+    /// <param name="input">The input.</param>
     public void Parse(string input)
     {
         List<string> timeParts;
@@ -40,6 +56,10 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
         To = (T)(dynamic)toSeconds!;
     }
 
+    /// <summary>
+    /// Is filled with data.
+    /// </summary>
+    /// <returns>The is filled with data result.</returns>
     public bool IsFilledWithData()
     {
         return ToL >= 0 && ToL != 0;
@@ -62,6 +82,11 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
         return result;
     }
 
+    /// <summary>
+    /// To string.
+    /// </summary>
+    /// <param name="lang">The lang.</param>
+    /// <returns>The to string result.</returns>
     public string ToString(LangsGoogleSheets lang)
     {
         if (Empty) return string.Empty;
@@ -82,6 +107,11 @@ public class FromToTGoogleSheets<T> : FromToTSHGoogleSheets<T> where T : struct
         }
     }
 
+    /// <summary>
+    /// To string date time.
+    /// </summary>
+    /// <param name="lang">The lang.</param>
+    /// <returns>The to string date time result.</returns>
     protected virtual string ToStringDateTime(LangsGoogleSheets lang)
     {
         return "";

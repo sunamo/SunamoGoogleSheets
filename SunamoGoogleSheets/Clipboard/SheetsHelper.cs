@@ -1,7 +1,15 @@
 namespace SunamoGoogleSheets.Clipboard;
 
+/// <summary>
+/// Represents the sheets helper type.
+/// </summary>
 public class SheetsHelper
 {
+    /// <summary>
+    /// First letter from sheet.
+    /// </summary>
+    /// <param name="cellContent">The cell content.</param>
+    /// <returns>The first letter from sheet result.</returns>
     public static char? FirstLetterFromSheet(string cellContent)
     {
         if (cellContent.Length > 2)
@@ -10,6 +18,12 @@ public class SheetsHelper
         return null;
     }
 
+    /// <summary>
+    /// Switch rows and column.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="isKeepingInSizeOfSmallest">The is keeping in size of smallest.</param>
+    /// <returns>The switch rows and column result.</returns>
     public static string SwitchRowsAndColumn(string text, bool isKeepingInSizeOfSmallest = true)
     {
         var exists = new List<List<string>>();
@@ -25,6 +39,11 @@ public class SheetsHelper
         return DataTableToString(dataTable);
     }
 
+    /// <summary>
+    /// Data table to string.
+    /// </summary>
+    /// <param name="dataTable">The data table.</param>
+    /// <returns>The data table to string result.</returns>
     public static string DataTableToString(DataTable dataTable)
     {
         var stringBuilder = new StringBuilder();
@@ -32,6 +51,11 @@ public class SheetsHelper
         return stringBuilder.ToString();
     }
 
+    /// <summary>
+    /// Columns ids.
+    /// </summary>
+    /// <param name="count">The count.</param>
+    /// <returns>The columns ids result.</returns>
     public static List<string> ColumnsIds(int count)
     {
         var result = new List<string>();
@@ -58,6 +82,13 @@ public class SheetsHelper
         return columnName;
     }
 
+    /// <summary>
+    /// Calculate median average.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="isRequiringAllNumbers">The is requiring all numbers.</param>
+    /// <param name="calculateFunction">The calculate function.</param>
+    /// <returns>The calculate median average result.</returns>
     public static string CalculateMedianAverage(string text, bool isRequiringAllNumbers,
         Func<List<double>, string> calculateFunction)
     {
@@ -72,6 +103,12 @@ public class SheetsHelper
         return stringBuilder.ToString();
     }
 
+    /// <summary>
+    /// Calculate median from two rows.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <param name="calculateFunction">The calculate function.</param>
+    /// <returns>The calculate median from two rows result.</returns>
     public static string CalculateMedianFromTwoRows(string text, Func<List<double>, string> calculateFunction)
     {
         var result = Rows(text);
@@ -79,6 +116,11 @@ public class SheetsHelper
         return string.Join(Environment.NewLine, result);
     }
 
+    /// <summary>
+    /// All lines.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The all lines result.</returns>
     public static List<List<string>> AllLines(string text)
     {
         var result = new List<List<string>>();
@@ -87,16 +129,31 @@ public class SheetsHelper
         return result;
     }
 
+    /// <summary>
+    /// Get row cells.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The get row cells result.</returns>
     public static List<string> GetRowCells(string text)
     {
         return SplitFromGoogleSheets(text);
     }
 
+    /// <summary>
+    /// Rows.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The rows result.</returns>
     public static List<string> Rows(string text)
     {
         return text.Split('\n').ToList();
     }
 
+    /// <summary>
+    /// Split from google sheets row.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The split from google sheets row result.</returns>
     public static List<string> SplitFromGoogleSheetsRow(string text)
     {
         var result = SplitFromGoogleSheets(text);
@@ -116,17 +173,34 @@ public class SheetsHelper
         return result;
     }
 
+    /// <summary>
+    /// Split from google sheets 2.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The split from google sheets 2 result.</returns>
     public static List<string> SplitFromGoogleSheets2(string text)
     {
         return SHGetLines.GetLines(text);
     }
 
+    /// <summary>
+    /// Split from google sheets.
+    /// </summary>
+    /// <param name="text">The text.</param>
+    /// <returns>The split from google sheets result.</returns>
     public static List<string> SplitFromGoogleSheets(string text)
     {
         var result = SHSplit.SplitNone(text, "\t");
         return result;
     }
 
+    /// <summary>
+    /// Switch for google sheets.
+    /// </summary>
+    /// <param name="captions">The captions.</param>
+    /// <param name="dataColumns">The data columns.</param>
+    /// <param name="isThrowingExceptionIfDifferentCountOfCaptionsAndExists">The is throwing exception if different count of captions and exists.</param>
+    /// <returns>The switch for google sheets result.</returns>
     public static string SwitchForGoogleSheets(List<string> captions, List<List<string>> dataColumns, bool isThrowingExceptionIfDifferentCountOfCaptionsAndExists = false)
     {
         var captionCount = captions.Count;
@@ -199,12 +273,22 @@ public class SheetsHelper
         }
     }
 
+    /// <summary>
+    /// Join for google sheet row.
+    /// </summary>
+    /// <param name="stringBuilder">The string builder.</param>
+    /// <param name="cells">The cells.</param>
     public static void JoinForGoogleSheetRow(StringBuilder stringBuilder, object[] cells)
     {
         stringBuilder.AppendLine(JoinForGoogleSheetRow(cells));
     }
 
     // CRITICAL - Sanitizes cell values by removing newlines, tabs, and carriage returns that would break TSV format
+    /// <summary>
+    /// Join for google sheet row.
+    /// </summary>
+    /// <param name="cells">The cells.</param>
+    /// <returns>The join for google sheet row result.</returns>
     public static string JoinForGoogleSheetRow(object[] cells)
     {
         // Sanitize each cell value - remove/replace characters that would break TSV format
@@ -222,6 +306,11 @@ public class SheetsHelper
     }
 
     // CRITICAL - Sanitizes cell values by removing newlines, tabs, and carriage returns that would break TSV format
+    /// <summary>
+    /// Join for google sheet row.
+    /// </summary>
+    /// <param name="cells">The cells.</param>
+    /// <returns>The join for google sheet row result.</returns>
     public static string JoinForGoogleSheetRow(IEnumerable<string> cells)
     {
         // Sanitize each cell value - remove/replace characters that would break TSV format

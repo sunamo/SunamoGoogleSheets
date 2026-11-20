@@ -1,20 +1,46 @@
 namespace SunamoGoogleSheets;
 
+/// <summary>
+/// Sheets table.
+/// </summary>
+/// <param name="logger">The logger.</param>
+/// <returns>The sheets table result.</returns>
 public class SheetsTable(ILogger logger)
 {
+    /// <summary>
+    /// Gets or sets the table.
+    /// </summary>
     public DataTable Table { get; private set; } = new();
 
+    /// <summary>
+    /// Gets or sets the section ranges.
+    /// </summary>
     public Dictionary<string, FromToTGoogleSheets<int>> SectionRanges { get; private set; } = new();
 
+    /// <summary>
+    /// Gets the column count.
+    /// </summary>
     public int ColumnCount => Table.Columns.Count;
 
+    /// <summary>
+    /// Gets the rows count.
+    /// </summary>
     public int RowsCount => Table.Rows.Count;
 
+    /// <summary>
+    /// Delete column.
+    /// </summary>
+    /// <returns>The delete column result.</returns>
     public void DeleteColumn(int columnIndex)
     {
         Table.Columns.RemoveAt(columnIndex);
     }
 
+    /// <summary>
+    /// Parse rows.
+    /// </summary>
+    /// <param name="columnIndex">The column index.</param>
+    /// <returns>The parse rows result.</returns>
     public void ParseRows(string input)
     {
         var result = SheetsHelper.Rows(input);
@@ -74,6 +100,10 @@ public class SheetsTable(ILogger logger)
         }
     }
 
+    /// <summary>
+    /// Parse rows of sections.
+    /// </summary>
+    /// <returns>The parse rows of sections result.</returns>
     public void ParseRowsOfSections(string input)
     {
         var result = SheetsHelper.Rows(input);

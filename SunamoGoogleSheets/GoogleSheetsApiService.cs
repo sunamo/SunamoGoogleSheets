@@ -7,20 +7,43 @@ using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Util.Store;
 
+/// <summary>
+/// Represents the drive sheet info type.
+/// </summary>
 public sealed class DriveSheetInfo
 {
+    /// <summary>
+    /// Gets or sets the id.
+    /// </summary>
     public string Id { get; set; } = "";
+    /// <summary>
+    /// Gets or sets the name.
+    /// </summary>
     public string Name { get; set; } = "";
+    /// <summary>
+    /// Gets or sets the modified time.
+    /// </summary>
     public DateTime? ModifiedTime { get; set; }
+    /// <summary>
+    /// Gets or sets the web view link.
+    /// </summary>
     public string WebViewLink { get; set; } = "";
 }
 
+/// <summary>
+/// Represents the google sheets api service type.
+/// </summary>
 public sealed class GoogleSheetsApiService(ILogger logger)
 {
     private SheetsService? _sheetsService;
     private DriveService? _driveService;
     private string _applicationName = "SunamoGoogleSheets";
 
+    /// <summary>
+    /// Initialize async.
+    /// </summary>
+    /// <param name="logger">The logger.</param>
+    /// <returns>The initialize async result.</returns>
     public async Task<bool> InitializeAsync(string clientSecretsPath, string applicationName, bool forceRefresh = false)
     {
         try
@@ -84,6 +107,11 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
+    /// <summary>
+    /// Write values to existing async.
+    /// </summary>
+    /// <param name="initialized"">The initialized.</param>
+    /// <returns>The write values to existing async result.</returns>
     public async Task<bool> WriteValuesToExistingAsync(string spreadsheetId, IList<IList<object>> values, string range = "Sheet1!A1:Z1000")
     {
         if (_sheetsService is null)
@@ -190,6 +218,11 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         return letters;
     }
 
+    /// <summary>
+    /// Read values async.
+    /// </summary>
+    /// <param name="columnNumber">The column number.</param>
+    /// <returns>The read values async result.</returns>
     public async Task<IList<IList<object>>?> ReadValuesAsync(string spreadsheetId, string range)
     {
         if (_sheetsService is null)
@@ -209,6 +242,12 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
+    /// <summary>
+    /// Create spreadsheet in folder async.
+    /// </summary>
+    /// <param name="spreadsheetId">The spreadsheet id.</param>
+    /// <param name="range">The range.</param>
+    /// <returns>The create spreadsheet in folder async result.</returns>
     public async Task<(string? Id, string? Url)> CreateSpreadsheetInFolderAsync(string folderId, string title, IList<IList<object>> values)
     {
         if (_driveService is null || _sheetsService is null)
@@ -248,6 +287,10 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
+    /// <summary>
+    /// List spreadsheets in folder async.
+    /// </summary>
+    /// <returns>The list spreadsheets in folder async result.</returns>
     public async Task<List<DriveSheetInfo>?> ListSpreadsheetsInFolderAsync(string folderId)
     {
         if (_driveService is null)
@@ -287,6 +330,13 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
+    /// <summary>
+    /// Delete file async.
+    /// </summary>
+    /// <param name="{FolderId}"">The folder id.</param>
+    /// <param name="result.Count">The result count.</param>
+    /// <param name="folderId">The folder id.</param>
+    /// <returns>The delete file async result.</returns>
     public async Task<bool> DeleteFileAsync(string fileId)
     {
         if (_driveService is null)
@@ -310,6 +360,11 @@ public sealed class GoogleSheetsApiService(ILogger logger)
         }
     }
 
+    /// <summary>
+    /// Create spreadsheet async.
+    /// </summary>
+    /// <param name="ex">The ex.</param>
+    /// <returns>The create spreadsheet async result.</returns>
     public async Task<string?> CreateSpreadsheetAsync(string title, IList<IList<object>> values)
     {
         if (_sheetsService is null)
