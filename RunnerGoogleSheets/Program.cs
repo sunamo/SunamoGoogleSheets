@@ -1,4 +1,3 @@
-// variables names: ok
 namespace RunnerGoogleSheets;
 
 using Microsoft.Extensions.DependencyInjection;

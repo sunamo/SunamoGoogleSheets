@@ -1,4 +1,3 @@
-// variables names: ok
 using System.Data;
 
 namespace SunamoGoogleSheets.Tests;
