@@ -127,11 +127,11 @@ public class SheetsTable(ILogger logger)
         if (SectionRanges.Count > 0) SectionRanges.Last().Value.To = rowIndex;
     }
 
-    /// Vrátí buňky jednoho sloupce shora dolů (volitelně jen v rozsahu sekce).
+    /// Returns the cells of one column from top to bottom (optionally only within the section range).
     public List<string> RowsFromColumn(int columnIndex, FromToTGoogleSheets<int>? sectionRange = null)
     {
-        // Indexer řádku, ne ItemArray — ItemArray kopíruje při každém čtení celý řádek, takže volání ve
-        // smyčce přes sloupce stálo řádky × sloupce místo řádků (karta nemovitosti PerfectHome: desítky sekund).
+        // Row indexer, not ItemArray - ItemArray copies the whole row on every read, so calling it in
+        // the loop over columns cost rows x columns instead of rows (PerfectHome property card: tens of seconds).
         var result = new List<string>(Table.Rows.Count);
 
         if (sectionRange != null)
