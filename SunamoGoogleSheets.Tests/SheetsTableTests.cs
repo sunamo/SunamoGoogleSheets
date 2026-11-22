@@ -1,4 +1,3 @@
-// variables names: ok
 namespace SunamoGoogleSheets.Tests;
 
 using Microsoft.Extensions.Logging;

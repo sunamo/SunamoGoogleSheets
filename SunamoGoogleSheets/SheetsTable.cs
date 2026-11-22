@@ -1,20 +1,46 @@
 namespace SunamoGoogleSheets;
 
+/// <summary>
+/// Sheets table.
+/// </summary>
+/// <param name="logger">The logger.</param>
+/// <returns>The sheets table result.</returns>
 public class SheetsTable(ILogger logger)
 {
+    /// <summary>
+    /// Gets or sets the table.
+    /// </summary>
     public DataTable Table { get; private set; } = new();
 
+    /// <summary>
+    /// Gets or sets the section ranges.
+    /// </summary>
     public Dictionary<string, FromToTGoogleSheets<int>> SectionRanges { get; private set; } = new();
 
+    /// <summary>
+    /// Gets the column count.
+    /// </summary>
     public int ColumnCount => Table.Columns.Count;
 
+    /// <summary>
+    /// Gets the rows count.
+    /// </summary>
     public int RowsCount => Table.Rows.Count;
 
+    /// <summary>
+    /// Delete column.
+    /// </summary>
+    /// <returns>The delete column result.</returns>
     public void DeleteColumn(int columnIndex)
     {
         Table.Columns.RemoveAt(columnIndex);
     }
 
+    /// <summary>
+    /// Parse rows.
+    /// </summary>
+    /// <param name="columnIndex">The column index.</param>
+    /// <returns>The parse rows result.</returns>
     public void ParseRows(string input)
     {
         var result = SheetsHelper.Rows(input);
@@ -74,6 +100,10 @@ public class SheetsTable(ILogger logger)
         }
     }
 
+    /// <summary>
+    /// Parse rows of sections.
+    /// </summary>
+    /// <returns>The parse rows of sections result.</returns>
     public void ParseRowsOfSections(string input)
     {
         var result = SheetsHelper.Rows(input);
@@ -127,11 +157,11 @@ public class SheetsTable(ILogger logger)
         if (SectionRanges.Count > 0) SectionRanges.Last().Value.To = rowIndex;
     }
 
-    /// Vrátí buňky jednoho sloupce shora dolů (volitelně jen v rozsahu sekce).
+    /// Returns the cells of one column from top to bottom (optionally only within the section range).
     public List<string> RowsFromColumn(int columnIndex, FromToTGoogleSheets<int>? sectionRange = null)
     {
-        // Indexer řádku, ne ItemArray — ItemArray kopíruje při každém čtení celý řádek, takže volání ve
-        // smyčce přes sloupce stálo řádky × sloupce místo řádků (karta nemovitosti PerfectHome: desítky sekund).
+        // Row indexer, not ItemArray - ItemArray copies the whole row on every read, so calling it in
+        // the loop over columns cost rows x columns instead of rows (PerfectHome property card: tens of seconds).
         var result = new List<string>(Table.Rows.Count);
 
         if (sectionRange != null)

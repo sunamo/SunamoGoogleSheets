@@ -1,4 +1,3 @@
-// variables names: ok
 namespace RunnerGoogleSheets;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -47,7 +46,6 @@ partial class Program
 
 
 
-        //Console.WriteLine("Finished: " + runnedAction);
         Console.ReadLine();
     }
 
@@ -56,15 +54,8 @@ partial class Program
         await Task.Delay(1);
 
         SheetsHelperTests t = new SheetsHelperTests();
-        //t.SwitchForGoogleSheetsTest();
-        //t.SwitchRowsAndColumnTest();
-        //t.DataTableToStringTest();
         t.SwitchForGoogleSheetsTest();
 
-        //SheetsTableTests t = new();
-        //await t.ParseRowsTest();
-        //await t.RowsFromColumnTest();
-        //await t.DeleteColumnTest();
 
     }
 }

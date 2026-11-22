@@ -1,7 +1,15 @@
 namespace SunamoGoogleSheets.Clipboard;
 
+/// <summary>
+/// Represents the sheets generator template type.
+/// </summary>
 public class SheetsGeneratorTemplate
 {
+    /// <summary>
+    /// Android app comparing.
+    /// </summary>
+    /// <param name="parsedApps">The parsed apps.</param>
+    /// <returns>The android app comparing result.</returns>
     public static string AndroidAppComparing(List<StoreParsedApp> parsedApps)
     {
         var valuesByField = new Dictionary<string, List<object>>();
