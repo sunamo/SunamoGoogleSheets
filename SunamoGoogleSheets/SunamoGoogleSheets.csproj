@@ -4,7 +4,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
-    <Version>26.5.18.4</Version>
+    <Version>26.11.22.1</Version>
     <Description>Parsing from and formatting to Google Sheets, plus Google Sheets v4 API service for creating and writing spreadsheets via OAuth</Description>
     <Authors>www.sunamo.cz</Authors>
     <Copyright>www.sunamo.cz</Copyright>

@@ -195,6 +195,28 @@ public class SheetsHelper
     }
 
     /// <summary>
+    /// Builds tab-separated text for pasting into a sheet: one line per caption, followed by the value of every column; a missing value is an empty cell and the inputs are not changed.
+    /// </summary>
+    /// <param name="captions">The captions, one per output line.</param>
+    /// <param name="dataColumns">The columns; each holds the values in the order of the captions.</param>
+    /// <returns>The tab-separated text.</returns>
+    public static string CaptionsWithColumnsToTsv(IReadOnlyList<string> captions, IReadOnlyList<List<string>> dataColumns)
+    {
+        StringBuilder stringBuilder = new();
+        for (int i = 0; i < captions.Count; i++)
+        {
+            stringBuilder.Append(captions[i]);
+            foreach (var column in dataColumns)
+            {
+                stringBuilder.Append('\t');
+                stringBuilder.Append(i < column.Count ? column[i] : string.Empty);
+            }
+            stringBuilder.AppendLine();
+        }
+        return stringBuilder.ToString();
+    }
+
+    /// <summary>
     /// Switch for google sheets.
     /// </summary>
     /// <param name="captions">The captions.</param>

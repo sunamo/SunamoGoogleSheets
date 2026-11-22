@@ -25,6 +25,22 @@ public class SheetsHelperTests
     }
 
     /// <summary>
+    /// Tests that CaptionsWithColumnsToTsv writes an empty cell for a missing value and keeps the inputs unchanged.
+    /// </summary>
+    [Fact]
+    public void CaptionsWithColumnsToTsvTest()
+    {
+        List<string> captions = ["a", "b"];
+        List<List<string>> columns = [["c", "d"], ["e"]];
+
+        var result = SheetsHelper.CaptionsWithColumnsToTsv(captions, columns);
+
+        Assert.Equal("a\tc\te" + Environment.NewLine + "b\td\t" + Environment.NewLine, result);
+        Assert.Equal(2, captions.Count);
+        Assert.Single(columns[1]);
+    }
+
+    /// <summary>
     /// Tests SwitchForGoogleSheets method
     /// </summary>
     [Fact]
